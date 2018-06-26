@@ -1,15 +1,18 @@
 ﻿/* 命名空间  body=notfound */
 body{
-    background-color: #fff !important;
+    background-color: #fff;
 }
 .wid{ 
     width: 1280px;
     margin:0 auto;
 }
+.notfound{
+    min-height: 100vh;
+    background-color: #fff;
+}
 .notfound .sprite-notfound{
     background: url('./../img/404.jpg') no-repeat;
     overflow: hidden;
-    
 }
 .notfound .bg{
     width: 277px;
@@ -18,7 +21,14 @@ body{
     padding-top: 311px;
 }
 .notfound .wid{
-    padding-top: 191px;
+    height: 523px;
+    width: 1280px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 .notfound .btns{
     margin-top: 147px;

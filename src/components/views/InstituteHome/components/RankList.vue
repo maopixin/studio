@@ -11,7 +11,11 @@
                 :key="index"
             >
                 <span class="ranking">{{index+1}}</span>
-                <span class="name">工作室名称</span>
+                <span class="name">
+                    <router-link :to="{path:'/institute/studio/'+index}">
+                        工作室名称
+                    </router-link>
+                </span>
                 <span class="hot">访问量</span>
             </li>
         </ul>
