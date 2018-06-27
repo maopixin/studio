@@ -4,7 +4,7 @@
             <li>
                 <span class="ranking">名次</span>
                 <span class="name">工作室名称</span>
-                <span class="hot">访问量</span>
+                <span class="hot">{{label}}</span>
             </li>
             <li 
                 v-for="(item,index) in 5"
@@ -23,7 +23,7 @@
             <li>
                 <span class="ranking">名次</span>
                 <span class="name">工作室名称</span>
-                <span class="hot">访问量</span>
+                <span class="hot">{{label}}</span>
             </li>
             <li 
                 v-for="(item,index) in 5"
@@ -39,7 +39,15 @@
 
 <script>
 export default {
-    name:'RankList'
+    name:'RankList',
+    props:{
+        label:String,
+    },
+    data(){
+        return {
+
+        }
+    }
 }
 </script>
 

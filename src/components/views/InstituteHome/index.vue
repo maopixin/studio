@@ -11,26 +11,12 @@
                     </div>
                     <div>
                         <el-tabs v-model="activeName" @tab-click="handleClick">
-                            <el-tab-pane label="访问量" name="first">
-                                <rank-list></rank-list>
-                            </el-tab-pane>
-                            <el-tab-pane label="活跃度" name="second">
-                                <rank-list></rank-list>
-                            </el-tab-pane>
-                            <el-tab-pane label="文章" name="third">
-                                <rank-list></rank-list>
-                            </el-tab-pane>
-                            <el-tab-pane label="资源" name="fourth">
-                                <rank-list></rank-list>
-                            </el-tab-pane>
-                            <el-tab-pane label="名师课堂" name="fifth">
-                                <rank-list></rank-list>
-                            </el-tab-pane>
-                            <el-tab-pane label="主题研修" name="sixth">
-                                <rank-list></rank-list>
-                            </el-tab-pane>
-                            <el-tab-pane label="话题" name="seveth">
-                                <rank-list></rank-list>
+                            <el-tab-pane
+                                v-for="(item,index) in rankListArr"
+                                :key='index'
+                                :label="item.label" 
+                                :name="index+''">
+                                <rank-list :label='item.label'></rank-list>
                             </el-tab-pane>
                         </el-tabs>
                     </div>
@@ -313,7 +299,30 @@ export default {
     },
     data() {
         return {
-            activeName: 'first',
+            activeName: '0',
+            rankListArr : [
+                {
+                    label:'访问量',
+                },
+                {
+                    label:'活跃度',
+                },
+                {
+                    label:'文章',
+                },
+                {
+                    label:'资源',
+                },
+                {
+                    label:'名师课堂',
+                },
+                {
+                    label:'主题研修',
+                },
+                {
+                    label:'话题',
+                },
+            ],
             fontArr:[
                 '一',
                 '二',
@@ -324,7 +333,7 @@ export default {
     },
     methods: {
         handleClick(tab, event) {
-            console.log(tab, event);
+            console.log(tab);
         }
     }
 }
