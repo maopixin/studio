@@ -13,6 +13,14 @@ import HeaderUse from '@global/Header'
 export default {
     components: {
         HeaderUse
+    },
+    data(){
+        return {
+            
+        }
+    },
+    created(){
+        
     }
 }
 </script>

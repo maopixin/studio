@@ -1,7 +1,6 @@
 'use strict'
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
-
 const path = require('path')
 
 module.exports = {
@@ -10,8 +9,21 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
-
+    proxyTable: {
+      '/studio/api/': {
+          target: 'http://institute.dljy.lzdev',  // 接口域名
+        //secure: false,  // 如果是https接口，需要配置这个参数
+          changeOrigin: true,  //是否跨域
+          
+      },
+      '/source/api/': {
+        target: 'http://institute.dljy.lzdev',  // 接口域名
+      //secure: false,  // 如果是https接口，需要配置这个参数
+        changeOrigin: true,  //是否跨域
+        
+    }
+    },
+    
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined

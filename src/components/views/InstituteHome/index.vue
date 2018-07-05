@@ -15,7 +15,8 @@
                                 v-for="(item,index) in rankListArr"
                                 :key='index'
                                 :label="item.label" 
-                                :name="index+''">
+                                :name="index+''"
+                            >
                                 <rank-list :label='item.label'></rank-list>
                             </el-tab-pane>
                         </el-tabs>
@@ -26,12 +27,6 @@
                 <div class="box-shadow">
                     <div class="title_box">
                         <h3 class="column_title">
-                            <div class="t_l">LINE</div>
-                            <div class="t_c">公告</div>
-                        </h3>
-                    </div>
-                    <div style="padding: 28px 20px 6px;background-color:#ffffff;">
-                        <news-list></news-list>
                     </div>
                 </div>
             </el-col>
@@ -253,26 +248,26 @@
                 <el-row :gutter='20'>
                     <el-col 
                         :span='6'
-                        v-for="(item,index) in 12"
-                        :key='index'
+                        v-for="(item) in allStudio.list"
+                        :key='item.id'
                     >
                         <div class="box-shadow">
                             <a href="" class="studio-pic">
                                 <img src="http://yun.zjer.cn/uploads1/400x400/studio/album/2018/0615/236/5b22f536b2c44..jpg" alt=""/>
                                 <div>
                                     <span class="fl">
-                                        xx工作室
+                                        {{item.name}}
                                     </span>
                                     <span class="fr">
-                                        xx
+                                        {{item.owner.nickname}}
                                     </span>
                                 </div>
                             </a>
                             <div class="studio-info">
-                                <div>主持人：xxx</div>
-                                <div>学科：xx</div>
-                                <div>资源：xxx 成员：xxx</div>
-                                <div>浏览量：xxx</div>
+                                <div>主持人：{{item.owner.nickname}}</div>
+                                <div>学科：暂无</div>
+                                <div>资源：{{item.source_num}} 成员：{{item.member_num}}</div>
+                                <div>浏览量：{{item.hit_num}}</div>
                                 <div class="btn">申请加入</div>
                             </div>
                         </div>
@@ -283,15 +278,19 @@
                 class="page_box"
                 background
                 layout="prev, pager, next"
-                :total="1000">
+                :page-size='allStudio.page'
+                :total="allStudio.total_page"
+                @size-change='sizeChange'
+            >
             </el-pagination>
         </div>
     </div>
 </template>
 
 <script>
-import RankList from './components/RankList'
-import NewsList from './components/NewsList'
+import RankList from './components/RankList';
+import NewsList from './components/NewsList';
+import {getStudioList} from '@api/index.js';
 export default {
     components: {
         RankList,
@@ -328,12 +327,34 @@ export default {
                 '二',
                 '三',
                 '四'
-            ]
+            ],
+            allStudio:{
+                list:[],
+                page:1,
+                total_page:1,
+                pre_page:1,
+            }
         };
+    },
+    created(){
+        getStudioList({
+            page:1,
+            pre_page:this.allStudio.pre_page,
+            institute_id:3,
+        }).then(res=>{
+            console.log(res);
+            if(res.status.code!=0) return;
+            this.allStudio.list = res.data.list;
+            this.allStudio.page = res.data.page;
+            this.allStudio.total_page = res.data.total_page;
+        })
     },
     methods: {
         handleClick(tab, event) {
             console.log(tab);
+        },
+        sizeChange(page){
+            console.log(page)
         }
     }
 }

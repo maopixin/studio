@@ -30,6 +30,7 @@ module.exports = {
       '@global': resolve('src/components/global'),
       '@views': resolve('src/components/views'),
       '@img': resolve('src/assets/img'),
+      '@api': resolve('src/api')
     }
   },
   module: {
