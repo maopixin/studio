@@ -27,6 +27,12 @@
                 <div class="box-shadow">
                     <div class="title_box">
                         <h3 class="column_title">
+                            <div class="t_l">LINE</div>
+                            <div class="t_c">工作室资讯</div>
+                        </h3>
+                    </div>
+                    <div style="padding: 28px 20px 6px;background-color:#ffffff;">
+                        <news-list></news-list>
                     </div>
                 </div>
             </el-col>
@@ -278,9 +284,9 @@
                 class="page_box"
                 background
                 layout="prev, pager, next"
-                :page-size='allStudio.page'
+                :page-size='1'
                 :total="allStudio.total_page"
-                @size-change='sizeChange'
+                @current-change='sizeChange'
             >
             </el-pagination>
         </div>
@@ -342,11 +348,13 @@ export default {
             pre_page:this.allStudio.pre_page,
             institute_id:3,
         }).then(res=>{
-            console.log(res);
-            if(res.status.code!=0) return;
-            this.allStudio.list = res.data.list;
-            this.allStudio.page = res.data.page;
-            this.allStudio.total_page = res.data.total_page;
+            if(res.status.code==0){
+                this.allStudio.list = res.data.list;
+                this.allStudio.page = res.data.page;
+                this.allStudio.total_page = res.data.total_page;
+            }else{
+
+            }
         })
     },
     methods: {
@@ -354,7 +362,21 @@ export default {
             console.log(tab);
         },
         sizeChange(page){
-            console.log(page)
+            console.log(page);
+            getStudioList({
+                page,
+                pre_page:this.allStudio.pre_page,
+                institute_id:3,
+            }).then(res=>{
+                console.log(res);
+                if(res.status.code==0){
+                    this.allStudio.list = res.data.list;
+                    this.allStudio.page = res.data.page;
+                    this.allStudio.total_page = res.data.total_page;
+                }else{
+                    
+                }
+            })
         }
     }
 }
