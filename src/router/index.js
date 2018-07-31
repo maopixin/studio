@@ -22,6 +22,8 @@ const StudioInformation = () => import('@views/StudioInformation')
 const SubjectLeader = () => import('@views/SubjectLeader')
 const BriefIntroduce = () => import('@views/BriefIntroduce')
 const StudioList = () => import('@views/StudioList')
+
+
 Vue.use(Router)
 
 export default new Router({
