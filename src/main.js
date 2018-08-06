@@ -20,6 +20,7 @@ Vue.prototype.$echarts = echarts;
 
 Vue.use(ElementUI,{ size: 'small', zIndex: 3000 });
 Vue.use(VueAxios,axios);
+
 Vue.config.productionTip = false;
 
 

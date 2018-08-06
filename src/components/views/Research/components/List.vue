@@ -2,7 +2,7 @@
     <ul class="activity_list">
         <li 
             class="clearfix"
-            v-for="(item,index) in 5"
+            v-for="(item,index) in list"
             :key='index'
         >
             <div class="pic_box fl">
@@ -32,7 +32,9 @@
 
 <script>
 export default {
-
+    props:{
+        list : Array
+    }
 }
 </script>
 

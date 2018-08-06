@@ -2,7 +2,7 @@
     <div class="content">
         <Crumbs/>
         <el-container>
-            <nav-menu></nav-menu>
+            <nav-menu :menu-list='menuList' :activeIndexF='activeIndexF' @selectChange='selectChange'></nav-menu>
             <el-main class="box-shadow">
                 <div class="title_box">
                     <h3 class="column_title">
@@ -236,6 +236,31 @@ export default {
     components: {
         Crumbs,
         NavMenu
+    },
+    data(){
+        return {
+            menuList:[
+                {
+                    title:'工作室动态',
+                    disabled:false
+                },
+                {
+                    title:'成员动态',
+                    disabled:false
+                },
+                {
+                    title:'与我相关',
+                    disabled:false
+                }
+            ],
+            activeIndexF: '0',
+
+        }
+    },
+    methods:{
+        selectChange(index){
+            this.activeIndexF = index;
+        }
     }
 }
 </script>

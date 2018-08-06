@@ -53,6 +53,7 @@
 import Crumbs from "@/components/global/crumbs";
 import List from './components/List';
 import ExampleList from '@/components/global/ExampleList.vue';
+import {getActivityList} from '@api/index.js'
 export default {
     name:'research',
     components: {
@@ -65,6 +66,13 @@ export default {
         activeName: 'first',
         list:[]
       };
+    },
+    created(){
+        getActivityList({
+            page:1
+        }).then(data=>{
+            console.log(data)
+        })
     },
     methods: {
       handleClick(tab, event) {
