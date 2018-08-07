@@ -6,24 +6,24 @@
             :key='index'
         >
             <div class="pic_box fl">
-                <img src="http://img.zjer.cn/uploads1/800x800/studio/album/2018/0610/149/5b1d100c0ffb2..jpg" alt="">
-                <span>线上</span>
+                <img :src="item.cover" alt="">
+                <span>{{item.type_text}}</span>
             </div>
             <div class="activity_info fl">
                 <div class="title clearfix">
-                    <h4 class="fl">如何更好的啊哈塞德里克哈哈对考拉山东龙口哈圣诞快乐哈</h4>
-                    <span class="fl">进行中</span>
+                    <h4 class="fl">{{item.title}}</h4>
+                    <span class="fl" :class="statusClass[item.process_status]">{{item.process_status_text}}</span>
                 </div>
                 <div class="time">
-                    起止时间：2018-05-31 09:51:29至2018-06-13 09:51:31
+                    起止时间：{{item.start_time}}至{{item.stop_time}}
                 </div>
                 <div class="number clearfix">
-                    <span class="person fl">创建者：毛丕新</span>
-                    <span class="person_num fl">参与人数：212</span>
+                    <span class="person fl">创建者：{{item.creator_name}}</span>
+                    <span class="person_num fl">参与人数：{{item.partner_cnt}}</span>
                 </div>
                 <div class="sys">
-                    <span class="fl">活动描述：啊说的话啊是的卡拉汉上课了啊黑色的卡拉汉顺利的话阿历山大卡拉什德库拉货收到了哈喽</span>
-                    <a href="">立即参与</a>
+                    <span class="fl">活动描述：{{item.description}}</span>
+                    <a href="javasxript:;" @click='handleJoinActivityClick(item.id)' v-if='item.process_status==1'>立即参与</a>
                 </div>
             </div>
         </li>
@@ -33,7 +33,22 @@
 <script>
 export default {
     props:{
-        list : Array
+        list : Array,
+    },
+    data(){
+        return {
+            statusClass:{
+                '0':'un_start',
+                '1':'going',
+                '2':'over'
+            }
+        }
+    },
+    methods:{
+        handleJoinActivityClick(id){
+            console.log(1)
+            this.$emit('joinActivityClick',{id})
+        }
     }
 }
 </script>
@@ -89,6 +104,15 @@ export default {
                     font-size: 12px;
                     text-indent: 1em;
                     line-height: 18px;
+                }
+                .un_start{
+                    background-image: url('./img/going.png');
+                }
+                .going{
+                    background-image: url('./img/over.png');
+                }
+                .over{
+                    background-image: url('./img/ready.png');
                 }
             }
             .time{

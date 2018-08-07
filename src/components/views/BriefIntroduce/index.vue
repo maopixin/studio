@@ -58,11 +58,24 @@
 </template>
 
 <script>
+import {getStudioDetail} from '@api/index.js'
 export default {
     data(){
         return {
+            data: {
 
+            }
         }
+    },
+    created(){
+        console.log(this.$route);
+        getStudioDetail({
+            id:this.$route.params.id
+        }).then(data=>{
+            console.log(data);
+        }).catch(error=>{
+            console.log(error)
+        })
     }
 }
 </script>
