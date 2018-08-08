@@ -250,12 +250,18 @@ export default {
         });
       },
       joinActivityClick(id){
+          console.log(id)
           joinActivity({
               activity_id:id
           }).then(data=>{
               console.log(data);
               if(data.status.code==0){
-                  //
+                  
+                  this.$notify({
+                    title: '成功',
+                    message: '参与活动成功',
+                    type: 'success'
+                  });
               }else{
                 let str = '';
                 for(let i in data.data){

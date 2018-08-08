@@ -46,8 +46,7 @@ export default {
     },
     methods:{
         handleJoinActivityClick(id){
-            console.log(1)
-            this.$emit('joinActivityClick',{id})
+            this.$emit('joinActivityClick',id)
         }
     }
 }

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 axios.defaults.withCredentials = true;
 axios.interceptors.request.use(
     config => {
@@ -54,7 +54,8 @@ export function getInstituteLatest(payload){
 // process_status 否 int 0:未开始;1:进行中;2:已结束
 export function getActivityList(payload){
     return axios.get('/activity/api/page_list',{
-        params:payload
+        params:payload,
+        
     }).then(data=>{
         return data.data
     }).catch(error=>{
@@ -63,9 +64,7 @@ export function getActivityList(payload){
 };
 // 参加活动
 export function joinActivity(payload){
-    return axios.post('/api/activity_auth/join',{
-        params:payload
-    }).then(data=>{
+    return axios.post('/api/activity_auth/join',payload).then(data=>{
         return data.data;
     }).catch(error=>{
         return error;
