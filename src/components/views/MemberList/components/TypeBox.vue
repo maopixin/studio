@@ -6,7 +6,7 @@
             <el-radio v-model="radio" label="3" border>月排行</el-radio>
         </div>
         <div class="person-num">
-            共<span>758</span>位成员
+            共<span>{{list.length}}</span>位成员
         </div>
         <div>
             <ul class="person-list">
@@ -14,7 +14,6 @@
                     <span class="ranking fl">排名</span>
                     <span class="name fl">姓名</span>
                     <span class="sex fl">性别</span>
-                    <span class="role fl">角色</span>
                     <span class="identity fl">身份</span>
                     <span class="company fl">单位</span>
                     <span class="integral fl">积分</span>
@@ -22,30 +21,21 @@
                 </li>
                 <li 
                     class="clearfix"
-                    v-for="(item,index) in 15"
+                    v-for="(item,index) in list"
                     :key='index'
                 >
                     <span class="ranking fl">
                         <span class="fl">{{index+1}}</span>
-                        <img class="fl" src="https://avatar.csdn.net/2/8/2/3_qq_24122593.jpg" alt=""/>
+                        <img class="fl" :src="item.smallAvatar" alt=""/>
                     </span>
-                    <span class="name fl">毛丕新</span>
-                    <span class="sex fl">男</span>
-                    <span class="role fl">普通成员</span>
-                    <span class="identity fl">学科带头人</span>
-                    <span class="company fl">北京市大钟寺东联教育</span>
-                    <span class="integral fl">88888</span>
-                    <span class="social-contact fl"></span>
+                    <span class="name fl">{{item.title}}</span>
+                    <span class="sex fl">{{item.gender}}</span>
+                    <span class="identity fl">{{item.duty}}</span>
+                    <span class="company fl">{{item.company||'无'}}</span>
+                    <span class="integral fl">{{item.integral}}</span>
+                    <span class="social-contact fl"><el-button type="primary">关注</el-button></span>
                 </li>
             </ul>
-            <el-pagination
-                class="page_box"
-                background
-                layout="prev, pager, next"
-                :total="30"
-                :page-size='15'    
-            >
-            </el-pagination>
         </div>
     </div>
 </template>
@@ -53,10 +43,14 @@
 <script>
 export default {
     name:'typebox',
+    props:['list'],
     data(){
         return {
             radio:'1',
         }
+    },
+    created(){
+        
     }
 }
 </script>
@@ -116,7 +110,7 @@ export default {
                 }
             }
             .ranking{
-                width: 142px;
+                width: 180px;
                 text-indent: 2em;
                 span{
                     width: 26px;
@@ -128,7 +122,7 @@ export default {
                     font-size: 12px;
                     line-height: 26px;
                     text-indent: 0;
-                    margin: 20px 46px 0 25px;
+                    margin: 20px 60px 0 30px;
                 }
                 img{
                     width: 44px;
@@ -138,21 +132,18 @@ export default {
                 }
             }
             .name{
-                width: 167px;
+                width: 200px;
                 text-align: center;
             }
             .sex{
                 width: 28px;
                 text-align: center;
-                margin-right: 86px; 
-            }
-            .role{
-                width: 95px;
+                margin-right: 50px; 
             }
             .identity{
                 width: 145px;
                 text-align: center;
-                margin-right: 24px;
+                margin-right: 50px;
             }
             .company{
                 width: 280px;

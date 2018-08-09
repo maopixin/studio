@@ -76,7 +76,19 @@ export function getStudioDetail(payload){
         params:payload
     }).then(data=>{
         return data.data;
-    }).catch(erroe=>{
+    }).catch(error=>{
+        console.log(error)
+    })
+}
+// 获取工作室下所有成员
+// duty_code	否	int	头衔编码【1：管理员；2：学科带头人；3：普通成员；4：专家；5：助教
+// _sort	否	string	排序 【积分正序：+integral；积分倒序 -integral
+export function getStuidoMembers(payload){
+    return axios.get('/api/member/studio',{
+        params:payload
+    }).then(data=>{
+        return data.data;
+    }).catch(error=>{
         console.log(error)
     })
 }
