@@ -13,12 +13,12 @@
                     <el-button slot="append" icon="el-icon-search"></el-button>
                 </el-input>
             </div>
-            <div class="part" data-type='login' style="">
+            <div class="part" data-type='login' style="" v-if='!userInfo'>
                 <a href="http://account.dljy.com/user/login/login">登录</a>
                 /
                 <a href="http://account.dljy.com/user/login/register" class="orange">注册</a>
             </div>
-            <div class="part" data-type='logined' style='display:none;'>
+            <div class="part" data-type='logined' v-if='userInfo'>
                 <a href="http://meet.dljy.com" data-user='logined' style="margin-right:20px;">毛丕新</a>
                 <a href="http://account.dljy.com/user/login/logout" class="orange">退出</a>
             </div>
@@ -28,12 +28,23 @@
 </template>
 
 <script>
+import {getUserInfo} from '@api/index'
 export default {
     name:'header-use',
     data(){
         return {
-            seacrValue:''
+            seacrValue:'',
+            userInfo:false,
+            name:''
         }
+    },
+    created(){
+        getUserInfo().then(data=>{
+            if(data.status.code==0){
+                this.userInfo = true;
+                this.name = data.data.nickname
+            }
+        })
     }
 }
 </script>

@@ -16,6 +16,8 @@ require('echarts/lib/chart/pie');
 // 引入提示框和标题组件
 require('echarts/lib/component/tooltip');
 require('echarts/lib/component/title');
+import {tips} from './methods/index.js';
+Vue.prototype.$tips = tips;
 Vue.prototype.$echarts = echarts;
 
 Vue.use(ElementUI,{ size: 'small', zIndex: 3000 });

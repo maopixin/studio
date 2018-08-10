@@ -11,7 +11,7 @@
                         :name="e.value"
                         v-loading="!e.list.loading"
                     >
-                        <type-box :list='e.list.list'/>
+                        <type-box :list='e.list.list' @follow='followClick'/>
                     </el-tab-pane>
                 </el-tabs>
                 <el-main class="search-box">
@@ -29,7 +29,7 @@
 <script>
 import Crumbs from '@global/crumbs'
 import TypeBox from './components/TypeBox'
-import {getStuidoMembers} from '@api/index.js'
+import {getStuidoMembers, followPerson, followCancel} from '@api/index.js'
 import { Loading } from 'element-ui';
 export default {
     name:'MemberList',
@@ -123,12 +123,68 @@ export default {
                         message: str
                     });
                 }
+            }).catch(error=>{
+                this.$notify.error({
+                    title: '错误',
+                    message: '请求出错'
+                });
             })
         }   
+      },
+      followClick(obj){
+          if(obj.type=='关注'){
+            followPerson({
+                follow_user_id:obj.id
+            }).then(data=>{
+                console.log(data)
+                if(data.status.code==0){
+                    this.$notify({
+                        title: '成功',
+                        message: '关注成功',
+                        type: 'success'
+                    });
+                }else{
+                    console.log(this.$fn)
+                    var _this = this;
+                    this.$notify.error({
+                        title: '错误',
+                        message: this.$tips(data.data)
+                    });
+                }
+            }).catch((error)=>{
+                console.log(error)
+                this.$notify.error({
+                    title: '错误',
+                    message: '请求出错'
+                });
+            })
+          }else{
+            followCancel({
+                follow_user_id:obj.id
+            }).then(data=>{
+                console.log(data)
+                if(data.status.code==0){
+                    this.$notify({
+                        title: '成功',
+                        message: '取消成功',
+                        type: 'success'
+                    });
+                }else{
+                    this.$notify.error({
+                        title: '错误',
+                        message: this.$tips(data.data)
+                    });
+                }
+            }).catch(()=>{
+                this.$notify.error({
+                    title: '错误',
+                    message: '请求出错'
+                });
+            })
+          }
       }
     },
     created(){
-        console.log(1)
         getStuidoMembers({
             id:this.$route.params.id,
             pre_page:1000
@@ -146,6 +202,12 @@ export default {
                     message: str
                 });
             }
+        }).catch(error=>{
+            this.list[0].list.loading = true;
+            this.$notify.error({
+                title: '错误',
+                message: '请求出错'
+            });
         })
     }
 }

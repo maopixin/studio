@@ -92,3 +92,31 @@ export function getStuidoMembers(payload){
         console.log(error)
     })
 }
+
+// 关注用户:
+// URL：http://institute.dljy.com/api/follow/confirm
+export function followPerson(payload){
+    return axios.post('/api/follow/confirm',payload).then(data=>{
+        return data.data
+    }).catch(error=>{
+        console.log(error)
+    })
+}
+// 取消关注
+export function followCancel(payload){
+    return axios.post('/api/follow/concel',payload).then(data=>{
+        return data.data
+    }).catch(error=>{
+        console.log(error)
+    })
+}
+// 获取用户信息
+export function getUserInfo(payload){
+    return axios.get('/api/user/info',{
+        params:payload
+    }).then(data=>{
+        return data.data
+    }).catch(error=>{
+        console.log(error)
+    })
+}
