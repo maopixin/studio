@@ -120,3 +120,21 @@ export function getUserInfo(payload){
         console.log(error)
     })
 }
+
+// 获取研究院/工作室下所有栏目
+export function getCategory(payload){
+    return axios.get('/api/category/page_list',{
+        params:payload
+    }).then(data=>{
+        return data.data
+    })
+}
+// 获取研究院/工作室数据列表
+// /source/api/studio_data
+export function getStudioData(payload){
+    return axios.get('/source/api/studio_data',{
+        params:payload
+    }).then(data=>{
+        return data.data
+    })
+}

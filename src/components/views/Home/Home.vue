@@ -50,32 +50,38 @@
                         </h3>
                     </div>
                     <div>
-                        <div class="info_box">
+                        <loading v-if='!studioInfo.l'/>
+                        <fail v-if="studioInfo.fail"/>
+                        <div v-if="studioInfo.l && !studioInfo.fail" class="info_box">
                             <div class="info clearfix">
                                 <img src="http://yun.zjer.cn/uploads/snsPhotos/snscover/551e070cc5593_100.jpg" alt="">
                                 <div class="text">
                                     <span class="name">
-                                        <router-link :to='{name:"introduce"}'>姓名</router-link>
+                                        <router-link :to='{name:"introduce"}'>{{studioInfo.data.name}}</router-link>
                                     </span>
-                                    <span class="type">学科</span>
+                                    <span class="type">{{studioInfo.data.subject_major}}</span>
                                 </div>
                             </div>
                             <div class="num clearfix">
                                 <div>
-                                    <a href="">
-                                        <span>758</span>
+                                    <a href="javascript:;">
+                                        <span>{{studioInfo.data.member_count}}</span>
                                         <span>成员</span>
                                     </a>
                                 </div>
                                 <em></em>
                                 <div>
-                                    <span>758</span>
-                                    <span>资源</span>
+                                    <a href="javascript:;">
+                                        <span>{{studioInfo.data.resource_count}}</span>
+                                        <span>资源</span>
+                                    </a>
                                 </div>
                                 <em></em>
                                 <div>
-                                    <span>758</span>
-                                    <span>文章</span>
+                                    <a href="javascript:;">
+                                        <span>{{studioInfo.data.info_count}}</span>
+                                        <span>文章</span>
+                                    </a>
                                 </div>
                             </div>
                             <a href="" class="join" id="btn">
@@ -91,51 +97,20 @@
                             <div class="t_l">LINE</div>
                             <div class="t_c">成员排行</div>
                         </h3>
-
+                        <router-link :to='{name:"member"}' class="title_more">更多</router-link>
                     </div>
                     <div class="">
-                        <ul class="member_list">
-                            <li>
-                                <span class="no fl">1</span>
-                                <img class="fl" src="https://avatars1.githubusercontent.com/u/30068481?s=460&v=4" alt="">
-                                <a href="" class="name fl">啦啦</a>
-                                <span class="number fr">1213</span>
-                            </li>
-                            <li>
-                                <span class="no fl">2</span>
-                                <img class="fl" src="https://avatars1.githubusercontent.com/u/30068481?s=460&v=4" alt="">
-                                <span class="name fl">啦啦</span>
-                                <span class="number fr">113</span>
-                            </li>
-                            <li>
-                                <span class="no fl">2</span>
-                                <img class="fl" src="https://avatars1.githubusercontent.com/u/30068481?s=460&v=4" alt="">
-                                <span class="name fl">啦啦</span>
-                                <span class="number fr">113</span>
-                            </li>
-                            <li>
-                                <span class="no fl">2</span>
-                                <img class="fl" src="https://avatars1.githubusercontent.com/u/30068481?s=460&v=4" alt="">
-                                <span class="name fl">啦啦</span>
-                                <span class="number fr">113</span>
-                            </li>
-                            <li>
-                                <span class="no fl">2</span>
-                                <img class="fl" src="https://avatars1.githubusercontent.com/u/30068481?s=460&v=4" alt="">
-                                <span class="name fl">啦啦</span>
-                                <span class="number fr">113</span>
-                            </li>
-                            <li>
-                                <span class="no fl">2</span>
-                                <img class="fl" src="https://avatars1.githubusercontent.com/u/30068481?s=460&v=4" alt="">
-                                <span class="name fl">啦啦</span>
-                                <span class="number fr">113</span>
-                            </li>
-                            <li>
-                                <span class="no fl">2</span>
-                                <img class="fl" src="https://avatars1.githubusercontent.com/u/30068481?s=460&v=4" alt="">
-                                <span class="name fl">啦啦</span>
-                                <span class="number fr">113</span>
+                        <loading v-if='!member.l'/>
+                        <fail v-if="member.fail"/>
+                        <ul v-if="member.l && !member.fail" class="member_list">
+                            <li 
+                                v-for="(item,index) in member.list"
+                                :key='item.id'
+                            >
+                                <span class="no fl">{{index+1}}</span>
+                                <img class="fl" :src="item.smallAvatar" alt="">
+                                <a href="" class="name fl">{{item.nickname}}</a>
+                                <span class="number fr">{{item.integral}}</span>
                             </li>
                         </ul>
                     </div>
@@ -244,51 +219,27 @@
                             <router-link :to='{name:"information"}' class="title_more">更多</router-link>
                         </div>
                         <div class="clearfix news_boxs">
-                            <div class="carousel_box">
+                            <loading v-if='!information.l'/>
+                            <fail v-if="information.fail"/>
+                            <div class="carousel_box" v-if="information.l&&!information.fail">
                                 <el-carousel indicator-position="outside" height='186px'>
-                                    <el-carousel-item v-for="item in 4" :key="item">
+                                    <el-carousel-item v-for="item in information.list" :key="item">
                                         <a href="">
-                                            <img src="http://yun.zjer.cn/uploads1/400x400/studio/album/2018/0601/114/5b109e3692dcf.jpg" alt="">
+                                            <img :src="item.media.small" alt="">
                                         </a>
-                                        <span>啊睡了多久爱了很久圣啊睡了多久爱了很久圣诞快乐安徽省的绿卡设计的考拉设计的看啦诞快乐安徽省的绿卡设计的考拉设计的看啦</span>
+                                        <span>{{item.title}}</span>
                                     </el-carousel-item>
                                 </el-carousel>
                             </div>
                             <div class="sss">
-                                <ul class="new_list_text">
-                                    <li>
+                                <ul class="new_list_text" v-if='information.l&&!information.fail'>
+                                    <li 
+                                        v-for="(item) in information.list"
+                                        :key='item.id'
+
+                                    >
                                         <a href="">
-                                            奥斯卡的；卢萨卡；安师大
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            奥斯卡的；卢萨卡；安师大
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            奥斯卡的；卢萨卡；安师大
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            奥斯卡的；卢萨卡；安师大
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            奥斯卡的；卢萨卡；安师大
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            奥斯卡的；卢萨卡；安师大
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            奥斯卡的；卢萨卡；安师大
+                                            {{item.title}}
                                         </a>
                                     </li>
                                 </ul>
@@ -304,22 +255,25 @@
                             <a href="" class="title_more">更多</a>
                         </div>
                         <div>
-                            <ul class="studio_new_list">
+                            <loading v-if='!announcement.l'/>
+                            <fail v-if="announcement.fail"/>
+                            <ul class="studio_new_list" v-if='announcement.l&&!announcement.fail'>
                                 <li 
-                                    v-for="(item,index) in 5"
+                                    v-for="(item,index) in announcement.list"
                                     :key="index"
                                 >
                                     <span class="data">
-                                        <em>05/30</em>
-                                        <em>2018</em>
+                                        <em>{{item.utime.m}}/{{item.utime.d}}</em>
+                                        <em>{{item.utime.y}}</em>
                                     </span>
                                     <span class="new_title">
                                         <a href="">
-                                            啊咯设计的睡觉觉阿三；点击
+                                            {{ item.title || '无标题' }}
                                         </a>
                                     </span>
                                 </li>
                             </ul>
+
                         </div>
                     </div>
                 </div>
@@ -482,7 +436,9 @@
                         <router-link :to='{name:"research"}' class="title_more">更多</router-link>
                     </div>
                     <div>
-                        <ul class="teaching_and_researching_activity">
+                        <loading v-if='!activity.l'/>
+                        <fail v-if="activity.fail"/>
+                        <ul v-if="activity.l && !activity.fail" class="teaching_and_researching_activity">
                             <!-- 第一个不变  循环第二个 -->
                             <li class="clearfix">
                                 <div class="title fl">活动标题</div>
@@ -490,21 +446,19 @@
                                 <div class="io fl">活动状态</div>
                                 <div class="start_end fl">起止时间</div>
                             </li>
-                            <li class="clearfix">
+                            <li 
+                                class="clearfix"
+                                v-for="(item) in activity.list"
+                                :key = 'item.id'
+                            >
                                 <div class="title fl">
-                                    <a href="">活动标题</a>
+                                    <a href="">{{item.title}}</a>
                                 </div>
                                 <div class="name fl">
-                                    <a href="">创建者</a>
+                                    <a href="">{{item.creator_name}}</a>
                                 </div>
-                                <div class="io fl">活动状态</div>
-                                <div class="start_end fl">起止时间</div>
-                            </li>
-                            <li class="clearfix">
-                                <div class="title fl">活动标题</div>
-                                <div class="name fl">创建者</div>
-                                <div class="io fl">活动状态</div>
-                                <div class="start_end fl">起止时间</div>
+                                <div class="io fl">{{item.type_text}}</div>
+                                <div class="start_end fl">{{item.start_time}}至{{item.stop_time}}</div>
                             </li>
                         </ul>
                     </div>
@@ -582,9 +536,19 @@
                             <router-link :to="{name:'news'}" class="title_more">更多</router-link>
                         </div>
                         <div style="background-color:#fff;overflow:hidden;">
+
                             <div class="resource_list_box" id="test1">
-                                <ul class="resource_list">
-                                    <li class="clearfix" >
+                                 <loading v-if='!latest.l'/>
+                                <fail v-if="latest.fail"/>
+                                <ul 
+                                    class="resource_list"
+                                    v-if='latest.l && !latest.fail'
+                                >
+                                    <li 
+                                        class="clearfix"
+                                        v-for="(item) in latest.list"
+                                        :key='item.id'
+                                    >
                                         <span class="time fl">05-30 13:20</span>
                                         <span class="line fl"></span>
                                         <a class="head_pic fl" href="">
@@ -801,13 +765,49 @@
 </template>
 
 <script>
-
+import {getStudioData, getStudioDetail, getStudioLatest, getActivityList ,getStuidoMembers} from '@api/index';
+import Loading from '@global/Loading';
+import Fail from '@global/Fail'
 export default {
     name:'Home',
     data(){
         return {
             visitor_show_index:-1,
+            announcement:{
+                l:false,
+                list:[],
+                fail:false
+            },
+            information:{
+                l:false,
+                list:[],
+                fail:false
+            },
+            activity:{
+                l:false,
+                list:[],
+                fail:false
+            },
+            latest:{
+                l:false,
+                list:[],
+                fail:false
+            },
+            studioInfo:{
+                l:false,
+                data:{},
+                fail:false
+            },
+            member:{
+                l:false,
+                list:[],
+                fail:false
+            }
         }
+    },
+    components:{
+        Loading,
+        Fail
     },
     methods:{
         HandelHover(i){
@@ -815,9 +815,107 @@ export default {
         },
         HandelOut(){
             this.visitor_show_index = -1;
+        },
+        firstLoading(){
+            // 通告
+            getStudioData({
+                id:this.$route.params.id,
+                category_type_name:'通告',
+                pre_page:5
+            }).then(data=>{
+                console.log(data,'通告');
+                this.announcement.l = true;
+                if(data.status.code==0){
+                    this.announcement.list = data.data.list
+                }else{
+                    this.announcement.fail = true;
+                }
+            }).catch(error=>{
+                this.announcement.fail = true;
+            })
+            // 资讯
+            getStudioData({
+                id:this.$route.params.id,
+                category_type_name:'资讯',
+                pre_page:7,
+                require_media:1
+
+            }).then(data=>{
+                console.log(data,'资讯');
+                this.information.l = true;
+                if(data.status.code==0){
+                    this.information.list = data.data.list
+                }else{
+                    this.information.fail = true;
+                }
+            }).catch(error=>{
+                this.information.fail = true;
+            })
+            // 工作室信息
+            getStudioDetail({
+                id:this.$route.params.id
+            }).then(data=>{
+                console.log(data,'工作室信息');
+                this.studioInfo.l = true;
+                if(data.status.code==0){
+                    this.studioInfo.data = data.data
+                }else{
+                    this.studioInfo.fail = true;
+                }
+            }).catch(error=>{
+                this.studioInfo.fail = true;
+            })
+            // 最新动态
+            getStudioLatest({
+                id:this.$route.params.id,
+                require_user:1,
+                pre_page:5
+            }).then(data=>{
+                console.log(data,'最新动态')
+                this.latest.l = true;
+                if(data.status.code==0){
+                    this.latest.list = data.data.list
+                }else{
+                    this.latest.fail = true;
+                }
+            }).catch(error=>{
+                this.latest.fail = true;
+            })
+            // 教研活动
+            getActivityList({
+                studio_id:this.$route.params.id,
+                pre_page:5
+            }).then(data=>{
+                console.log(data,'教研活动');
+                this.activity.l = true;
+                if(data.status.code==0){
+                    this.activity.list = data.data.list
+                }else{
+                    this.activity.fail = true;
+                }
+            }).catch(error=>{
+                this.activity.fail = true;
+            })
+            // 成员列表
+            getStuidoMembers({
+                studio_id:this.$route.params.id,
+                pre_page:7
+            }).then(data=>{
+                console.log(data,'成员列表');
+                this.member.l = true;
+                if(data.status.code==0){
+                    console.log(data)
+                    this.member.list = data.data.list
+                }else{
+                    this.member.fail = true
+                }
+            }).catch(error=>{
+                this.member.fail = true;
+            })
         }
     },
     mounted () {
+        // canvas 相关
         var myChart = this.$echarts.init(document.getElementById('main'));
         var option = {
             tooltip: {
@@ -850,6 +948,8 @@ export default {
             }]
         };
         myChart.setOption(option);
+        // 初次加载
+        this.firstLoading();
     }
 }
 </script>
@@ -905,8 +1005,9 @@ export default {
 .info_box{
     padding: 39px 20px 54px;
     background-color: #fff;
+    // margin: 17px 20px;
     .info{
-        padding-left: 30px;
+        padding-left: 18px;
         img{
             float: left;
             width: 90px;
@@ -1301,7 +1402,7 @@ export default {
 .carousel_box{
     float: left;
     width: 248px;
-    height: 18px;
+    // height: 18px;
 }
 .sss{
     float: left;
@@ -1509,12 +1610,11 @@ export default {
         }
     }
 }
-.resource_list_box{
-    margin: 17px 20px;
-    background-color: #fff;
-    height: 520px;
-    overflow: hidden;
-}
+// .resource_list_box{
+//     margin: 17px 20px;
+//     background-color: #fff;
+//     overflow: hidden;
+// }
 .resource_list{
     
     li{
