@@ -2,7 +2,27 @@
     <div>
         <Crumbs/>
         <el-container class="content">
-            <NavMenu/>
+            <el-row class="tac" :gutter="20">
+                <el-col :span="24">
+                    <el-menu
+                        :default-active='activeIndexF'
+                        class="el-menu-vertical-demo box-shadow"
+                        @open="handleOpen"
+                        @close="handleClose"
+                        @select="handleSelect"
+                    >
+                        <el-menu-item
+                            v-for="(e,i) in menuList.child"
+                            :key='i'
+                            :index='i+""'
+                            :disabled='e.disabled'
+                        >
+                            <i class="el-icon-tickets"></i>
+                            <span slot="title">{{e.name}}</span>
+                        </el-menu-item>
+                    </el-menu>
+                </el-col>
+            </el-row>
             <el-main class="resource_lixt_box box-shadow">
                 <div class="title_box">
                     <h3 class="column_title">
@@ -96,13 +116,37 @@
 
 <script>
 import Crumbs from "@/components/global/crumbs";
-import NavMenu from '@/components/global/NavMenu';
 export default {
     components: {
-        Crumbs,
-        NavMenu
+        Crumbs
     },
-
+    data(){
+        return {
+            activeIndexF:''
+        }
+    },
+    computed:{
+        menuList(){
+            let data = this.$getNavNow(this.$store.getters.navList,this.$route.query.navId);
+            if(data){
+                return data;
+            }else{
+                this.$router.push({name:'notFound'})
+            }
+        }
+    },
+    methods: {
+        handleOpen(key, keyPath) {
+            console.log(key, keyPath);
+        },
+        handleClose(key, keyPath) {
+            console.log(key, keyPath);
+        },
+        handleSelect(index,indexPath){
+            console.log(index,indexPath);
+            
+        }
+    }
 };
 </script>
 

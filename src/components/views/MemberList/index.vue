@@ -105,7 +105,7 @@ export default {
         if(!this.list[tab.index].list.loading){
             let loadingInstance = Loading.service({target:document.getElementById('pane-'+this.list[tab.index].value),lock:true,fullscreen:false});
             getStuidoMembers({
-                id:this.$route.params.id,
+                studio_id:this.$route.params.id,
                 duty_code:this.list[tab.index].type,
                 pre_page:1000
             }).then(data=>{
@@ -186,7 +186,7 @@ export default {
     },
     created(){
         getStuidoMembers({
-            id:this.$route.params.id,
+            studio_id:this.$route.params.id,
             pre_page:1000
         }).then(data=>{
             if(data.status.code==0){

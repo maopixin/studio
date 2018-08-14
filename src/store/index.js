@@ -3,16 +3,23 @@ import Vuex from 'vuex';
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
-    list:2
+    navList:[],
+    navNow:{}
   },
   getters: {
-    getList: state => {
-      return state.list
+    navList: state => {
+      return state.navList
+    },
+    navNow: state => {
+      return state.navNow
     }
   },
   mutations: {
-    increment(state) {
-      state.count++
-    }
+    changeNavList(state,payload) {
+      state.navList = payload
+    },
+    changeNavNow(state,payload){
+      state.navNow = payload
+    },
   }
 });

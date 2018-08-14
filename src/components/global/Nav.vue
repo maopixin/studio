@@ -6,10 +6,10 @@
             </li>
             <li 
                 class="nav_item"
-                v-for="(item,index) in list"
+                v-for="(item,index) in navList"
                 :key='index'
             >
-                <router-link :to='{name:item.type}'>{{item.name}}</router-link>
+                <router-link :to='{name:routerType[item.type_code],query:{navId:item.id}}'>{{item.name}}</router-link>
                 <ul class="nav_item_list">
                     <li 
                         class="nav_item_item" 
@@ -91,17 +91,24 @@ export default {
                 //     type:'activitycase',
                 //     child:[]
                 // }
-            ]
+            ],
+            routerType:{
+                "1":'resource',
+                "2":"information",
+                "3":"classroom",
+                "4":'research'
+            }
         }
     },
     created () {
         getCategory({
             source:2,
-            source_id:this.$route.params.id
+            source_id:this.$route.params.id,
+            pre_page:1000
         }).then(data=>{
             console.log(data);
             if(data.status.code==0){
-                this.list = this.handleData(data.data.list);
+                this.$store.commit('changeNavList',this.handleData(data.data.list));
             }
         }).catch(error=>{
 
@@ -125,7 +132,12 @@ export default {
                     }
                 })
             })
-            return newArr
+            return newArr.slice(0,9);
+        },
+    },
+    computed:{
+        navList(){
+            return this.$store.getters.navList;
         }
     }
 }

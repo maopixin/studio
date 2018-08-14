@@ -12,7 +12,9 @@
                             <div class="t_c">基本任务建设进度</div>
                         </h3>
                     </div>
-                    <div class="echart_main" id="main">
+                    <loading v-if='!studioState.l'/>
+                    <fail v-if="studioState.fail"/>
+                    <div class="echart_main" id="main" v-show="studioState.l && !studioState.fail">
 
                     </div>
                 </div>
@@ -24,19 +26,21 @@
                             <div class="t_c">基本任务建设进度</div>
                         </h3>
                     </div>
-                    <div class="number_main">
+                    <loading v-if='!studioState.l'/>
+                    <fail v-if="studioState.fail"/>
+                    <div class="number_main" v-show="studioState.l && !studioState.fail">
                         <ul class="number_list clearfix">
                             <li>
                                 <span>昨日新增</span>
-                                <span style="color:#fc6232;">0.81</span>
+                                <span style="color:#fc6232;">{{studioState.data.yesterday_added}}</span>
                             </li>
                             <li>
                                 <span>年活跃度</span>
-                                <span style='color:#1fb7fc;'>12414</span>
+                                <span style='color:#1fb7fc;'>{{studioState.data.year_active}}</span>
                             </li>
                             <li>
                                 <span>排名</span>
-                                <span style="color:#fdad68;">114</span>
+                                <span style="color:#fdad68;">{{studioState.data.rank}}</span>
                             </li>
                         </ul>
                     </div>
@@ -125,34 +129,36 @@
                         </h3>
                     </div>
                     <div>
-                        <ul class="statistics_list">
+                        <loading v-if='!studioState.l'/>
+                        <fail v-if="studioState.fail"/>
+                        <ul class="statistics_list" v-show="studioState.l && !studioState.fail">
                             <li>
                                 <span class="fl">成员数</span>
-                                <span class="fr">100</span>
+                                <span class="fr">{{studioState.data.member_count}}</span>
                             </li>
                             <li>
                                 <span class="fl">文章数</span>
-                                <span class="fr">100</span>
+                                <span class="fr">{{studioState.data.article_count}}</span>
                             </li>
                             <li>
                                 <span class="fl">资源数</span>
-                                <span class="fr">100</span>
+                                <span class="fr">{{studioState.data.resource_count}}</span>
                             </li>
                             <li>
                                 <span class="fl">名师课堂数</span>
-                                <span class="fr">100</span>
+                                <span class="fr">{{studioState.data.course_count}}</span>
                             </li>
                             <li>
                                 <span class="fl">教研活动数</span>
-                                <span class="fr">100</span>
+                                <span class="fr">{{studioState.data.activity_count}}</span>
                             </li>
                             <li>
                                 <span class="fl">话题数</span>
-                                <span class="fr">100</span>
+                                <span class="fr">{{studioState.data.rank}}</span>
                             </li>
                             <li>
                                 <span class="fl">总活跃度数</span>
-                                <span class="fr">100</span>
+                                <span class="fr">{{studioState.data.activity}}</span>
                             </li>
                         </ul>
                     </div>
@@ -166,18 +172,20 @@
                             <div class="t_c">最近访客</div>
                         </h3>
                     </div>
-                    <div>
+                    <loading v-if='!studioState.l'/>
+                    <fail v-if="studioState.fail"/>
+                    <div v-show="studioState.l && !studioState.fail">
                         <ul class="visitor_list clearfix">
                             <li 
-                                v-for="(item,index) in 9"
+                                v-for="(item,index) in studioState.data.visitors"
                                 :key='index'
                                 @mouseover="HandelHover(index)" 
                                 @mouseout="HandelOut(index)"
                             >
-                                <img class="pic_head" src="https://avatars1.githubusercontent.com/u/30068481?s=460&v=4" alt="">
-                                <a href="">毛丕新</a>
-                                <span>刚刚</span>
-                                <div class="info_jump_box" v-show='visitor_show_index==index'>
+                                <img class="pic_head" src="@img/head_pic.png" alt="">
+                                <a href="javascript:;">{{item.nickname}}</a>
+                                <span>{{item.time_ago}}</span>
+                                <!-- <div class="info_jump_box" v-show='visitor_show_index==index'>
                                     <div class="pic_join fl">
                                         <img src="https://avatars1.githubusercontent.com/u/30068481?s=460&v=4" alt="">
                                         <a href="">进入空间</a>
@@ -191,17 +199,17 @@
                                             阿里；速度快了；暗色大赛；距离；大家商量；就；按时间东联； 就
                                         </p>
                                     </div>
-                                </div>
+                                </div> -->
                             </li>
                         </ul>
                         <div class="visitor_total_num_box clearfix">
                             <div class="fl">
                                 <span>今日访问量</span>
-                                <span>12132</span>
+                                <span>{{studioState.data.today_pv}}</span>
                             </div>
                             <div class="fl">
                                 <span>总访问量</span>
-                                <span>12132</span>
+                                <span>{{studioState.data.total_pv}}</span>
                             </div>
                         </div>
                     </div>
@@ -223,7 +231,7 @@
                             <fail v-if="information.fail"/>
                             <div class="carousel_box" v-if="information.l&&!information.fail">
                                 <el-carousel indicator-position="outside" height='186px'>
-                                    <el-carousel-item v-for="item in information.list" :key="item">
+                                    <el-carousel-item v-for="item in information.list" :key="item.id">
                                         <a href="">
                                             <img :src="item.media.small" alt="">
                                         </a>
@@ -286,12 +294,14 @@
                         </h3>
                         <a href="" class="title_more">更多</a>
                     </div>
-                    <div class="clearfix three_box">
+                    <loading v-if='!achievements.l'/>
+                    <fail v-if="achievements.fail"/>
+                    <div class="clearfix three_box" v-show=" achievements.l && !achievements.fail">
                         <el-carousel :interval="4000" type="card" height="200px">
-                            <el-carousel-item v-for="item in 6" :key="item">
+                            <el-carousel-item v-for="item in achievements.list" :key="item.id">
                                 <a href="">
-                                    <img src="http://yun.zjer.cn/uploads1/400x400/studio/album/2018/0601/114/5b109e3692dcf.jpg" alt="">
-                                    <span class="name">工作室名称</span>
+                                    <img :src="item.media.middle" alt="">
+                                    <span class="name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{item.title}}</span>
                                 </a>
                             </el-carousel-item>
                         </el-carousel>
@@ -307,55 +317,39 @@
                             </h3>
                             <router-link :to="{name:'article'}" class="title_more">更多</router-link>
                         </div>
-                        <div>
+                        <loading v-if='!article.l'/>
+                        <fail v-if="article.fail"/>
+                        <div v-if="article.l && !article.fail">
                             <div class="resource_info_box clearfix">
                                 <div class="fl img_box">
                                     <img src="./img/teacher_img.jpg" alt="">
                                 </div>
                                 <div class="fr resource_info">
                                     <div class="title">
-                                        <a href="">标题</a>
+                                        <a href="">{{article.data.title}}</a>
                                     </div>
                                     <div class="sys">简介简介简介简介简介简介简介简介简介简介简介简介</div>
                                     <div class="name_time">
-                                        <span class="name fl">姓名</span>
-                                        <span class="time fl">时间</span>
-                                        <span class="num fr">
-                                            <em class="eye"></em>4次</span>
+                                        <span class="name fl">{{article.data.username}}</span>
+                                        <span class="time fl">{{article.data.utime.m + '-' + article.data.utime.d}}</span>
+                                        <span class="fr">
+                                            <em class="eye"></em>
+                                            {{article.data.hits}}次
+                                        </span>
                                     </div>
                                 </div>
                             </div>
                             <ul class="resource_info_list">
                                 <!-- *5 -->
-                                <li class="clearfix">
-                                    <div class="type fl">类型</div>
-                                    <div class="title fl">标题</div>
-                                    <div class="name fl">姓名</div>
-                                    <div class="time fl">时间</div>
-                                </li>
-                                <li class="clearfix">
-                                    <div class="type fl">类型</div>
-                                    <div class="title fl">标题</div>
-                                    <div class="name fl">姓名</div>
-                                    <div class="time fl">时间</div>
-                                </li>
-                                <li class="clearfix">
-                                    <div class="type fl">类型</div>
-                                    <div class="title fl">标题</div>
-                                    <div class="name fl">姓名</div>
-                                    <div class="time fl">时间</div>
-                                </li>
-                                <li class="clearfix">
-                                    <div class="type fl">类型</div>
-                                    <div class="title fl">标题</div>
-                                    <div class="name fl">姓名</div>
-                                    <div class="time fl">时间</div>
-                                </li>
-                                <li class="clearfix">
-                                    <div class="type fl">类型</div>
-                                    <div class="title fl">标题</div>
-                                    <div class="name fl">姓名</div>
-                                    <div class="time fl">时间</div>
+                                <li 
+                                    class="clearfix"
+                                    v-for = "(item) in article.list"
+                                    :key = 'item.id'
+                                >
+                                    <div class="type fl">{{item.category_name}}</div>
+                                    <div class="title fl">{{item.title}}</div>
+                                    <div class="name fl">{{item.username}}</div>
+                                    <div class="time fl">{{article.data.utime.m + '-' + article.data.utime.d}}</div>
                                 </li>
                             </ul>
                         </div>
@@ -368,58 +362,41 @@
                             </h3>
                             <a href="" class="title_more">更多</a>
                         </div>
-                        <div>
+                        <loading v-if='!teachingResources.l'/>
+                        <fail v-if="teachingResources.fail"/>
+                        <div v-if="teachingResources.l && !teachingResources.fail">
                             <div class="resource_info_box clearfix">
                                 <div class="fl img_box">
                                     <img src="./img/source_img.jpg" alt="">
                                 </div>
                                 <div class="fr resource_info">
                                     <div class="title">
-                                        <a href="">标题</a>
+                                        <a href="">{{teachingResources.data.title}}</a>
                                     </div>
                                     <div class="sys">简介简介简介简介简介简介简介简介简介简介简介简介</div>
                                     <div class="name_time">
-                                        <span class="name fl">姓名</span>
-                                        <span class="time fl">时间</span>
+                                        <span class="name fl">{{teachingResources.data.username}}</span>
+                                        <span class="time fl">{{teachingResources.data.utime.m + '-' + teachingResources.data.utime.d}}</span>
                                         <span class="num fr">
-                                            <em class="down"></em>1次
+                                            <em class="down"></em>{{teachingResources.data.hits}}次
                                         </span>
                                     </div>
                                 </div>
                             </div>
                             <ul class="resource_info_list">
                                 <!-- *5 -->
-                                <li class="clearfix">
-                                    <div class="type fl">类型</div>
+                                <li 
+                                    class="clearfix"
+                                    v-for="(item) in teachingResources.list"
+                                    :key='item.id'
+                                >
+                                    
+                                    <div class="type fl">{{item.category_name}}</div>
                                     <div class="title fl">
-                                        <a href="">标题</a>
+                                        <a href="">{{item.title}}</a>
                                     </div>
-                                    <div class="name fl">姓名</div>
-                                    <div class="time fl">次数</div>
-                                </li>
-                                <li class="clearfix">
-                                    <div class="type fl">类型</div>
-                                    <div class="title fl">标题</div>
-                                    <div class="name fl">姓名</div>
-                                    <div class="time fl">次数</div>
-                                </li>
-                                <li class="clearfix">
-                                    <div class="type fl">类型</div>
-                                    <div class="title fl">标题</div>
-                                    <div class="name fl">姓名</div>
-                                    <div class="time fl">次数</div>
-                                </li>
-                                <li class="clearfix">
-                                    <div class="type fl">类型</div>
-                                    <div class="title fl">标题</div>
-                                    <div class="name fl">姓名</div>
-                                    <div class="time fl">次数</div>
-                                </li>
-                                <li class="clearfix">
-                                    <div class="type fl">类型</div>
-                                    <div class="title fl">标题</div>
-                                    <div class="name fl">姓名</div>
-                                    <div class="time fl">次数</div>
+                                    <div class="name fl">{{item.username}}</div>
+                                    <div class="time fl">{{item.hits}}次</div>
                                 </li>
                             </ul>
                         </div>
@@ -473,52 +450,25 @@
                         <a href="" class="title_more">更多</a>
                     </div>
                     <div>
-                        <ul class="list_box clearfix">
-                            <li>
+                        <loading v-if='!achievements.l'/>
+                        <fail v-if="achievements.fail"/>
+                        <ul class="list_box clearfix" v-if="achievements.l && !achievements.fail">
+                            <li 
+                                v-for="(item) in achievements.list"
+                                :key = 'item.id'
+                            >
                                 <a href="" class="video_show_box">
-                                    <img src="http://yun.zjer.cn/uploads1/400x400/studio/album/2018/0601/114/5b109e3692dcf.jpg" alt="">
+                                    <img :src="item.media.middle" alt="">
                                     <div class="video_play">
                                         <div class="play">
 
                                         </div>
                                     </div>
                                 </a>
-                                <span class="title">标题标题标题标题标题标题标题标题标题标题</span>
+                                <span class="title">{{item.title}}</span>
                                 <div class="list_info clearfix">
-                                    <em class="teacher_name">主讲人：姓名</em>
-                                    <em class="time">时间</em>
-                                    <a href="">点击听课</a>
-                                </div>
-                            </li>
-                            <li>
-                                <a href="" class="video_show_box">
-                                    <img src="http://yun.zjer.cn/uploads1/400x400/studio/album/2018/0601/114/5b109e3692dcf.jpg" alt="">
-                                    <div class="video_play">
-                                        <div class="play">
-
-                                        </div>
-                                    </div>
-                                </a>
-                                <span class="title">标题标题标题标题标题标题标题标题标题标题</span>
-                                <div class="list_info clearfix">
-                                    <em class="teacher_name">主讲人：姓名</em>
-                                    <em class="time">时间</em>
-                                    <a href="">点击听课</a>
-                                </div>
-                            </li>
-                            <li>
-                                <a href="" class="video_show_box">
-                                    <img src="http://yun.zjer.cn/uploads1/400x400/studio/album/2018/0601/114/5b109e3692dcf.jpg" alt="">
-                                    <div class="video_play">
-                                        <div class="play">
-
-                                        </div>
-                                    </div>
-                                </a>
-                                <span class="title">标题标题标题标题标题标题标题标题标题标题</span>
-                                <div class="list_info clearfix">
-                                    <em class="teacher_name">主讲人：姓名</em>
-                                    <em class="time">时间</em>
+                                    <em class="teacher_name">主讲人：{{item.username}}</em>
+                                    <em class="time">{{item.utime.y+ '-' + item.utime.m + '-' + item.utime.d}}</em>
                                     <a href="">点击听课</a>
                                 </div>
                             </li>
@@ -765,7 +715,7 @@
 </template>
 
 <script>
-import {getStudioData, getStudioDetail, getStudioLatest, getActivityList ,getStuidoMembers} from '@api/index';
+import {getStudioData, getStudioDetail, getStudioLatest, getActivityList ,getStuidoMembers ,getStudioState} from '@api/index';
 import Loading from '@global/Loading';
 import Fail from '@global/Fail'
 export default {
@@ -802,6 +752,28 @@ export default {
                 l:false,
                 list:[],
                 fail:false
+            },
+            article:{
+                l:false,
+                list:[],
+                data:{},
+                fail:false
+            },
+            teachingResources:{
+                l:false,
+                list:[],
+                data:{},
+                fail:false
+            },
+            studioState:{
+                l:false,
+                data:{},
+                fail:false
+            },
+            achievements:{
+                l:false,
+                list:[],
+                fail:false
             }
         }
     },
@@ -817,137 +789,221 @@ export default {
             this.visitor_show_index = -1;
         },
         firstLoading(){
-            // 通告
+            // // 通告
+            // getStudioData({
+            //     id:this.$route.params.id,
+            //     category_type_name:'通告',
+            //     pre_page:5
+            // }).then(data=>{
+            //     console.log(data,'通告');
+            //     this.announcement.l = true;
+            //     if(data.status.code==0){
+            //         this.announcement.list = data.data.list
+            //     }else{
+            //         this.announcement.fail = true;
+            //     }
+            // }).catch(error=>{
+            //     this.announcement.fail = true;
+            // })
+            // // 资讯
+            // getStudioData({
+            //     id:this.$route.params.id,
+            //     category_type_name:'资讯',
+            //     pre_page:7,
+            //     require_media:1
+
+            // }).then(data=>{
+            //     console.log(data,'资讯');
+            //     this.information.l = true;
+            //     if(data.status.code==0){
+            //         this.information.list = data.data.list
+            //     }else{
+            //         this.information.fail = true;
+            //     }
+            // }).catch(error=>{
+            //     this.information.fail = true;
+            // })
+            // getStudioData({
+            //     id:this.$route.params.id,
+            //     category_type_name:'成果展示',
+            //     pre_page:7,
+            //     require_media:1
+
+            // }).then(data=>{
+            //     console.log(data,'成果展示');
+            //     this.achievements.l = true;
+            //     if(data.status.code==0){
+            //         this.achievements.list = data.data.list
+            //     }else{
+            //         this.achievements.fail = true;
+            //     }
+            // }).catch(error=>{
+            //     this.achievements.l = true;
+            //     this.achievements.fail = true;
+            // })
             getStudioData({
                 id:this.$route.params.id,
-                category_type_name:'通告',
-                pre_page:5
-            }).then(data=>{
-                console.log(data,'通告');
-                this.announcement.l = true;
-                if(data.status.code==0){
-                    this.announcement.list = data.data.list
-                }else{
-                    this.announcement.fail = true;
-                }
-            }).catch(error=>{
-                this.announcement.fail = true;
-            })
-            // 资讯
-            getStudioData({
-                id:this.$route.params.id,
-                category_type_name:'资讯',
-                pre_page:7,
+                category_type_name:'名师课堂',
+                pre_page:3,
                 require_media:1
 
             }).then(data=>{
-                console.log(data,'资讯');
-                this.information.l = true;
+                console.log(data,'名师课堂');
+                this.achievements.l = true;
                 if(data.status.code==0){
-                    this.information.list = data.data.list
+                    this.achievements.list = data.data.list
                 }else{
-                    this.information.fail = true;
+                    this.achievements.fail = true;
                 }
             }).catch(error=>{
-                this.information.fail = true;
+                this.achievements.l = true;
+                this.achievements.fail = true;
             })
-            // 工作室信息
-            getStudioDetail({
+            // // 工作室信息
+            // getStudioDetail({
+            //     id:this.$route.params.id
+            // }).then(data=>{
+            //     console.log(data,'工作室信息');
+            //     this.studioInfo.l = true;
+            //     if(data.status.code==0){
+            //         this.studioInfo.data = data.data
+            //     }else{
+            //         this.studioInfo.fail = true;
+            //     }
+            // }).catch(error=>{
+            //     this.studioInfo.fail = true;
+            // })
+            // // 最新动态
+            // getStudioLatest({
+            //     id:this.$route.params.id,
+            //     require_user:1,
+            //     pre_page:5
+            // }).then(data=>{
+            //     console.log(data,'最新动态')
+            //     this.latest.l = true;
+            //     if(data.status.code==0){
+            //         this.latest.list = data.data.list
+            //     }else{
+            //         this.latest.fail = true;
+            //     }
+            // }).catch(error=>{
+            //     this.latest.fail = true;
+            // })
+            // // 教研活动
+            // getActivityList({
+            //     studio_id:this.$route.params.id,
+            //     pre_page:5
+            // }).then(data=>{
+            //     console.log(data,'教研活动');
+            //     this.activity.l = true;
+            //     if(data.status.code==0){
+            //         this.activity.list = data.data.list
+            //     }else{
+            //         this.activity.fail = true;
+            //     }
+            // }).catch(error=>{
+            //     this.activity.fail = true;
+            // })
+            // // 成员列表
+            // getStuidoMembers({
+            //     studio_id:this.$route.params.id,
+            //     pre_page:7
+            // }).then(data=>{
+            //     console.log(data,'成员列表');
+            //     this.member.l = true;
+            //     if(data.status.code==0){
+            //         console.log(data)
+            //         this.member.list = data.data.list
+            //     }else{
+            //         this.member.fail = true
+            //     }
+            // }).catch(error=>{
+            //     this.member.fail = true;
+            // })
+            // getStudioData({
+            //     id:this.$route.params.id,
+            //     category_type_name:'教师文章',
+            //     pre_page:6
+            // }).then(data=>{
+            //     console.log(data,'教师文章');
+            //     this.article.l = true;
+            //     if(data.status.code==0){
+            //         this.article.data = data.data.list[0];
+            //         this.article.list = data.data.list.slice(1);
+            //     }else{
+            //         this.article.fail = true;
+            //     }
+            // }).catch(error=>{
+            //     this.article.fail = true;
+            // });
+            // getStudioData({
+            //     id:this.$route.params.id,
+            //     category_type_name:'教学资源',
+            //     pre_page:6
+            // }).then(data=>{
+            //     console.log(data,'教学资源');
+            //     this.teachingResources.l = true;
+            //     if(data.status.code==0){
+            //         this.teachingResources.data = data.data.list[0];
+            //         this.teachingResources.list = data.data.list.slice(1);
+            //     }else{
+            //         this.teachingResources.fail = true;
+            //     }
+            // }).catch(error=>{
+            //     this.teachingResources.fail = true;
+            // })
+            getStudioState({
                 id:this.$route.params.id
             }).then(data=>{
-                console.log(data,'工作室信息');
-                this.studioInfo.l = true;
+                console.log(data);
+                this.studioState.l = true;
                 if(data.status.code==0){
-                    this.studioInfo.data = data.data
+                    this.studioState.data = data.data;
+                    this.$nextTick(()=>{
+                        var myChart = this.$echarts.init(document.getElementById('main'));
+                        var option = {
+                            tooltip: {
+                                show: true,
+                                trigger: 'item',
+                                formatter: "{d}%",
+
+                            },
+                            series: [{
+                                type: 'pie',
+                                radius: '65%',
+                                center: ['50%', '50%'],
+                                radius: ['60%', '70%'],
+                                selectedMode: 'single',
+                                data: [{
+                                        value: data.data.complete,
+                                        name: '已完成',
+                                        itemStyle: {
+                                            color: '#1b9fe2'
+                                        }
+                                    },
+                                    {
+                                        value: 100 - data.data.complete,
+                                        name: '未完成',
+                                        itemStyle: {
+                                            color: '#aaaaaa'
+                                        }
+                                    }
+                                ]
+                            }]
+                        };
+                        myChart.setOption(option);
+                    })
+                    
                 }else{
-                    this.studioInfo.fail = true;
+                    this.studioState.fail = true;
                 }
             }).catch(error=>{
-                this.studioInfo.fail = true;
-            })
-            // 最新动态
-            getStudioLatest({
-                id:this.$route.params.id,
-                require_user:1,
-                pre_page:5
-            }).then(data=>{
-                console.log(data,'最新动态')
-                this.latest.l = true;
-                if(data.status.code==0){
-                    this.latest.list = data.data.list
-                }else{
-                    this.latest.fail = true;
-                }
-            }).catch(error=>{
-                this.latest.fail = true;
-            })
-            // 教研活动
-            getActivityList({
-                studio_id:this.$route.params.id,
-                pre_page:5
-            }).then(data=>{
-                console.log(data,'教研活动');
-                this.activity.l = true;
-                if(data.status.code==0){
-                    this.activity.list = data.data.list
-                }else{
-                    this.activity.fail = true;
-                }
-            }).catch(error=>{
-                this.activity.fail = true;
-            })
-            // 成员列表
-            getStuidoMembers({
-                studio_id:this.$route.params.id,
-                pre_page:7
-            }).then(data=>{
-                console.log(data,'成员列表');
-                this.member.l = true;
-                if(data.status.code==0){
-                    console.log(data)
-                    this.member.list = data.data.list
-                }else{
-                    this.member.fail = true
-                }
-            }).catch(error=>{
-                this.member.fail = true;
+                this.studioState.l = true;
+                this.studioState.fail = true;
             })
         }
     },
-    mounted () {
-        // canvas 相关
-        var myChart = this.$echarts.init(document.getElementById('main'));
-        var option = {
-            tooltip: {
-                show: true,
-                trigger: 'item',
-                formatter: "{d}%",
-
-            },
-            series: [{
-                type: 'pie',
-                radius: '65%',
-                center: ['50%', '50%'],
-                radius: ['60%', '70%'],
-                selectedMode: 'single',
-                data: [{
-                        value: 47,
-                        name: '已完成',
-                        itemStyle: {
-                            color: '#1b9fe2'
-                        }
-                    },
-                    {
-                        value: 53,
-                        name: '未完成',
-                        itemStyle: {
-                            color: '#aaaaaa'
-                        }
-                    }
-                ]
-            }]
-        };
-        myChart.setOption(option);
+    mounted () {        
         // 初次加载
         this.firstLoading();
     }
@@ -1202,6 +1258,9 @@ export default {
             font-size: 14px;
             color: #1b9fe2;
             margin-top: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         span{
             display: block;
@@ -1478,6 +1537,9 @@ export default {
             line-height: 30px;
             font-size: 14px;
             color: #152433;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .sys{
             font-size: 12px;
@@ -1487,11 +1549,14 @@ export default {
         .name_time{
             font-size: 14px;
             line-height: 30px;
-            margin-top: 22px;
+            margin-top: 8px;
             color: #152433;
             span{
                 width: 33%;
                 text-align: center;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
                 &:nth-child(1){
                     text-align: left;
                 }
@@ -1543,6 +1608,9 @@ export default {
     }
     .name{
         width: 55px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .time{
         width: 40px;
