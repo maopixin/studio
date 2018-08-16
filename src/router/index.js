@@ -22,9 +22,9 @@ const StudioInformation = () => import('@views/StudioInformation')
 const SubjectLeader = () => import('@views/SubjectLeader')
 const BriefIntroduce = () => import('@views/BriefIntroduce')
 const StudioList = () => import('@views/StudioList')
+const Gather = () => import('@views/Gather/Gather')
 
-
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
@@ -102,6 +102,11 @@ export default new Router({
           path:'introduce',
           name:'introduce',
           component:BriefIntroduce
+        },
+        {
+          path:'gather',
+          name:'gather',
+          component:Gather
         }
       ]
     },

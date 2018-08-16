@@ -41,7 +41,7 @@ export function getStudioLatest(payload){
     })
 }
 export function getInstituteLatest(payload){
-    return axios.get('/source/api/institute_latest',{
+    return axios.get('/source/api/institute_latest',{   
         params:payload
     }).then(data=>{
         return data.data
@@ -123,7 +123,7 @@ export function getUserInfo(payload){
 
 // 获取研究院/工作室下所有栏目
 export function getCategory(payload){
-    return axios.get('/api/category/page_list',{
+    return axios.get('/api/category/index',{
         params:payload
     }).then(data=>{
         return data.data

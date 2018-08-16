@@ -49,57 +49,6 @@
                                 </a>
                             </span>
                         </li>
-                        <li>
-                            <!-- word ppt pdf -->
-                            <span class="icon word"></span>
-                            <span class="name">
-                                <a href="">资源名称</a>
-                            </span>
-                            <span class="type">PDF</span>
-                            <span class="person">
-                                <a href="">name</a>
-                            </span>
-                            <span class="time">2018-06-60</span>
-                            <span class="down_num">
-                                <a href="">
-                                    <em></em>下载10次
-                                </a>
-                            </span>
-                        </li>
-                        <li>
-                            <!-- word ppt pdf -->
-                            <span class="icon word"></span>
-                            <span class="name">
-                                <a href="">资源名称</a>
-                            </span>
-                            <span class="type">PDF</span>
-                            <span class="person">
-                                <a href="">name</a>
-                            </span>
-                            <span class="time">2018-06-60</span>
-                            <span class="down_num">
-                                <a href="">
-                                    <em></em>下载10次
-                                </a>
-                            </span>
-                        </li>
-                        <li>
-                                <!-- word ppt pdf -->
-                                <span class="icon word"></span>
-                                <span class="name">
-                                    <a href="">资源名称</a>
-                                </span>
-                                <span class="type">PDF</span>
-                                <span class="person">
-                                    <a href="">name</a>
-                                </span>
-                                <span class="time">2018-06-60</span>
-                                <span class="down_num">
-                                    <a href="">
-                                        <em></em>下载10次
-                                    </a>
-                                </span>
-                            </li>
                     </ul>
                     <el-pagination
                         background
@@ -116,23 +65,36 @@
 
 <script>
 import Crumbs from "@/components/global/crumbs";
+import {getStudioData} from '@api/index'
 export default {
     components: {
         Crumbs
     },
     data(){
         return {
-            activeIndexF:''
+            
         }
     },
     computed:{
         menuList(){
-            let data = this.$getNavNow(this.$store.getters.navList,this.$route.query.navId);
+            let data = this.$getNavNow(this.$store.getters.navList,this.$getQuery('navId'));
             if(data){
                 return data;
             }else{
+                this.$router.push({name:'notFound'});
+            }
+        },
+        activeIndexF(){
+            let data = this.$getNavNow(this.$store.getters.navList,this.$getQuery('navId'));
+            if(!data){
                 this.$router.push({name:'notFound'})
             }
+            for (let i = 0; i < data.child.length; i++) {
+                if(data.child[i].id==this.$getQuery('mId')){
+                    return i+'';
+                }
+            };
+            return '0';
         }
     },
     methods: {
@@ -143,9 +105,23 @@ export default {
             console.log(key, keyPath);
         },
         handleSelect(index,indexPath){
-            console.log(index,indexPath);
-            
+            this.$router.push({
+                name:'resource',
+                query:{
+                    navId:this.$route.query.navId,
+                    mId:this.menuList.child[index].id
+                }
+            })
         }
+    },
+    created(){
+        getStudioData({
+            id:this.$route.params.id,
+            category_type_name:'专题资源',
+            category_id:this.$route.query.mId
+        }).then(data=>{
+            console.log(data)
+        })
     }
 };
 </script>

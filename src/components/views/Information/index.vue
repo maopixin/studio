@@ -2,7 +2,27 @@
     <div>
         <Crumbs/>
         <el-container class="content">
-            <NavMenu/>
+            <el-row class="tac" :gutter="20">
+                <el-col :span="24">
+                    <el-menu
+                        :default-active='activeIndexF'
+                        class="el-menu-vertical-demo box-shadow"
+                        @open="handleOpen"
+                        @close="handleClose"
+                        @select="handleSelect"
+                    >
+                        <el-menu-item
+                            v-for="(e,i) in menuList.child"
+                            :key='i'
+                            :index='i+""'
+                            :disabled='e.disabled'
+                        >
+                            <i class="el-icon-tickets"></i>
+                            <span slot="title">{{e.name}}</span>
+                        </el-menu-item>
+                    </el-menu>
+                </el-col>
+            </el-row>
             <el-main class="information_list box-shadow">
                 <div class="title_box">
                     <h3 class="column_title">
@@ -47,7 +67,6 @@
 
 <script>
 import Crumbs from "@/components/global/crumbs";
-import NavMenu from '@/components/global/NavMenu';
 import Loading from '@global/Loading';
 import Fail from '@global/Fail'
 import {getStudioData} from '@api/index'
@@ -91,6 +110,28 @@ export default {
             this.data1.fail = true;
         })
     },
+    computed:{
+        menuList(){
+            let data = this.$getNavNow(this.$store.getters.navList,this.$getQuery('navId'));
+            if(data){
+                return data;
+            }else{
+                this.$router.push({name:'notFound'});
+            }
+        },
+        activeIndexF(){
+            let data = this.$getNavNow(this.$store.getters.navList,this.$getQuery('navId'));
+            if(!data){
+                this.$router.push({name:'notFound'})
+            }
+            for (let i = 0; i < data.child.length; i++) {
+                if(data.child[i].id==this.$getQuery('mId')){
+                    return i+'';
+                }
+            };
+            return '0';
+        }
+    },
     methods:{
         data1ListChange(page){
             this.l = true;
@@ -111,21 +152,36 @@ export default {
                 this.l = false;
                 this.data1.fail = true;
             })
+        },
+        handleOpen(key, keyPath) {
+            console.log(key, keyPath);
+        },
+        handleClose(key, keyPath) {
+            console.log(key, keyPath);
+        },
+        handleSelect(index,indexPath){
+            this.$router.push({
+                name:'information',
+                query:{
+                    navId:this.$route.query.navId,
+                    mId:this.menuList.child[index].id
+                }
+            })
         }
     }
 }
 </script>
 
 <style lang='less' scoped>
-    .content{
-        width: 1140px;
-        margin: 0 auto;
-    }
-    .el-main{
-        padding: 0;
-        margin-left: 20px;
-    }
-    .nav{
+.content{
+    width: 1140px;
+    margin: 0 auto;
+}
+.el-main{
+    padding: 0;
+    margin-left: 20px;
+}
+.nav{
     height: 60px;
     background-color: #393D49;
 }

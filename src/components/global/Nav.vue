@@ -8,15 +8,21 @@
                 class="nav_item"
                 v-for="(item,index) in navList"
                 :key='index'
+                @mouseover="navHover(index)"
+                @mouseout="navOut"
+                @click='navClick'
             >
                 <router-link :to='{name:routerType[item.type_code],query:{navId:item.id}}'>{{item.name}}</router-link>
-                <ul class="nav_item_list">
+                <ul 
+                    class="nav_item_list"
+                    v-show="show==index"
+                >
                     <li 
                         class="nav_item_item" 
                         v-for="(value,i) in item.child"
                         :key='i'
                     >
-                        <a href="">{{value.name}}</a>
+                        <router-link :to='{name:routerType[item.type_code],query:{navId:item.id,mId:value.id}}'>{{value.name}}</router-link>
                     </li>
                 </ul>
             </li>
@@ -38,6 +44,7 @@ export default {
             typeList:{
 
             },
+            show:null,
             list:[
                 // {
                 //     title:'专题资源',
@@ -108,10 +115,14 @@ export default {
         }).then(data=>{
             console.log(data);
             if(data.status.code==0){
-                this.$store.commit('changeNavList',this.handleData(data.data.list));
+                this.$store.commit('changeNavList',this.handleData(data.data.nav.list));
+                this.$store.commit('changeBodyList',this.handleData2(data.data.body.list));
+                this.$store.commit('changeNavL')
+            }else{
+                this.$message.error('工作室导航请求出错');
             }
         }).catch(error=>{
-
+            this.$message.error('工作室导航请求出错');
         })
     },
     methods:{
@@ -134,12 +145,28 @@ export default {
             })
             return newArr.slice(0,9);
         },
+        handleData2(arr){
+            let obj = {};
+            arr.forEach(e => {
+                obj[e.name.trim()] = e;
+            });
+            return obj;
+        },
+        navHover(index){
+            this.show = index;
+        },
+        navOut(){
+            this.show = null;
+        },
+        navClick(){
+            this.show = null;
+        }
     },
     computed:{
         navList(){
             return this.$store.getters.navList;
         }
-    }
+    },
 }
 </script>
 

@@ -4,22 +4,29 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     navList:[],
-    navNow:{}
+    bodyList:[],
+    navL:false
   },
   getters: {
     navList: state => {
       return state.navList
     },
-    navNow: state => {
-      return state.navNow
-    }
+    bodyList: state => {
+      return state.bodyList
+    },
+    navL: state => {
+      return state.navL
+    },
   },
   mutations: {
     changeNavList(state,payload) {
       state.navList = payload
     },
-    changeNavNow(state,payload){
-      state.navNow = payload
+    changeBodyList(state,payload) {
+      state.bodyList = payload
     },
+    changeNavL(state){
+      state.navL = true;
+    }
   }
 });

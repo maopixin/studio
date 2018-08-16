@@ -16,10 +16,11 @@ require('echarts/lib/chart/pie');
 // 引入提示框和标题组件
 require('echarts/lib/component/tooltip');
 require('echarts/lib/component/title');
-import {tips,getNavNow} from './methods/index.js';
+import {tips,getNavNow,getQuery} from './methods/index.js';
 Vue.prototype.$tips = tips;
 Vue.prototype.$getNavNow = getNavNow;
 Vue.prototype.$echarts = echarts;
+Vue.prototype.$getQuery = getQuery;
 
 Vue.use(ElementUI,{ size: 'small', zIndex: 3000 });
 Vue.use(VueAxios,axios);

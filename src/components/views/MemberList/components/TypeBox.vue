@@ -28,7 +28,7 @@
                         <span class="fl">{{index+1}}</span>
                         <img class="fl" :src="item.smallAvatar" alt=""/>
                     </span>
-                    <span class="name fl">{{item.title}}</span>
+                    <span class="name fl">{{item.title||'无'}}</span>
                     <span class="sex fl">{{item.gender}}</span>
                     <span class="identity fl">{{item.duty}}</span>
                     <span class="company fl">{{item.company||'无'}}</span>

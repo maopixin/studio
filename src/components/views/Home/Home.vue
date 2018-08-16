@@ -224,7 +224,7 @@
                                 <div class="t_l">LINE</div>
                                 <div class="t_c">资讯</div>
                             </h3>
-                            <router-link :to='{name:"information"}' class="title_more">更多</router-link>
+                            <router-link :to='{name:"gather",query:{mid:"0"}}' class="title_more">更多</router-link>
                         </div>
                         <div class="clearfix news_boxs">
                             <loading v-if='!information.l'/>
@@ -260,7 +260,7 @@
                                 <div class="t_l">LINE</div>
                                 <div class="t_c">通告</div>
                             </h3>
-                            <a href="" class="title_more">更多</a>
+                            <router-link :to='{name:"gather",query:{mid:"1"}}' class="title_more">更多</router-link>
                         </div>
                         <div>
                             <loading v-if='!announcement.l'/>
@@ -292,7 +292,7 @@
                             <div class="t_l">LINE</div>
                             <div class="t_c">成果展示</div>
                         </h3>
-                        <a href="" class="title_more">更多</a>
+                        <router-link :to='{name:"gather",query:{mid:"2"}}' class="title_more">更多</router-link>
                     </div>
                     <loading v-if='!achievements.l'/>
                     <fail v-if="achievements.fail"/>
@@ -308,8 +308,8 @@
                     </div>
                 </div>
                 <!-- 文章和资源 -->
-                <div class="clearfix margin_t resource_and_text">
-                    <div class="fl item">
+                <div class="clearfix resource_and_text">
+                    <div class="fl margin_t item">
                         <div class="title_box">
                             <h3 class="column_title">
                                 <div class="t_l">LINE</div>
@@ -354,7 +354,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="fr item">
+                    <div class="fr margin_t item">
                         <div class="title_box">
                             <h3 class="column_title">
                                 <div class="t_l">LINE</div>
@@ -434,7 +434,7 @@
                                 <div class="name fl">
                                     <a href="">{{item.creator_name}}</a>
                                 </div>
-                                <div class="io fl">{{item.type_text}}</div>
+                                <div class="io fl">{{item.process_status_text}}</div>
                                 <div class="start_end fl">{{item.start_time}}至{{item.stop_time}}</div>
                             </li>
                         </ul>
@@ -450,11 +450,11 @@
                         <a href="" class="title_more">更多</a>
                     </div>
                     <div>
-                        <loading v-if='!achievements.l'/>
-                        <fail v-if="achievements.fail"/>
-                        <ul class="list_box clearfix" v-if="achievements.l && !achievements.fail">
+                        <loading v-if='!lesson.l'/>
+                        <fail v-if="lesson.fail"/>
+                        <ul class="list_box clearfix" v-if="lesson.l && !lesson.fail">
                             <li 
-                                v-for="(item) in achievements.list"
+                                v-for="(item) in lesson.list"
                                 :key = 'item.id'
                             >
                                 <a href="" class="video_show_box">
@@ -476,8 +476,8 @@
                     </div>
                 </div>
                 <!--  -->
-                <div class="clearfix margin_t resource_and_text">
-                    <div class="fl item">
+                <div class="clearfix  resource_and_text">
+                    <div class="fl item margin_t">
                         <div class="title_box">
                             <h3 class="column_title">
                                 <div class="t_l">LINE</div>
@@ -499,114 +499,16 @@
                                         v-for="(item) in latest.list"
                                         :key='item.id'
                                     >
-                                        <span class="time fl">05-30 13:20</span>
+                                        <span class="time fl">{{item.utime.y+"-"+item.utime.m+"-"+item.utime.d}}</span>
                                         <span class="line fl"></span>
                                         <a class="head_pic fl" href="">
-                                            <img src="http://img.zjer.cn/uploads_avatar/avatar/data/19/53/617301_45x45.jpg?1508937264" alt="">
+                                            <img src="@img/head_pic.png" alt="">
                                         </a>
                                         <div class="info fl">
-                                            <a href="" class="name">name</a>
+                                            <a href="" class="name">{{item.username}}</a>
                                             <span>
                                                 发布：
-                                                <a href="">资资源名资源名资源名资源名资源名资源名资源名资源名资源名源名</a>
-                                            </span>
-                                        </div>
-                                    </li>
-                                    <li class="clearfix" >
-                                        <span class="time fl">05-30 13:20</span>
-                                        <span class="line fl"></span>
-                                        <a class="head_pic fl" href="">
-                                            <img src="http://img.zjer.cn/uploads_avatar/avatar/data/19/53/617301_45x45.jpg?1508937264" alt="">
-                                        </a>
-                                        <div class="info fl">
-                                            <a href="" class="name">name</a>
-                                            <span>
-                                                发布：
-                                                <a href="">资资源名资源名资源名资源名资源名资源名资源名资源名资源名源名</a>
-                                            </span>
-                                        </div>
-                                    </li>
-                                    <li class="clearfix" >
-                                        <span class="time fl">05-30 13:20</span>
-                                        <span class="line fl"></span>
-                                        <a class="head_pic fl" href="">
-                                            <img src="http://img.zjer.cn/uploads_avatar/avatar/data/19/53/617301_45x45.jpg?1508937264" alt="">
-                                        </a>
-                                        <div class="info fl">
-                                            <a href="" class="name">name</a>
-                                            <span>
-                                                发布：
-                                                <a href="">资资源名资源名资源名资源名资源名资源名资源名资源名资源名源名</a>
-                                            </span>
-                                        </div>
-                                    </li>
-                                    <li class="clearfix" >
-                                        <span class="time fl">05-30 13:20</span>
-                                        <span class="line fl"></span>
-                                        <a class="head_pic fl" href="">
-                                            <img src="http://img.zjer.cn/uploads_avatar/avatar/data/19/53/617301_45x45.jpg?1508937264" alt="">
-                                        </a>
-                                        <div class="info fl">
-                                            <a href="" class="name">name</a>
-                                            <span>
-                                                发布：
-                                                <a href="">资资源名资源名资源名资源名资源名资源名资源名资源名资源名源名</a>
-                                            </span>
-                                        </div>
-                                    </li>
-                                    <li class="clearfix" >
-                                        <span class="time fl">05-30 13:20</span>
-                                        <span class="line fl"></span>
-                                        <a class="head_pic fl" href="">
-                                            <img src="http://img.zjer.cn/uploads_avatar/avatar/data/19/53/617301_45x45.jpg?1508937264" alt="">
-                                        </a>
-                                        <div class="info fl">
-                                            <a href="" class="name">name6</a>
-                                            <span>
-                                                发布：
-                                                <a href="">资资源名资源名资源名资源名资源名资源名资源名资源名资源名源名</a>
-                                            </span>
-                                        </div>
-                                    </li>
-                                    <li class="clearfix" >
-                                        <span class="time fl">05-30 13:20</span>
-                                        <span class="line fl"></span>
-                                        <a class="head_pic fl" href="">
-                                            <img src="http://img.zjer.cn/uploads_avatar/avatar/data/19/53/617301_45x45.jpg?1508937264" alt="">
-                                        </a>
-                                        <div class="info fl">
-                                            <a href="" class="name">name</a>
-                                            <span>
-                                                发布：
-                                                <a href="">资资源名资源名资源名资源名资源名资源名资源名资源名资源名源名</a>
-                                            </span>
-                                        </div>
-                                    </li>
-                                    <li class="clearfix" >
-                                        <span class="time fl">05-30 13:20</span>
-                                        <span class="line fl"></span>
-                                        <a class="head_pic fl" href="">
-                                            <img src="http://img.zjer.cn/uploads_avatar/avatar/data/19/53/617301_45x45.jpg?1508937264" alt="">
-                                        </a>
-                                        <div class="info fl">
-                                            <a href="" class="name">name7</a>
-                                            <span>
-                                                发布：
-                                                <a href="">资资源名资源名资源名资源名资源名资源名资源名资源名资源名源名</a>
-                                            </span>
-                                        </div>
-                                    </li>
-                                    <li class="clearfix" >
-                                        <span class="time fl">05-30 13:20</span>
-                                        <span class="line fl"></span>
-                                        <a class="head_pic fl" href="">
-                                            <img src="http://img.zjer.cn/uploads_avatar/avatar/data/19/53/617301_45x45.jpg?1508937264" alt="">
-                                        </a>
-                                        <div class="info fl">
-                                            <a href="" class="name">name8</a>
-                                            <span>
-                                                发布：
-                                                <a href="">资资源名资源名资源名资源名资源名资源名资源名资源名资源名源名</a>
+                                                <a href="">{{item.title}}</a>
                                             </span>
                                         </div>
                                     </li>
@@ -614,7 +516,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="fr item">
+                    <div class="fr item margin_t">
                         <div class="title_box">
                             <h3 class="column_title">
                                 <div class="t_l">LINE</div>
@@ -624,85 +526,25 @@
                         </div>
                         <div>
                             <ul class="leave_message_box">
-                                <li class="clearfix">
+                                <li 
+                                    class="clearfix"
+                                    v-for="(item) in studioState.data.comments.slice(0,5)"
+                                    :key='item.id'
+                                >
                                     <a href="" class="head_pic_border head_pic fl">
-                                        <img src="http://img.zjer.cn/uploads_avatar/avatar/data/17/89/46005_90x90.jpg?1528158380" alt="">
+                                        <img src="@img/head_pic.png" alt="">
                                     </a>
                                     <div class="fl people_info">
                                         <div class="name">
                                             <span class="line"></span>
-                                            <span class="text">name</span>
+                                            <span class="text">{{item.nickname}}</span>
                                         </div>
                                         <div class="msg clearfix">
                                             <span class="line"></span>
-                                            <span class="text">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
+                                            <span class="text">{{item.msg}}</span>
                                         </div>
                                     </div>
-                                    <div class="time fr">201456413</div>
-                                </li>
-                                <li class="clearfix">
-                                    <a href="" class="head_pic_border head_pic fl">
-                                        <img src="http://img.zjer.cn/uploads_avatar/avatar/data/17/89/46005_90x90.jpg?1528158380" alt="">
-                                    </a>
-                                    <div class="fl people_info">
-                                        <div class="name">
-                                            <span class="line"></span>
-                                            <span class="text">name</span>
-                                        </div>
-                                        <div class="msg clearfix">
-                                            <span class="line"></span>
-                                            <span class="text">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
-                                        </div>
-                                    </div>
-                                    <div class="time fr">201456413</div>
-                                </li>
-                                <li class="clearfix">
-                                    <a href="" class="head_pic_border head_pic fl">
-                                        <img src="http://img.zjer.cn/uploads_avatar/avatar/data/17/89/46005_90x90.jpg?1528158380" alt="">
-                                    </a>
-                                    <div class="fl people_info">
-                                        <div class="name">
-                                            <span class="line"></span>
-                                            <span class="text">name</span>
-                                        </div>
-                                        <div class="msg clearfix">
-                                            <span class="line"></span>
-                                            <span class="text">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
-                                        </div>
-                                    </div>
-                                    <div class="time fr">201456413</div>
-                                </li>
-                                <li class="clearfix">
-                                    <a href="" class="head_pic_border head_pic fl">
-                                        <img src="http://img.zjer.cn/uploads_avatar/avatar/data/17/89/46005_90x90.jpg?1528158380" alt="">
-                                    </a>
-                                    <div class="fl people_info">
-                                        <div class="name">
-                                            <span class="line"></span>
-                                            <span class="text">name</span>
-                                        </div>
-                                        <div class="msg clearfix">
-                                            <span class="line"></span>
-                                            <span class="text">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
-                                        </div>
-                                    </div>
-                                    <div class="time fr">201456413</div>
-                                </li>
-                                <li class="clearfix">
-                                    <a href="" class="head_pic_border head_pic fl">
-                                        <img src="http://img.zjer.cn/uploads_avatar/avatar/data/17/89/46005_90x90.jpg?1528158380" alt="">
-                                    </a>
-                                    <div class="fl people_info">
-                                        <div class="name">
-                                            <span class="line"></span>
-                                            <span class="text">name</span>
-                                        </div>
-                                        <div class="msg clearfix">
-                                            <span class="line"></span>
-                                            <span class="text">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
-                                        </div>
-                                    </div>
-                                    <div class="time fr">201456413</div>
+                                    <div class="time fr">{{item.time_ago}}</div>
                                 </li>
                             </ul>
                         </div>
@@ -767,14 +609,22 @@ export default {
             },
             studioState:{
                 l:false,
-                data:{},
+                data:{
+                    comments:[],
+                    visitors:[]
+                },
                 fail:false
             },
             achievements:{
                 l:false,
                 list:[],
                 fail:false
-            }
+            },
+            lesson:{
+                l:false,
+                list:[],
+                fail:false
+            },
         }
     },
     components:{
@@ -789,66 +639,49 @@ export default {
             this.visitor_show_index = -1;
         },
         firstLoading(){
-            // // 通告
-            // getStudioData({
-            //     id:this.$route.params.id,
-            //     category_type_name:'通告',
-            //     pre_page:5
-            // }).then(data=>{
-            //     console.log(data,'通告');
-            //     this.announcement.l = true;
-            //     if(data.status.code==0){
-            //         this.announcement.list = data.data.list
-            //     }else{
-            //         this.announcement.fail = true;
-            //     }
-            // }).catch(error=>{
-            //     this.announcement.fail = true;
-            // })
-            // // 资讯
-            // getStudioData({
-            //     id:this.$route.params.id,
-            //     category_type_name:'资讯',
-            //     pre_page:7,
-            //     require_media:1
-
-            // }).then(data=>{
-            //     console.log(data,'资讯');
-            //     this.information.l = true;
-            //     if(data.status.code==0){
-            //         this.information.list = data.data.list
-            //     }else{
-            //         this.information.fail = true;
-            //     }
-            // }).catch(error=>{
-            //     this.information.fail = true;
-            // })
-            // getStudioData({
-            //     id:this.$route.params.id,
-            //     category_type_name:'成果展示',
-            //     pre_page:7,
-            //     require_media:1
-
-            // }).then(data=>{
-            //     console.log(data,'成果展示');
-            //     this.achievements.l = true;
-            //     if(data.status.code==0){
-            //         this.achievements.list = data.data.list
-            //     }else{
-            //         this.achievements.fail = true;
-            //     }
-            // }).catch(error=>{
-            //     this.achievements.l = true;
-            //     this.achievements.fail = true;
-            // })
+            let bodyList = this.$store.getters.bodyList;
+            // 通告
             getStudioData({
                 id:this.$route.params.id,
-                category_type_name:'名师课堂',
-                pre_page:3,
+                category_id:bodyList['通告'].id,
+                pre_page:5
+            }).then(data=>{
+                console.log(data,'通告');
+                this.announcement.l = true;
+                if(data.status.code==0){
+                    this.announcement.list = data.data.list
+                }else{
+                    this.announcement.fail = true;
+                }
+            }).catch(error=>{
+                this.announcement.fail = true;
+            })
+            // 资讯
+            getStudioData({
+                id:this.$route.params.id,
+                category_id:bodyList['资讯'].id,
+                pre_page:7,
                 require_media:1
 
             }).then(data=>{
-                console.log(data,'名师课堂');
+                console.log(data,'资讯');
+                this.information.l = true;
+                if(data.status.code==0){
+                    this.information.list = data.data.list
+                }else{
+                    this.information.fail = true;
+                }
+            }).catch(error=>{
+                this.information.fail = true;
+            })
+            getStudioData({
+                id:this.$route.params.id,
+                category_id:bodyList['成果展示'].id,
+                pre_page:7,
+                require_media:1
+
+            }).then(data=>{
+                console.log(data,'成果展示');
                 this.achievements.l = true;
                 if(data.status.code==0){
                     this.achievements.list = data.data.list
@@ -859,106 +692,126 @@ export default {
                 this.achievements.l = true;
                 this.achievements.fail = true;
             })
-            // // 工作室信息
-            // getStudioDetail({
-            //     id:this.$route.params.id
-            // }).then(data=>{
-            //     console.log(data,'工作室信息');
-            //     this.studioInfo.l = true;
-            //     if(data.status.code==0){
-            //         this.studioInfo.data = data.data
-            //     }else{
-            //         this.studioInfo.fail = true;
-            //     }
-            // }).catch(error=>{
-            //     this.studioInfo.fail = true;
-            // })
-            // // 最新动态
-            // getStudioLatest({
-            //     id:this.$route.params.id,
-            //     require_user:1,
-            //     pre_page:5
-            // }).then(data=>{
-            //     console.log(data,'最新动态')
-            //     this.latest.l = true;
-            //     if(data.status.code==0){
-            //         this.latest.list = data.data.list
-            //     }else{
-            //         this.latest.fail = true;
-            //     }
-            // }).catch(error=>{
-            //     this.latest.fail = true;
-            // })
-            // // 教研活动
-            // getActivityList({
-            //     studio_id:this.$route.params.id,
-            //     pre_page:5
-            // }).then(data=>{
-            //     console.log(data,'教研活动');
-            //     this.activity.l = true;
-            //     if(data.status.code==0){
-            //         this.activity.list = data.data.list
-            //     }else{
-            //         this.activity.fail = true;
-            //     }
-            // }).catch(error=>{
-            //     this.activity.fail = true;
-            // })
-            // // 成员列表
-            // getStuidoMembers({
-            //     studio_id:this.$route.params.id,
-            //     pre_page:7
-            // }).then(data=>{
-            //     console.log(data,'成员列表');
-            //     this.member.l = true;
-            //     if(data.status.code==0){
-            //         console.log(data)
-            //         this.member.list = data.data.list
-            //     }else{
-            //         this.member.fail = true
-            //     }
-            // }).catch(error=>{
-            //     this.member.fail = true;
-            // })
-            // getStudioData({
-            //     id:this.$route.params.id,
-            //     category_type_name:'教师文章',
-            //     pre_page:6
-            // }).then(data=>{
-            //     console.log(data,'教师文章');
-            //     this.article.l = true;
-            //     if(data.status.code==0){
-            //         this.article.data = data.data.list[0];
-            //         this.article.list = data.data.list.slice(1);
-            //     }else{
-            //         this.article.fail = true;
-            //     }
-            // }).catch(error=>{
-            //     this.article.fail = true;
-            // });
-            // getStudioData({
-            //     id:this.$route.params.id,
-            //     category_type_name:'教学资源',
-            //     pre_page:6
-            // }).then(data=>{
-            //     console.log(data,'教学资源');
-            //     this.teachingResources.l = true;
-            //     if(data.status.code==0){
-            //         this.teachingResources.data = data.data.list[0];
-            //         this.teachingResources.list = data.data.list.slice(1);
-            //     }else{
-            //         this.teachingResources.fail = true;
-            //     }
-            // }).catch(error=>{
-            //     this.teachingResources.fail = true;
-            // })
+            getStudioData({
+                id:this.$route.params.id,
+                category_id:bodyList['教师文章'].id,
+                pre_page:6
+            }).then(data=>{
+                console.log(data,'教师文章');
+                this.article.l = true;
+                if(data.status.code==0){
+                    this.article.data = data.data.list[0];
+                    this.article.list = data.data.list.slice(1);
+                }else{
+                    this.article.fail = true;
+                }
+            }).catch(error=>{
+                this.article.fail = true;
+            });
+            getStudioData({
+                id:this.$route.params.id,
+                category_id:bodyList['教学资源'].id,
+                pre_page:6
+            }).then(data=>{
+                console.log(data,'教学资源');
+                this.teachingResources.l = true;
+                if(data.status.code==0){
+                    this.teachingResources.data = data.data.list[0];
+                    this.teachingResources.list = data.data.list.slice(1);
+                }else{
+                    this.teachingResources.fail = true;
+                }
+            }).catch(error=>{
+                this.teachingResources.fail = true;
+            })
+            getStudioData({
+                id:this.$route.params.id,
+                category_id:bodyList['名师课堂'].id,
+                pre_page:3,
+                require_media:1
+            }).then(data=>{
+                console.log(data,'名师课堂');
+                this.lesson.l = true;
+                if(data.status.code==0){
+                    this.lesson.list = data.data.list
+                }else{
+                    this.lesson.fail = true;
+                }
+            }).catch(error=>{
+                this.lesson.l = true;
+                this.lesson.fail = true;
+            })
+            // 工作室信息
+            getStudioDetail({
+                id:this.$route.params.id
+            }).then(data=>{
+                console.log(data,'工作室信息');
+                this.studioInfo.l = true;
+                if(data.status.code==0){
+                    this.studioInfo.data = data.data
+                }else{
+                    this.studioInfo.fail = true;
+                }
+            }).catch(error=>{
+                this.studioInfo.fail = true;
+            })
+           
+            // 教研活动
+            getActivityList({
+                studio_id:this.$route.params.id,
+                pre_page:5
+            }).then(data=>{
+                console.log(data,'教研活动');
+                this.activity.l = true;
+                if(data.status.code==0){
+                    this.activity.list = data.data.list
+                }else{
+                    this.activity.fail = true;
+                }
+            }).catch(error=>{
+                this.activity.fail = true;
+            })
+            // 成员列表
+            getStuidoMembers({
+                studio_id:this.$route.params.id,
+                pre_page:7
+            }).then(data=>{
+                console.log(data,'成员列表');
+                this.member.l = true;
+                if(data.status.code==0){
+                    console.log(data)
+                    this.member.list = data.data.list
+                }else{
+                    this.member.fail = true
+                }
+            }).catch(error=>{
+                this.member.fail = true;
+            })
+            // 最新动态
+            getStudioLatest({
+                id:this.$route.params.id,
+                require_user:1,
+                pre_page:5
+            }).then(data=>{
+                console.log(data,'最新动态')
+                this.latest.l = true;
+                if(data.status.code==0){
+                    this.latest.list = data.data.list
+                }else{
+                    this.latest.fail = true;
+                }
+            }).catch(error=>{
+                this.latest.fail = true;
+            });
+        
             getStudioState({
                 id:this.$route.params.id
             }).then(data=>{
-                console.log(data);
+                console.log(data,'0.0');
                 this.studioState.l = true;
                 if(data.status.code==0){
-                    this.studioState.data = data.data;
+                    var obj = data.data;
+                    this.studioState.data = obj;
                     this.$nextTick(()=>{
                         var myChart = this.$echarts.init(document.getElementById('main'));
                         var option = {
@@ -1004,8 +857,22 @@ export default {
         }
     },
     mounted () {        
-        // 初次加载
-        this.firstLoading();
+        if(this.$store.getters.navL){
+            console.log('首页第二次加载')
+            this.firstLoading();
+        }
+    },
+    computed:{
+        bodyList(){
+            return this.$store.getters.bodyList;
+        }
+    },
+    watch:{
+        bodyList(){
+            // 初次加载需要等待导航请求结束，并且拿到bodylist
+            console.log('首页第一次加载')
+            this.firstLoading();
+        }
     }
 }
 </script>
@@ -1684,7 +1551,7 @@ export default {
 //     overflow: hidden;
 // }
 .resource_list{
-    
+    padding: 15px 20px 14px;
     li{
 
         .time{
