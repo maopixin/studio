@@ -1,7 +1,11 @@
 <template>
   <div>
     <Head></Head>
-    <router-view/>
+    <transition>
+      <keep-alive include="Home">
+        <router-view/>
+      </keep-alive>
+    </transition>
   </div>
 </template>
 

@@ -2,14 +2,14 @@
     <div class="crumbs_box">
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/institute/studio/'+this.$route.params.id }">工作室首页</el-breadcrumb-item>
-            <el-breadcrumb-item>专题资源</el-breadcrumb-item>
+            <el-breadcrumb-item>{{title}}</el-breadcrumb-item>
         </el-breadcrumb>
     </div>
 </template>
 
 <script>
 export default {
-    props:['crumbList'],
+    props:['crumbList','title'],
     data(){
         return{
 

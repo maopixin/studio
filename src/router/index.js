@@ -5,6 +5,7 @@ const Institute = () => import('@/components/Institute')
 const WorkStation = () => import('@/components/WorkStation')
 const Home = () => import('@views/Home/Home')
 const SpecialResource = () => import('@views/SpecialResource')
+const TResource = () => import('@views/TResource')
 const Information = () => import('@views/Information')
 const Research = () => import('@views/Research')
 const Characteristic = () => import('@views/Characteristic')
@@ -47,6 +48,11 @@ export default new Router({
           path:'resource',
           name:'resource',
           component:SpecialResource
+        },
+        {
+          path:'t_resource',
+          name:'t_resource',
+          component:TResource
         },
         {
           path:'information',

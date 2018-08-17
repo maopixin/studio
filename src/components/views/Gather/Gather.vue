@@ -6,7 +6,7 @@
         <div
             v-if="navL"
         >
-            <Crumbs/>
+            <Crumbs :title='menuList[activeF].title'/>
             <el-container class="content">
                 <el-row class="tac" :gutter="20">
                     <el-col :span="24">

@@ -31,9 +31,24 @@
 </template>
 
 <script>
-import {getCategory} from '@api/index.js'
+import {getCategory,getStudioDetail} from '@api/index.js'
 export default {
     name:'Nav',
+    metaInfo(){
+        return {
+            title:this.studioInfo.data.name || '东联教育',
+            meta: [
+                {
+                    name: 'keyWords',
+                    content: '东联教育,东联在线,工作室,研究院,在线教育,家庭教育'
+                },
+                {
+                    name:'description',
+                    content: '优质的教育资源，各类专家坐阵咨询，百强名校成果展示，万位名师供你选择，周末与孩子共成长'
+                }
+            ]
+        }
+    },
     props: ['bgColor','textColor','activeTextColor'],
     data(){
         return {
@@ -43,6 +58,11 @@ export default {
             activeTextColor_d:'#301133',
             typeList:{
 
+            },
+            studioInfo:{
+                l:false,
+                data:{},
+                fail:false
             },
             show:null,
             list:[
@@ -123,6 +143,20 @@ export default {
             }
         }).catch(error=>{
             this.$message.error('工作室导航请求出错');
+        });
+        // 工作室信息
+        getStudioDetail({
+            id:this.$route.params.id
+        }).then(data=>{
+            console.log(data,'工作室信息');
+            this.studioInfo.l = true;
+            if(data.status.code==0){
+                this.studioInfo.data = data.data
+            }else{
+                this.studioInfo.fail = true;
+            }
+        }).catch(error=>{
+            this.studioInfo.fail = true;
         })
     },
     methods:{

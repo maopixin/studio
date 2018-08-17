@@ -88,7 +88,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <a href="" class="join" id="btn">
+                            <a href="javascript:;" @click="()=>{this.$message('加入工作室功能未开放')}" class="join" id="btn">
                                 <span class="text">申请加入工作室</span>
                             </a>
                         </div>
@@ -113,7 +113,7 @@
                             >
                                 <span class="no fl">{{index+1}}</span>
                                 <img class="fl" :src="item.smallAvatar" alt="">
-                                <a href="" class="name fl">{{item.nickname}}</a>
+                                <a href="javascript:;" class="name fl">{{item.nickname}}</a>
                                 <span class="number fr">{{item.integral}}</span>
                             </li>
                         </ul>
@@ -360,7 +360,7 @@
                                 <div class="t_l">LINE</div>
                                 <div class="t_c">教学资源</div>
                             </h3>
-                            <a href="" class="title_more">更多</a>
+                            <router-link :to="{name:'t_resource'}" class="title_more">更多</router-link>
                         </div>
                         <loading v-if='!teachingResources.l'/>
                         <fail v-if="teachingResources.fail"/>
@@ -447,7 +447,7 @@
                             <div class="t_l">LINE</div>
                             <div class="t_c">名师课堂</div>
                         </h3>
-                        <a href="" class="title_more">更多</a>
+                        <!-- <router-link :to='{name:"research"}' class="title_more">更多</router-link> -->
                     </div>
                     <div>
                         <loading v-if='!lesson.l'/>
@@ -469,7 +469,7 @@
                                 <div class="list_info clearfix">
                                     <em class="teacher_name">主讲人：{{item.username}}</em>
                                     <em class="time">{{item.utime.y+ '-' + item.utime.m + '-' + item.utime.d}}</em>
-                                    <a href="">点击听课</a>
+                                    <a href="javascript:;">点击听课</a>
                                 </div>
                             </li>
                         </ul>
@@ -508,7 +508,7 @@
                                             <a href="" class="name">{{item.username}}</a>
                                             <span>
                                                 发布：
-                                                <a href="">{{item.title}}</a>
+                                                <a href="javascript:;">{{item.title}}</a>
                                             </span>
                                         </div>
                                     </li>
@@ -531,7 +531,7 @@
                                     v-for="(item) in studioState.data.comments.slice(0,5)"
                                     :key='item.id'
                                 >
-                                    <a href="" class="head_pic_border head_pic fl">
+                                    <a href="javascript:;" class="head_pic_border head_pic fl">
                                         <img src="@img/head_pic.png" alt="">
                                     </a>
                                     <div class="fl people_info">
@@ -562,6 +562,7 @@ import Loading from '@global/Loading';
 import Fail from '@global/Fail'
 export default {
     name:'Home',
+    
     data(){
         return {
             visitor_show_index:-1,
@@ -858,8 +859,10 @@ export default {
     },
     mounted () {        
         if(this.$store.getters.navL){
-            console.log('首页第二次加载')
+            console.log('导航已激活，加载首页数据')
             this.firstLoading();
+        }else{
+            console.log('等待导航激活')
         }
     },
     computed:{
@@ -870,7 +873,7 @@ export default {
     watch:{
         bodyList(){
             // 初次加载需要等待导航请求结束，并且拿到bodylist
-            console.log('首页第一次加载')
+            console.log('导航已激活，加载首页数据')
             this.firstLoading();
         }
     }

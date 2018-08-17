@@ -9,6 +9,7 @@ import router from './router';
 import store from './store/index';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import MetaInfo from 'vue-meta-info'
 // 引入 ECharts 主模块
 var echarts = require('echarts/lib/echarts');
 // 引入柱状图
@@ -24,6 +25,7 @@ Vue.prototype.$getQuery = getQuery;
 
 Vue.use(ElementUI,{ size: 'small', zIndex: 3000 });
 Vue.use(VueAxios,axios);
+Vue.use(MetaInfo)
 
 Vue.config.productionTip = false;
 
