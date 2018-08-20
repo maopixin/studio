@@ -61,7 +61,8 @@
                                 <img src="http://yun.zjer.cn/uploads/snsPhotos/snscover/551e070cc5593_100.jpg" alt="">
                                 <div class="text">
                                     <span class="name">
-                                        <router-link :to='{name:"introduce"}'>{{studioInfo.data.name}}</router-link>
+                                        {{studioInfo.data.name}}
+                                        <!-- <router-link :to='{name:"introduce"}'>{{studioInfo.data.name}}</router-link> -->
                                     </span>
                                     <span class="type">{{studioInfo.data.subject_major}}</span>
                                 </div>
@@ -165,7 +166,7 @@
 
                 </div>
                 <!-- 最近访客 -->
-                <div class="margin_t" style='overflow:visible;'>
+                <!-- <div class="margin_t" style='overflow:visible;'>
                     <div class="title_box">
                         <h3 class="column_title">
                             <div class="t_l">LINE</div>
@@ -185,7 +186,7 @@
                                 <img class="pic_head" src="@img/head_pic.png" alt="">
                                 <a href="javascript:;">{{item.nickname}}</a>
                                 <span>{{item.time_ago}}</span>
-                                <!-- <div class="info_jump_box" v-show='visitor_show_index==index'>
+                                <div class="info_jump_box" v-show='visitor_show_index==index'>
                                     <div class="pic_join fl">
                                         <img src="https://avatars1.githubusercontent.com/u/30068481?s=460&v=4" alt="">
                                         <a href="">进入空间</a>
@@ -199,7 +200,7 @@
                                             阿里；速度快了；暗色大赛；距离；大家商量；就；按时间东联； 就
                                         </p>
                                     </div>
-                                </div> -->
+                                </div>
                             </li>
                         </ul>
                         <div class="visitor_total_num_box clearfix">
@@ -213,7 +214,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
              <!-- 右边启动 -->
             <div class="studio_right fr">
@@ -476,14 +477,14 @@
                     </div>
                 </div>
                 <!--  -->
-                <div class="clearfix  resource_and_text">
+                <!-- <div class="clearfix  resource_and_text">
                     <div class="fl item margin_t">
                         <div class="title_box">
                             <h3 class="column_title">
                                 <div class="t_l">LINE</div>
                                 <div class="t_c">最新动态</div>
                             </h3>
-                            <router-link :to="{name:'news'}" class="title_more">更多</router-link>
+                           <router-link :to="{name:'news'}" class="title_more">更多</router-link>
                         </div>
                         <div style="background-color:#fff;overflow:hidden;">
 
@@ -550,7 +551,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -693,55 +694,57 @@ export default {
                 this.achievements.l = true;
                 this.achievements.fail = true;
             })
-            getStudioData({
-                id:this.$route.params.id,
-                category_id:bodyList['教师文章'].id,
-                pre_page:6
-            }).then(data=>{
-                console.log(data,'教师文章');
-                this.article.l = true;
-                if(data.status.code==0){
-                    this.article.data = data.data.list[0];
-                    this.article.list = data.data.list.slice(1);
-                }else{
+            setTimeout(()=>{
+                getStudioData({
+                    id:this.$route.params.id,
+                    category_id:bodyList['教师文章'].id,
+                    pre_page:6
+                }).then(data=>{
+                    console.log(data,'教师文章');
+                    this.article.l = true;
+                    if(data.status.code==0){
+                        this.article.data = data.data.list[0];
+                        this.article.list = data.data.list.slice(1);
+                    }else{
+                        this.article.fail = true;
+                    }
+                }).catch(error=>{
                     this.article.fail = true;
-                }
-            }).catch(error=>{
-                this.article.fail = true;
-            });
-            getStudioData({
-                id:this.$route.params.id,
-                category_id:bodyList['教学资源'].id,
-                pre_page:6
-            }).then(data=>{
-                console.log(data,'教学资源');
-                this.teachingResources.l = true;
-                if(data.status.code==0){
-                    this.teachingResources.data = data.data.list[0];
-                    this.teachingResources.list = data.data.list.slice(1);
-                }else{
+                });
+                getStudioData({
+                    id:this.$route.params.id,
+                    category_id:bodyList['教学资源'].id,
+                    pre_page:6
+                }).then(data=>{
+                    console.log(data,'教学资源');
+                    this.teachingResources.l = true;
+                    if(data.status.code==0){
+                        this.teachingResources.data = data.data.list[0];
+                        this.teachingResources.list = data.data.list.slice(1);
+                    }else{
+                        this.teachingResources.fail = true;
+                    }
+                }).catch(error=>{
                     this.teachingResources.fail = true;
-                }
-            }).catch(error=>{
-                this.teachingResources.fail = true;
-            })
-            getStudioData({
-                id:this.$route.params.id,
-                category_id:bodyList['名师课堂'].id,
-                pre_page:3,
-                require_media:1
-            }).then(data=>{
-                console.log(data,'名师课堂');
-                this.lesson.l = true;
-                if(data.status.code==0){
-                    this.lesson.list = data.data.list
-                }else{
-                    this.lesson.fail = true;
-                }
-            }).catch(error=>{
-                this.lesson.l = true;
-                this.lesson.fail = true;
-            })
+                })
+                 // 教研活动
+                getActivityList({
+                    studio_id:this.$route.params.id,
+                    pre_page:5
+                }).then(data=>{
+                    console.log(data,'教研活动');
+                    this.activity.l = true;
+                    if(data.status.code==0){
+                        this.activity.list = data.data.list
+                    }else{
+                        this.activity.fail = true;
+                    }
+                }).catch(error=>{
+                    this.activity.fail = true;
+                })
+                
+            },2000)
+            
             // 工作室信息
             getStudioDetail({
                 id:this.$route.params.id
@@ -757,53 +760,57 @@ export default {
                 this.studioInfo.fail = true;
             })
            
-            // 教研活动
-            getActivityList({
-                studio_id:this.$route.params.id,
-                pre_page:5
-            }).then(data=>{
-                console.log(data,'教研活动');
-                this.activity.l = true;
-                if(data.status.code==0){
-                    this.activity.list = data.data.list
-                }else{
-                    this.activity.fail = true;
-                }
-            }).catch(error=>{
-                this.activity.fail = true;
-            })
-            // 成员列表
-            getStuidoMembers({
-                studio_id:this.$route.params.id,
-                pre_page:7
-            }).then(data=>{
-                console.log(data,'成员列表');
-                this.member.l = true;
-                if(data.status.code==0){
-                    console.log(data)
-                    this.member.list = data.data.list
-                }else{
-                    this.member.fail = true
-                }
-            }).catch(error=>{
-                this.member.fail = true;
-            })
-            // 最新动态
-            getStudioLatest({
-                id:this.$route.params.id,
-                require_user:1,
-                pre_page:5
-            }).then(data=>{
-                console.log(data,'最新动态')
-                this.latest.l = true;
-                if(data.status.code==0){
-                    this.latest.list = data.data.list
-                }else{
+            setTimeout(()=>{
+                getStudioData({
+                    id:this.$route.params.id,
+                    category_id:bodyList['名师课堂'].id,
+                    pre_page:3,
+                    require_media:1
+                }).then(data=>{
+                    console.log(data,'名师课堂');
+                    this.lesson.l = true;
+                    if(data.status.code==0){
+                        this.lesson.list = data.data.list
+                    }else{
+                        this.lesson.fail = true;
+                    }
+                }).catch(error=>{
+                    this.lesson.l = true;
+                    this.lesson.fail = true;
+                })
+                // 成员列表
+                getStuidoMembers({
+                    studio_id:this.$route.params.id,
+                    pre_page:7
+                }).then(data=>{
+                    console.log(data,'成员列表');
+                    this.member.l = true;
+                    if(data.status.code==0){
+                        console.log(data)
+                        this.member.list = data.data.list
+                    }else{
+                        this.member.fail = true
+                    }
+                }).catch(error=>{
+                    this.member.fail = true;
+                })
+                // 最新动态
+                getStudioLatest({
+                    id:this.$route.params.id,
+                    require_user:1,
+                    pre_page:5
+                }).then(data=>{
+                    console.log(data,'最新动态')
+                    this.latest.l = true;
+                    if(data.status.code==0){
+                        this.latest.list = data.data.list
+                    }else{
+                        this.latest.fail = true;
+                    }
+                }).catch(error=>{
                     this.latest.fail = true;
-                }
-            }).catch(error=>{
-                this.latest.fail = true;
-            });
+                });
+            },3000)
         
             getStudioState({
                 id:this.$route.params.id

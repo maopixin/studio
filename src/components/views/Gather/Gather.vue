@@ -53,10 +53,10 @@
                                 :key="e.id"
                             >
                                 <span class="title">
-                                    <a href="">{{e.title}}</a>
+                                    <a :href="e._link" target="_blank">{{e.title}}</a>
                                 </span>
                                 <span class="name">
-                                    <a href="">{{e.username}}</a>
+                                    <a>{{e.username}}</a>
                                 </span>
                                 <span class="time">{{e.utime.y+"-"+e.utime.m+"-"+e.utime.d}}</span>
                             </li>

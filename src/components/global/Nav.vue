@@ -6,13 +6,13 @@
             </li>
             <li 
                 class="nav_item"
-                v-for="(item,index) in navList"
+                v-for="(item,index) in navList.slice(0,8)"
                 :key='index'
                 @mouseover="navHover(index)"
                 @mouseout="navOut"
                 @click='navClick'
             >
-                <router-link :to='{name:routerType[item.type_code],query:{navId:item.id}}'>{{item.name}}</router-link>
+                <router-link :to='{name:routerType[item.type_code],query:{navId:item.id,mId:item.id}}'>{{item.name}}</router-link>
                 <ul 
                     class="nav_item_list"
                     v-show="show==index"
@@ -23,6 +23,26 @@
                         :key='i'
                     >
                         <router-link :to='{name:routerType[item.type_code],query:{navId:item.id,mId:value.id}}'>{{value.name}}</router-link>
+                    </li>
+                </ul>
+            </li>
+            <li 
+                class="nav_item"
+                @mouseover="navHover(9)"
+                @mouseout="navOut"
+                @click='navClick'
+            >
+                <a href="javascript:;">更多</a>
+                <ul 
+                    class="nav_item_list"
+                    v-show="show==9"
+                >
+                    <li 
+                        class="nav_item_item" 
+                        v-for="(item) in navList.slice(8,16)"
+                        :key='item.id'
+                    >
+                        <router-link :to='{name:routerType[item.type_code],query:{navId:item.id,mId:item.id}}'>{{item.name}}</router-link>
                     </li>
                 </ul>
             </li>
@@ -120,10 +140,11 @@ export default {
                 // }
             ],
             routerType:{
-                "1":'resource',
+                "1":'information',
                 "2":"information",
-                "3":"classroom",
-                "4":'research'
+                "3":"information",
+                "4":'information',
+                "5":'resource',
             }
         }
     },
@@ -141,9 +162,7 @@ export default {
             }else{
                 this.$message.error('工作室导航请求出错');
             }
-        }).catch(error=>{
-            this.$message.error('工作室导航请求出错');
-        });
+        })
         // 工作室信息
         getStudioDetail({
             id:this.$route.params.id
@@ -177,7 +196,7 @@ export default {
                     }
                 })
             })
-            return newArr.slice(0,9);
+            return newArr;
         },
         handleData2(arr){
             let obj = {};

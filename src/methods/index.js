@@ -11,7 +11,9 @@ export const getNavNow = function(obj,id){
     }
     for (let i = 0; i < obj.length; i++) {
         if(obj[i].id==id){
-            return obj[i];
+            let arr = obj[i];
+            arr = JSON.parse(JSON.stringify(arr))
+            return arr;
         }
     };
     if(obj.length>0){

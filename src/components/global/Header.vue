@@ -19,7 +19,7 @@
                 <a href="http://account.dljy.com/user/login/register" class="orange">注册</a>
             </div>
             <div class="part" data-type='logined' v-if='userInfo'>
-                <a href="http://meet.dljy.com" data-user='logined' style="margin-right:20px;">毛丕新</a>
+                <a href="http://meet.dljy.com" data-user='logined' style="margin-right:20px;">{{name}}</a>
                 <a href="http://account.dljy.com/user/login/logout" class="orange">退出</a>
             </div>
         </div>
@@ -42,7 +42,7 @@ export default {
         getUserInfo().then(data=>{
             if(data.status.code==0){
                 this.userInfo = true;
-                this.name = data.data.nickname
+                this.name = data.data.user.nickname
             }
         })
     }

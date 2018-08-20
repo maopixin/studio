@@ -27,17 +27,17 @@
                 <div class="title_box">
                     <h3 class="column_title">
                         <div class="t_l">LINE</div>
-                        <div class="t_c">资讯</div>
+                        <div class="t_c">{{activeName}}</div>
                     </h3>
                 </div>
                 <div>
                     <loading v-if="l"/>
-                    <fail v-if="data1.fail"/>
-                    <ul v-if="!l && !data1.fail" class="information_list_box">
+                    <fail v-if="fail"/>
+                    <ul v-if="!l && !fail" class="information_list_box">
                         <!-- *10 -->
                         <li 
                             class="clearfix"
-                            v-for = "(item) in data1.data.list"
+                            v-for = "(item) in data.list"
                             :key = 'item.id'
                         >
                             <span class="title">
@@ -52,11 +52,11 @@
                     <el-pagination
                         background
                         layout="prev, pager, next"
-                        :total="Number(data1.data.total)"
+                        :total="Number(data.total)"
                         class="page_box"
                         v-show="!this.l"
                         :page-size='pre_page'
-                        @current-change='data1ListChange'
+                        @current-change='pageChange'
                     >
                     </el-pagination>
                 </div>
@@ -74,85 +74,66 @@ export default {
     name:'information',
     components: {
         Crumbs,
-        NavMenu,
         Loading,
         Fail
     },
     data(){
         return {
             l:false,
+            fail:false,
             pre_page:10,
-            data1:{
-                data:{
-                    list:[]
-                },
-                fail:false
-            }
+            data:{
+                list:[],
+                total:0
+            },
+            activeName:''
         }
     },
     created(){
-        this.l = true;
-        getStudioData({
-            id:this.$route.params.id,
-            category_type_name:'资讯',
-            page:1,
-            pre_page:this.pre_page,
-        }).then(data=>{
-            this.l = false
-            console.log(data);
-            if(data.status.code==0){
-                this.data1.data = data.data
-            }else{
-                this.data1.fail = true;
-            }
-        }).catch(error=>{
-            this.l = false;
-            this.data1.fail = true;
-        })
+        if(this.$store.getters.navL){
+            this.getList();
+        }
+        
     },
     computed:{
         menuList(){
-            let data = this.$getNavNow(this.$store.getters.navList,this.$getQuery('navId'));
+            let data = this.$getNavNow(this.$store.getters.navList,this.$route.query.navId || this.$getQuery('navId'));
             if(data){
+                data.child.unshift({
+                    name:'全部',
+                    id:this.$getQuery('navId')
+                })
                 return data;
             }else{
                 this.$router.push({name:'notFound'});
             }
         },
         activeIndexF(){
-            let data = this.$getNavNow(this.$store.getters.navList,this.$getQuery('navId'));
+            let data = this.$getNavNow(this.$store.getters.navList,this.$route.query.navId || this.$getQuery('navId'));
             if(!data){
                 this.$router.push({name:'notFound'})
             }
+            data.child.unshift({
+                name:'全部',
+                id:this.$getQuery('navId')
+            })
+            
             for (let i = 0; i < data.child.length; i++) {
                 if(data.child[i].id==this.$getQuery('mId')){
+                    this.activeName = data.child[i].name;
                     return i+'';
                 }
             };
-            return '0';
+        },
+    },
+    watch:{
+        menuList(){
+            console.log('计算属性变化')
+
+            this.getList()
         }
     },
     methods:{
-        data1ListChange(page){
-            this.l = true;
-            getStudioData({
-                id:this.$route.params.id,
-                category_type_name:'资讯',
-                page:page,
-                pre_page:this.pre_page,
-            }).then(data=>{
-                this.l = false
-                console.log(data);
-                if(data.status.code==0){
-                    this.data1.data = data.data
-                }else{
-                    this.data1.fail = true;
-                }
-            }).catch(error=>{
-                this.l = false;
-                this.data1.fail = true;
-            })
-        },
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
         },
@@ -167,8 +148,52 @@ export default {
                     mId:this.menuList.child[index].id
                 }
             })
+        },
+        getList(){
+            this.l = true;
+            this.fail = false;
+            getStudioData({
+                id:this.$route.params.id,
+                category_id:this.$getQuery('mId') || this.menuList.child[this.activeIndexF].id,
+                pre_page:this.pre_page
+            }).then(data=>{
+                this.l = false;
+                if(data.status.code==0){
+                    this.data = data.data;
+                }else{
+                    this.$message.error('请求失败');
+                    this.fail = true;
+                }
+            }).catch(error=>{
+                this.$message.error('请求失败');
+                this.l = false;
+                this.fail = true;
+            })
+        },
+        pageChange(index){
+            this.l = true;
+            this.fail = false;
+            getStudioData({
+                id:this.$route.params.id,
+                category_id:this.$getQuery('mId') || this.menuList.child[this.activeIndexF].id,
+                pre_page:this.pre_page,
+                page:index
+            }).then(data=>{
+                this.l = false;
+                if(data.status.code==0){
+                    this.data = data.data;
+                }else{
+                    this.$message.error('请求失败');
+                    this.fail = true;
+                }
+            }).catch(error=>{
+                this.$message.error('请求失败');
+                this.l = false;
+                this.fail = true;
+            })
         }
-    }
+    },
+
 }
 </script>
 
@@ -207,6 +232,9 @@ export default {
         }
         .title{
             width: 540px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .name{
             width: 88px;

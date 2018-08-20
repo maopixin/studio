@@ -53,7 +53,7 @@
                                     :key='item.id'
                                 >
                                     <span class="title">
-                                        <a href="">{{item.title}}</a>
+                                        <a :href="item._link" target="_blank">{{item.title}}</a>
                                     </span>
                                     <span class="name">{{item.username}}</span>
                                     <span class="time">{{item.utime.y+"-"+item.utime.m+'-'+item.utime.d}}</span>
@@ -102,7 +102,7 @@ export default {
                     fail:false
                 }
             ],
-            pre_page:2
+            pre_page:10
         }
     },
     methods: {

@@ -43,15 +43,15 @@
                                 <!-- word ppt pdf -->
                                 <span class="icon" :class="item.file_type"></span>
                                 <span class="name">
-                                    <a href="">{{item.title}}</a>
+                                    <a :href="item._link" target="_blank">{{item.title}}</a>
                                 </span>
                                 <span class="type">{{item.file_type||'未知类型'}}</span>
                                 <span class="person">
-                                    <a href="">{{item.nackname}}</a>
+                                    <a href="javascript:;">{{item.nackname}}</a>
                                 </span>
                                 <span class="time">{{item.utime.y+"-"+item.utime.m+"-"+item.utime.d}}</span>
                                 <span class="down_num">
-                                    <a href="">
+                                    <a href="javascript:;">
                                         <em></em>下载{{item.hits}}次
                                     </a>
                                 </span>
@@ -96,7 +96,7 @@ export default {
                     total:0
                 }
             ],
-            pre_page:2
+            pre_page:10
         }
     },
     computed:{

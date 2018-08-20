@@ -11,10 +11,10 @@
                     <span class="ico sprite-notfound"></span>
                     返回上一页
                 </a>
-                <router-link class="home-btn" :to="{name:'home'}">
+                <a class="home-btn" href="http://www.dljy.com">
                     <span class="ico sprite-notfound"></span>
                     返回首页
-                </router-link>
+                </a>
             </div>
         </section>
     </div>
