@@ -24,6 +24,7 @@ const SubjectLeader = () => import('@views/SubjectLeader')
 const BriefIntroduce = () => import('@views/BriefIntroduce')
 const StudioList = () => import('@views/StudioList')
 const Gather = () => import('@views/Gather/Gather')
+const ActivityPage = () => import('@views/ActivityPage')
 
 Vue.use(Router);
 
@@ -62,7 +63,12 @@ export default new Router({
         {
           path:'research',
           name:'research',
-          component:Research
+          component:Research,
+        },
+        {
+          path:'research/:activityId',
+          name:'activityPage',
+          component:ActivityPage
         },
         {
           path:'characteristic',
@@ -116,38 +122,38 @@ export default new Router({
         }
       ]
     },
-    {
-      path:'/institute',
-      name:'institute',
-      component:Institute,
-      children:[
-        {
-          path:'home/:id?',
-          name:'home',
-          component:InstituteHome
-        },
-        {
-          path:'daylesson',
-          name:'daylesson',
-          component:DayLesson
-        },
-        {
-          path:'studioinformation',
-          name:'studioinformation',
-          component:StudioInformation
-        },
-        {
-          path:'subjectleader',
-          name:'subjectleader',
-          component:SubjectLeader
-        },
-        {
-          path:'list',
-          name:'list',
-          component:StudioList
-        }
-      ]
-    }
+    // {
+    //   path:'/institute',
+    //   name:'institute',
+    //   component:Institute,
+    //   children:[
+    //     {
+    //       path:'home/:id?',
+    //       name:'home',
+    //       component:InstituteHome
+    //     },
+    //     {
+    //       path:'daylesson',
+    //       name:'daylesson',
+    //       component:DayLesson
+    //     },
+    //     {
+    //       path:'studioinformation',
+    //       name:'studioinformation',
+    //       component:StudioInformation
+    //     },
+    //     {
+    //       path:'subjectleader',
+    //       name:'subjectleader',
+    //       component:SubjectLeader
+    //     },
+    //     {
+    //       path:'list',
+    //       name:'list',
+    //       component:StudioList
+    //     }
+    //   ]
+    // }
   ],
   scrollBehavior(to ,from , savedPosition){
     if(to.name==='msgboard'){

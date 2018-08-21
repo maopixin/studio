@@ -18,6 +18,9 @@ axios.defaults.withCredentials = true;
 //     });
 
 // const domin = http://institute.dljy.com/studio/api/page_list
+function HandelError(code){
+    
+}
 // 获取研究院下所有工作室列表：institute_id: int [必传]page: int [必传] pre_page: int
 export function getStudioList(payload){
     return axios.get('/studio/api/page_list',{

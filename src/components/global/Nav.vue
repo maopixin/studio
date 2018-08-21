@@ -1,5 +1,8 @@
 <template>
-     <nav class="nav">
+     <nav 
+        class="nav"
+        v-loading.fullscreen.lock="fullscreenLoading"
+     >
         <ul class="nav_list clearfix">
             <li class="nav_item">
                 <router-link :to="{ path: '/institute/studio/'+this.$route.params.id }">首页</router-link>
@@ -72,6 +75,7 @@ export default {
     props: ['bgColor','textColor','activeTextColor'],
     data(){
         return {
+            fullscreenLoading:false,
             activeIndex:1,
             bgColor_d:'#fff',
             textColor_d:'#909399',
@@ -149,19 +153,24 @@ export default {
         }
     },
     created () {
+        // this.fullscreenLoading = true;
         getCategory({
             source:2,
             source_id:this.$route.params.id,
             pre_page:1000
         }).then(data=>{
             console.log(data);
+            this.fullscreenLoading = false;
             if(data.status.code==0){
                 this.$store.commit('changeNavList',this.handleData(data.data.nav.list));
                 this.$store.commit('changeBodyList',this.handleData2(data.data.body.list));
                 this.$store.commit('changeNavL')
             }else{
-                this.$message.error('工作室导航请求出错');
+                this.$message.error('工作室导航请求出错,请稍后重试');
             }
+        }).catch(error=>{
+            this.fullscreenLoading = false;
+            this.$message.error('工作室导航请求出错,请稍后重试');
         })
         // 工作室信息
         getStudioDetail({

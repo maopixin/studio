@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Crumbs/>
+        <Crumbs title="教研活动"/>
         <div class="content clearfix">
             <div class="activity box-shadow fl">
                 <div class="title_box">
