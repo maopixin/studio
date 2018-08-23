@@ -165,6 +165,9 @@
                         >{{item.title}}</li>
                         
                     </ul>
+                    <div class="step_content">
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -172,32 +175,50 @@
 </template>
 
 <script>
+import Text from './components/Text';
+import Doc from './components/Doc';
+import Res from './components/Res';
+import Video from './components/Video';
+import Pic from './components/Pic';
+import Score from './components/Score';
+import Vote from './components/Vote';
+
 export default {
+    components:{
+       Text, Doc, Res, Video, Pic, Score, Vote, 
+    },
     data(){
         return {
             title:'活动详情',
             activityShowIndex:0,
             activityStep:[
                 {
-                    title:'活动文本'
+                    title:'活动文本',
+                    type:'text'
                 },
                 {
-                    title:'活动文档'
+                    title:'活动文档',
+                    type:'doc'
                 },
                 {
-                    title:'活动资源'
+                    title:'活动资源',
+                    type:'resource'
                 },
                 {
-                    title:'活动视频'
+                    title:'活动视频',
+                    type:'video'
                 },
                 {
-                    title:'活动图片'
+                    title:'活动图片',
+                    type:'pic'
                 },
                 {
-                    title:'活动评论'
+                    title:'活动评分',
+                    type:'score'
                 },
                 {
-                    title:'活动投票'
+                    title:'活动投票',
+                    type:'vote'
                 }
             ]
         }
@@ -284,11 +305,15 @@ export default {
             background-color: #fff;
             .p_content{
                 padding: 24px 0;
+                .step_content{
+                    
+                }
                 .step_list{
                     width: 240px;
                     text-align: center;
                     font-size: 20px;
                     line-height: 78px;
+                    margin-right: 63px;
                     li{
                         overflow: visible;
                         cursor: pointer;

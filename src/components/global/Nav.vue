@@ -164,13 +164,14 @@ export default {
             if(data.status.code==0){
                 this.$store.commit('changeNavList',this.handleData(data.data.nav.list));
                 this.$store.commit('changeBodyList',this.handleData2(data.data.body.list));
-                this.$store.commit('changeNavL')
+                this.$store.commit('changeNavL');
             }else{
                 this.$message.error('工作室导航请求出错,请稍后重试');
             }
         }).catch(error=>{
             this.fullscreenLoading = false;
             this.$message.error('工作室导航请求出错,请稍后重试');
+            console.log(error)
         })
         // 工作室信息
         getStudioDetail({
