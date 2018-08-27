@@ -166,7 +166,8 @@
                         
                     </ul>
                     <div class="step_content">
-
+                        <text-box/>
+                        <msg/>
                     </div>
                 </div>
             </div>
@@ -175,17 +176,18 @@
 </template>
 
 <script>
-import Text from './components/Text';
+import TextBox from './components/Text';
 import Doc from './components/Doc';
 import Res from './components/Res';
 import Video from './components/Video';
 import Pic from './components/Pic';
 import Score from './components/Score';
 import Vote from './components/Vote';
+import Msg from './components/Msg';
 
 export default {
     components:{
-       Text, Doc, Res, Video, Pic, Score, Vote, 
+       TextBox, Doc, Res, Video, Pic, Score, Vote, Msg, 
     },
     data(){
         return {
@@ -306,7 +308,40 @@ export default {
             .p_content{
                 padding: 24px 0;
                 .step_content{
+                    float: left;
+                    width: 761px;
                     
+                }
+                .step_content /deep/ .step_box{
+                    
+                    h4{
+                        font-size: 22px;
+                        line-height: 54px;
+                        color: #696969;
+                        border-bottom: 1px solid #eaeaea;
+                        margin-bottom: 13px;
+                        span{
+                            display: inline-block;
+                            vertical-align: top;
+                            padding: 5px 6px 0;
+                            border-bottom: 3px solid #34a7e0;
+                            margin-bottom: -2px;
+                        }
+                    }
+                    .describe{
+                        font-size: 16px;
+                        line-height: 43px;
+                        .title{
+                            width: 94px;
+                            text-indent: 4px;
+                            letter-spacing: 3px;
+                            color: #686868;
+                        }
+                        .info{
+                            width: 667px;
+                            color: #414141;
+                        }
+                    }
                 }
                 .step_list{
                     width: 240px;
@@ -494,4 +529,5 @@ export default {
             }
         }
     }
+    
 </style>
