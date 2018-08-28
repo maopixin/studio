@@ -26,26 +26,107 @@
         <div>
             <ul class="msg-list">
                 <li class="msg-item">
-                    <div class="fl msg_head">
-                        <a href="javascript:;">
-                            <img src="@/assets/img/person128*128.png" alt="">
-                        </a>
-                    </div>
-                    <div class="fr msg_content">
-                        <div class="text">
-                            <a href="javascript:;" class="color">李月兰</a>：哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈
+                    <div class="clearfix">
+                        <div class="fl msg_head">
+                            <a href="javascript:;">
+                                <img src="@/assets/img/person128*128.png" alt="">
+                            </a>
                         </div>
-                        <div class="time_fn">
-                            <time class="fl" datatime=''>2018-08-09 23:24</time>
-                            <div class="fr">
-                                <div class="fl">
-                                    <img src="@/assets/icon/up.png" alt="">
-                                    (0)
-                                </div>
-                                <div class="fl color">
-                                    回复
+                        <div class="fr msg_content">
+                            <div class="text">
+                                <a href="javascript:;" class="color">李月兰</a>：哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈
+                            </div>
+                            <div class="time_fn clearfix">
+                                <time class="fl color" datatime=''>2018-08-09 23:24</time>
+                                <div class="fr fn-box">
+                                    <div class="fl zan">
+                                        <span class="fl"></span>
+                                        （0）
+                                    </div>
+                                    <div 
+                                        class="fl color return ns"
+                                        @click='reply'
+                                    >
+                                        回复
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <ul class="replay-list">
+                        <li>
+                            <div class="clearfix">
+                                <div class="fl msg_head">
+                                    <a href="javascript:;">
+                                        <img src="@/assets/img/person128*128.png" alt="">
+                                    </a>
+                                </div>
+                                <div class="fr msg_content">
+                                    <div class="text">
+                                        <a href="javascript:;" class="color">李月兰</a> 回复 <a href="javascript:;" class="color">李月兰</a>：哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈
+                                    </div>
+                                    <div class="time_fn clearfix">
+                                        <time class="fl color" datatime=''>2018-08-09 23:24</time>
+                                        <div class="fr fn-box">
+                                            <div class="fl zan">
+                                                <span class="fl"></span>
+                                                （0）
+                                            </div>
+                                            <div 
+                                                class="fl color return ns"
+                                                @click='reply'
+                                            >
+                                                回复
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="clearfix">
+                                <div class="fl msg_head">
+                                    <a href="javascript:;">
+                                        <img src="@/assets/img/person128*128.png" alt="">
+                                    </a>
+                                </div>
+                                <div class="fr msg_content">
+                                    <div class="text">
+                                        <a href="javascript:;" class="color">李月兰</a> 回复 <a href="javascript:;" class="color">李月兰</a>：哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈
+                                    </div>
+                                    <div class="time_fn clearfix">
+                                        <time class="fl color" datatime=''>2018-08-09 23:24</time>
+                                        <div class="fr fn-box">
+                                            <div class="fl zan">
+                                                <span class="fl"></span>
+                                                （0）
+                                            </div>
+                                            <div 
+                                                class="fl color return ns"
+                                                @click='reply'
+                                            >
+                                                回复
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div 
+                        class="replay-box"
+
+                    >
+                        <div>
+                            <el-input
+                                type="textarea"
+                                :autosize="{ minRows: 4, maxRows: 4}"
+                                :placeholder="msg2tip"
+                                v-model="msg2">
+                            </el-input>
+                        </div>
+                        <div class="btn-box">
+                            <el-button type="primary">回复</el-button>
                         </div>
                     </div>
                 </li>
@@ -60,7 +141,9 @@ export default {
         return {
             msg: '',
             textNum:140,
-            textNumShow:140
+            textNumShow:140,
+            msg2:'',
+            msg2tip:'回复 xxx'
         }
     },
     methods:{
@@ -112,6 +195,9 @@ export default {
             if (str_length < len) {
                 return str;
             }
+        },
+        reply(){
+            return false;
         }
     },
 }
@@ -144,6 +230,7 @@ export default {
             padding-bottom: 20px;
             /deep/ .el-textarea__inner{
                 padding: 15px;
+                resize: none;
             }
             .msg_btn{
                 text-align: right;
@@ -179,10 +266,61 @@ export default {
                 width: 690px;
                 .text{
                     line-height: 18px;
+                    padding-top: 6px;
+                    padding-bottom: 25px;
+                    color: #545454;
+                }
+                .time_fn{
+                    line-height: 18px;
+                    margin-bottom: 40px;
+                    .fn-box{
+                        .zan{
+                            margin-right: 40px;
+                            color: #b3b3b3;
+                            span{
+                                width: 18px;
+                                height: 18px;
+                                background: url('../../../../../assets/icon/zan.png') no-repeat;
+                                background-size: cover;
+                                margin-top: -1px;
+                                cursor: pointer;
+                                &:hover{
+                                    background: url('../../../../../assets/icon/zan-active.png') no-repeat;
+                                    background-size: cover;
+                                }
+                            }
+                            span.active{
+                                background: url('../../../../../assets/icon/zan-active.png') no-repeat;
+                                background-size: cover;
+                            }
+                        }
+                        .return{
+                            cursor: pointer;
+                        }
+                    }
                 }
             }
             .color{
                 color: #1b9fe2;
+            }
+            .replay-list{
+                width: 690px;
+                margin-left: 71px;
+                .msg_content{
+                    width: 619px;
+                }
+            }
+            .replay-box{
+                width: 690px;
+                margin-left: 71px;
+                /deep/ textarea{
+                    padding: 15px;
+                    resize: none;
+                }
+                .btn-box{
+                    text-align: right;
+                    padding: 10px 0 20px;
+                }
             }
         }
     }

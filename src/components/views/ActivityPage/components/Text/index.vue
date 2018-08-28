@@ -25,8 +25,9 @@ export default {
 }
 </script>
 
-<style>
-    .describe{
+<style scoped>
+    .step_box{
         padding-bottom: 192px;
+        
     }
 </style>

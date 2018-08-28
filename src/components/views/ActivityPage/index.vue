@@ -166,7 +166,7 @@
                         
                     </ul>
                     <div class="step_content">
-                        <text-box/>
+                        <score/>
                         <msg/>
                     </div>
                 </div>
@@ -179,7 +179,7 @@
 import TextBox from './components/Text';
 import Doc from './components/Doc';
 import Res from './components/Res';
-import Video from './components/Video';
+import VideoBox from './components/Video';
 import Pic from './components/Pic';
 import Score from './components/Score';
 import Vote from './components/Vote';
@@ -187,7 +187,7 @@ import Msg from './components/Msg';
 
 export default {
     components:{
-       TextBox, Doc, Res, Video, Pic, Score, Vote, Msg, 
+       TextBox, Doc, Res, VideoBox, Pic, Score, Vote, Msg, 
     },
     data(){
         return {
@@ -340,6 +340,38 @@ export default {
                         .info{
                             width: 667px;
                             color: #414141;
+                        }
+                    }
+                    .doc-box{
+                        padding: 0 4px !important;
+                        margin: 0 !important;
+                        color: #b6b6b6 !important;
+                        font-size: 14px !important;
+                        line-height: 20px !important;
+                        p{
+                            padding: 10px 0 !important;
+                            margin: 0 !important;
+                        }
+                        *{
+                            color: #b6b6b6 !important;
+                            font-size: 14px !important;
+                            line-height: 20px !important;
+                        }
+                    }
+                    .doc-list{
+                        padding:10px 15px 10px 0;
+                        margin-bottom: 30px;
+                        font-size: 14px;
+                        line-height: 54px;
+                        li{
+                            padding-left: 50px;
+                        }
+                        .type{
+                            color: #616161;
+                        }
+                        .type-doc{
+                            background: url('../../../assets/icon/page.png') no-repeat 0 center;
+                            background-size: 28px;
                         }
                     }
                 }
