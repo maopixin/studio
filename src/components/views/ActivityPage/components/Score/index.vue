@@ -23,14 +23,31 @@
             <div class="clearfix">
                 <div class="fl label">满意度</div>
                 <span class="fl">：</span>
-                <div class="score-content fl">
-                    <el-rate v-model="value4"></el-rate>
+                <div class="score-content rate-box fl">
+                    <el-rate 
+                        v-model="rate"
+                        :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
+                        show-text
+                        :texts="['极差','不满意','一般','满意','很满意']"
+                    ></el-rate>
                 </div>
             </div>
             <div class="clearfix">
                 <div class="fl label">收获</div>
                 <span class="fl">：</span>
-                <div class="score-content fl">1</div>
+                <div class="score-content fl">
+                    <div class="input-box">
+                        <el-input
+                            type="textarea"
+                            :autosize="{ minRows: 4, maxRows: 4}"
+                            placeholder="请输入内容"
+                            v-model="harvest">
+                        </el-input>
+                    </div>
+                    <div align='right'>
+                        <el-button type="primary" @click='upDataRate'>提交</el-button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -40,7 +57,13 @@
 export default {
     data(){
         return {
-            value4:null
+            rate:null,
+            harvest:''
+        }
+    },
+    methods:{
+        upDataRate(){
+
         }
     }
 }
@@ -50,6 +73,7 @@ export default {
     .score-box{
         border-top: 1px solid #eaeaea;
         margin-top: 25px;
+        padding-bottom: 40px;
         font-size: 16px;
         line-height: 72px;
         .label{
@@ -71,6 +95,21 @@ export default {
         .score-content{
             width: 658px;
             padding-left: 10px;
+            .input-box{
+                padding-top: 25px;
+                /deep/ .el-textarea__inner{
+                    padding: 15px;
+                    // resize: none;
+                }
+            }
+        }
+        .rate-box{
+            padding-top: 25px;
+            /deep/ .el-rate__text{
+                display: inline-block;
+                line-height: 20px;
+                vertical-align: top;
+            }
         }
     }
 </style>

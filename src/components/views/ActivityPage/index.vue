@@ -165,8 +165,13 @@
                         >{{item.title}}</li>
                         
                     </ul>
-                    <div class="step_content">
-                        <score/>
+                    <div 
+                        class="step_content"
+                        v-loading="loading"
+                    >
+                        <keep-alive>
+                            <component v-bind:is="currentTabComponent"></component>
+                        </keep-alive>
                         <msg/>
                     </div>
                 </div>
@@ -196,38 +201,41 @@ export default {
             activityStep:[
                 {
                     title:'活动文本',
-                    type:'text'
+                    type:'TextBox'
                 },
                 {
                     title:'活动文档',
-                    type:'doc'
+                    type:'Doc'
                 },
                 {
                     title:'活动资源',
-                    type:'resource'
+                    type:'Res'
                 },
                 {
                     title:'活动视频',
-                    type:'video'
+                    type:'VideoBox'
                 },
                 {
                     title:'活动图片',
-                    type:'pic'
+                    type:'Pic'
                 },
                 {
                     title:'活动评分',
-                    type:'score'
+                    type:'Score'
                 },
                 {
                     title:'活动投票',
-                    type:'vote'
+                    type:'Vote'
                 }
-            ]
+            ],
+            currentTabComponent:'TextBox',
+            loading:true
         }
     },
     methods:{
         stepChange(index){
             this.activityShowIndex = index;
+            this.currentTabComponent = this.activityStep[index].type;
         }
     }
 }
