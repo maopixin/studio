@@ -1,5 +1,7 @@
 <template>
-    <div>
+    <div 
+        v-loading="loading"
+    >
         <div class="crumbs_box">
             <el-breadcrumb separator-class="el-icon-arrow-right">
                 <el-breadcrumb-item :to="{ path: '/institute/studio/'+this.$route.params.id }">工作室首页</el-breadcrumb-item>
@@ -10,31 +12,31 @@
         <div class="content layui-main">
             <div class="activity_info clearfix box-shadow">
                 <div class="pic_box fl">
-                    <img src="https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=3311515793,1390357452&fm=85&s=23966023E4C7CEB5248C68A20300E060" alt="">
+                    <img :src="data.cover" alt="">
                     <span class="ac_type on_line">线上</span>
                 </div>
                 <div class="fr ac_info">
-                    <h3 class="title">借助信息</h3>
+                    <h3 class="title">{{data.title}}</h3>
                     <ul>
                         <li class="clearfix">
                             <span class="label ccc justify">活动组织者</span>
                             <span class="ccc">：</span>
-                            <span class="ddd">张金良</span>
+                            <span class="ddd">{{data.creator_name}}</span>
                         </li>
                         <li class="clearfix">
                             <span class="label ccc justify">参与对象</span>
                             <span class="ccc">：</span>
-                            <span class="ddd">张金良名师工作室成员</span>
+                            <span class="ddd">{{data.participant_text}}</span>
                         </li>
                         <li class="clearfix">
                             <span class="label ccc justify">参与人数</span>
                             <span class="ccc">：</span>
-                            <span class="ddd">1人</span>
+                            <span class="ddd">{{data.partner_cnt}}人</span>
                         </li>
                         <li class="clearfix">
                             <span class="label ccc justify">起止时间</span>
                             <span class="ccc">：</span>
-                            <span class="blue">2018-06-21 00:53:33 至 2018-06-21 00:53:33</span>
+                            <span class="blue">{{data.start_time}} 至 {{data.stop_time}}</span>
                         </li>
                     </ul>
                 </div>
@@ -77,7 +79,7 @@
                 </h4>
                 <div class="p_content">
                     <p>
-                        爱上了大大路上看到啦开始的拉开
+                        {{data.description}}
                     </p>
                 </div>
             </div>
@@ -189,7 +191,7 @@ import Pic from './components/Pic';
 import Score from './components/Score';
 import Vote from './components/Vote';
 import Msg from './components/Msg';
-
+import {getActivityDetail} from '@api/index'
 export default {
     components:{
        TextBox, Doc, Res, VideoBox, Pic, Score, Vote, Msg, 
@@ -198,36 +200,20 @@ export default {
         return {
             title:'活动详情',
             activityShowIndex:0,
-            activityStep:[
-                {
-                    title:'活动文本',
-                    type:'TextBox'
-                },
-                {
-                    title:'活动文档',
-                    type:'Doc'
-                },
-                {
-                    title:'活动资源',
-                    type:'Res'
-                },
-                {
-                    title:'活动视频',
-                    type:'VideoBox'
-                },
-                {
-                    title:'活动图片',
-                    type:'Pic'
-                },
-                {
-                    title:'活动评分',
-                    type:'Score'
-                },
-                {
-                    title:'活动投票',
-                    type:'Vote'
-                }
-            ],
+            data:{
+                tache:[]
+            },
+            typeList:{
+                1 : 'TextBox',
+                2 : 'Doc', 
+                3 : 'Res', 
+                4 : 'VideoBox', 
+                5 : 'Score', 
+                6 : '直播',
+                7 : 'Pic',
+                8 : 'Vote'
+            },
+            
             currentTabComponent:'TextBox',
             loading:true
         }
@@ -236,7 +222,53 @@ export default {
         stepChange(index){
             this.activityShowIndex = index;
             this.currentTabComponent = this.activityStep[index].type;
+        },
+        getType(index){
+            switch(index){
+                case 1:
+                    return 'TextBox';
+                    break;
+                case 2:
+                    return 'Doc';
+                    break;
+                case 3:
+                    return 'Res';
+                    break;
+                case 4:
+                    return 'VideoBox';
+                    break;
+                case 5:
+                    return 'Score';
+                    break;
+                case 6:
+                    return '直播';
+                    break;
+                case 7:
+                    return 'Pic';
+                    break;
+                case 8:
+                    return "Vote";
+                    break;
+                default:
+                    return "TextBox"
+            }
         }
+    },
+    created(){
+        getActivityDetail({
+            studio_id:this.$route.params.id,
+            id:this.$route.params.activityId
+        }).then(data=>{
+            console.log(data);
+            this.loading = false;
+            if(data.status.code==0){
+                let arr = [];
+                for (let i = 0; i < data.tache.length; i++) {
+                    
+                }
+                this.data = data.data
+            }
+        })
     }
 }
 </script>
@@ -245,6 +277,11 @@ export default {
     .justify{
         text-align: justify;
         text-align-last: justify;
+        &:after{
+            content: "";
+            display: inline-block;
+            width: 100%;
+        }
     }
      .crumbs_box{
         width: 1140px;
@@ -296,6 +333,7 @@ export default {
                     }
                     .label{
                         width: 72px;
+                        height: 38px;
                     }
                     .ccc{
                         color: #686868;
@@ -535,8 +573,9 @@ export default {
                         color: #545454;
                     }
                     .laber{
-                        .justify();
+                        .justify;
                         width: 70px;
+                        height: 40px;
                     }
                     .texts{
                         color:#31a5f0;

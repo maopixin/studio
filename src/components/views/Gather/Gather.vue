@@ -81,7 +81,7 @@
 import Crumbs from "@/components/global/crumbs";
 import Loading from '@global/Loading';
 import Fail from '@global/Fail'
-import {getStudioData} from '@api/index'
+import {getStudioObj} from '@api/index'
 export default {
     components:{
         Crumbs,
@@ -137,31 +137,15 @@ export default {
                 }
             });
             if(this.menuList[index].first){
-                getStudioData({
-                    id:this.$route.params.id,
-                    category_id:this.$store.getters.bodyList[this.getType[index]].id,
-                    pre_page:this.pre_page,
-                }).then(data=>{
-                    console.log(data,this.getType[index]);
-                    this.menuList[index].l = false;
-                    if(data.status.code==0){
-                        this.menuList[index].list = data.data.list;
-                        this.menuList[index].first = false;
-                        this.menuList[index].total = data.data.total;
-                    }else{
-                        this.menuList[index].fail = true;
-                    }
-                }).catch(error=>{
-                    this.menuList[index].fail = true;
-                })
+                this.firstLoading(index);
             };
         },
         pageChange(page){
             let index = this.activeF;
             this.menuList[index].l = true;
-            getStudioData({
-                id:this.$route.params.id,
-                category_type_name:this.getType[index],
+            getStudioObj({
+                studio:this.$route.params.id,
+                category_name:this.getType[index],
                 pre_page:this.pre_page,
                 page:page
             }).then(data=>{
@@ -176,63 +160,51 @@ export default {
             }).catch(error=>{
                 this.menuList[index].fail = true;
             })
+        },
+        firstLoading(index){
+            getStudioObj({
+                studio:this.$route.params.id,
+                category_name:this.getType[index],
+                pre_page:this.pre_page,
+            }).then(data=>{
+                console.log(data,this.getType[index]);
+                this.menuList[index].l = false;
+                if(data.status.code==0){
+                    this.menuList[index].list = data.data.list;
+                    this.menuList[index].first = false;
+                    this.menuList[index].total = data.data.total;
+                }else{
+                    this.menuList[index].fail = true;
+                }
+            }).catch(error=>{
+                this.menuList[index].fail = true;
+            })
         }
     },
     computed:{
-        bodyList(){
-            return this.$store.getters.bodyList;
-        },
-        navL(){
-            return this.$store.getters.navL;
-        }
+        // navL(){
+        //     return this.$store.getters.navL;
+        // }
     },
     created(){
         // 初次加载需要等待导航请求结束，并且拿到bodylist ,如果为假 代表nav请求未结束，此时会走watch
-        if(this.$store.getters.navL){
-            let index = this.$getQuery('mid');
-            this.activeF = index;
-            getStudioData({
-                id:this.$route.params.id,
-                category_id:this.$store.getters.bodyList[this.getType[index]].id,
-                pre_page:this.pre_page
-            }).then(data=>{
-                console.log(data,this.getType[index]);
-                this.menuList[index].l = false;
-                if(data.status.code==0){
-                    this.menuList[index].list = data.data.list;
-                    this.menuList[index].first = false;
-                    this.menuList[index].total = data.data.total;
-                }else{
-                    this.menuList[index].fail = true;
-                }
-            }).catch(error=>{
-                this.menuList[index].fail = true;
-            })
-        }
+        // if(this.$store.getters.navL){
+        //     let index = this.$getQuery('mid');
+        //     this.activeF = index;
+        //     this.firstLoading(index);
+        // }
+        let index = this.$getQuery('mid');
+        this.activeF = index;
+        this.firstLoading(index);
     },
+    // "/api/index/more?studio=1&category_name=成果展示"
     watch:{
-        bodyList(){
-            // 初次加载需要等待导航请求结束，并且拿到bodylist
-            let index = this.$getQuery('mid');
-            this.activeF = index;
-            getStudioData({
-                id:this.$route.params.id,
-                category_id:this.$store.getters.bodyList[this.getType[index]].id,
-                pre_page:this.pre_page
-            }).then(data=>{
-                console.log(data,this.getType[index]);
-                this.menuList[index].l = false;
-                if(data.status.code==0){
-                    this.menuList[index].list = data.data.list;
-                    this.menuList[index].first = false;
-                    this.menuList[index].total = data.data.total;
-                }else{
-                    this.menuList[index].fail = true;
-                }
-            }).catch(error=>{
-                this.menuList[index].fail = true;
-            })
-        }
+        // navL(){
+        //     // 初次加载需要等待导航请求结束，并且拿到bodylist
+        //     let index = this.$getQuery('mid');
+        //     this.activeF = index;
+        //     this.firstLoading(index);
+        // }
     }
 }
 </script>

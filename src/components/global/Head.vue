@@ -1,8 +1,8 @@
 <template>
     <div class="top">
         <header-use></header-use>
-        <div class="studio_background" style="background-image:url('http://img.zjer.cn/uploads/album/2017/1215/125/5a33a8219fa98.jpg')">
-
+        <div class="studio_background">
+            <img src="../../assets/img/head_bg1.jpg" alt="">
         </div>
         <Nav :list='list' bgColor='#1b9fe2'/>
     </div>
@@ -56,8 +56,15 @@ export default {
 .studio_background{
     width: 100%;
     height: 340px;
-    background-position: center center;
-    background-repeat: no-repeat;
+    overflow: hidden;
+    position: relative;
 }
-
+.studio_background img{
+    min-height: 340px;
+    min-width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
 </style>

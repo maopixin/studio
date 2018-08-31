@@ -2,7 +2,7 @@
     <div class="step_box">
         <h4>
             <span>
-                活动文档
+                活动视频
             </span>
         </h4>
         <ul class="describe">

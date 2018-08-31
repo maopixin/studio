@@ -1,5 +1,8 @@
 <template>
-    <div class="layui-main">
+    <div 
+        class="layui-main"
+        v-loading="loading"
+    >
         <!-- 左右布局启动 -->
         <div class="studio_box clearfix">
             <!-- 左边启动 -->
@@ -12,9 +15,7 @@
                             <div class="t_c">基本任务建设进度</div>
                         </h3>
                     </div>
-                    <loading v-if='!studioState.l'/>
-                    <fail v-if="studioState.fail"/>
-                    <div class="echart_main" id="main" v-show="studioState.l && !studioState.fail">
+                    <div class="echart_main" id="main" v-show="loading">
 
                     </div>
                 </div>
@@ -26,9 +27,8 @@
                             <div class="t_c">基本任务建设进度</div>
                         </h3>
                     </div>
-                    <loading v-if='!studioState.l'/>
-                    <fail v-if="studioState.fail"/>
-                    <div class="number_main" v-show="studioState.l && !studioState.fail">
+                    
+                    <div class="number_main" v-show="loading">
                         <ul class="number_list clearfix">
                             <li>
                                 <span>昨日新增</span>
@@ -54,9 +54,8 @@
                         </h3>
                     </div>
                     <div>
-                        <loading v-if='!studioInfo.l'/>
-                        <fail v-if="studioInfo.fail"/>
-                        <div v-if="studioInfo.l && !studioInfo.fail" class="info_box">
+                        
+                        <div v-if="loading" class="info_box">
                             <div class="info clearfix">
                                 <img src="http://yun.zjer.cn/uploads/snsPhotos/snscover/551e070cc5593_100.jpg" alt="">
                                 <div class="text">
@@ -107,7 +106,7 @@
                     <div class="">
                         <loading v-if='!member.l'/>
                         <fail v-if="member.fail"/>
-                        <ul v-if="member.l && !member.fail" class="member_list">
+                        <ul v-if="member.l&&!member.fail" class="member_list">
                             <li 
                                 v-for="(item,index) in member.list"
                                 :key='item.id'
@@ -130,9 +129,8 @@
                         </h3>
                     </div>
                     <div>
-                        <loading v-if='!studioState.l'/>
-                        <fail v-if="studioState.fail"/>
-                        <ul class="statistics_list" v-show="studioState.l && !studioState.fail">
+                        
+                        <ul class="statistics_list" v-show="loading">
                             <li>
                                 <span class="fl">成员数</span>
                                 <span class="fr">{{studioState.data.member_count}}</span>
@@ -228,9 +226,8 @@
                             <router-link :to='{name:"gather",query:{mid:"0"}}' class="title_more">更多</router-link>
                         </div>
                         <div class="clearfix news_boxs">
-                            <loading v-if='!information.l'/>
-                            <fail v-if="information.fail"/>
-                            <div class="carousel_box" v-if="information.l&&!information.fail">
+                            
+                            <div class="carousel_box" v-if="loading">
                                 <el-carousel indicator-position="outside" height='186px'>
                                     <el-carousel-item v-for="item in information.list" :key="item.id">
                                         <a href="">
@@ -241,7 +238,7 @@
                                 </el-carousel>
                             </div>
                             <div class="sss">
-                                <ul class="new_list_text" v-if='information.l&&!information.fail'>
+                                <ul class="new_list_text" v-if='loading'>
                                     <li 
                                         v-for="(item) in information.list"
                                         :key='item.id'
@@ -264,9 +261,8 @@
                             <router-link :to='{name:"gather",query:{mid:"1"}}' class="title_more">更多</router-link>
                         </div>
                         <div>
-                            <loading v-if='!announcement.l'/>
-                            <fail v-if="announcement.fail"/>
-                            <ul class="studio_new_list" v-if='announcement.l&&!announcement.fail'>
+                            
+                            <ul class="studio_new_list" v-if='loading'>
                                 <li 
                                     v-for="(item,index) in announcement.list"
                                     :key="index"
@@ -295,9 +291,8 @@
                         </h3>
                         <router-link :to='{name:"gather",query:{mid:"2"}}' class="title_more">更多</router-link>
                     </div>
-                    <loading v-if='!achievements.l'/>
-                    <fail v-if="achievements.fail"/>
-                    <div class="clearfix three_box" v-show=" achievements.l && !achievements.fail">
+                    
+                    <div class="clearfix three_box" v-show="loading">
                         <el-carousel :interval="4000" type="card" height="200px">
                             <el-carousel-item v-for="item in achievements.list" :key="item.id">
                                 <a href="">
@@ -318,9 +313,8 @@
                             </h3>
                             <router-link :to="{name:'article'}" class="title_more">更多</router-link>
                         </div>
-                        <loading v-if='!article.l'/>
-                        <fail v-if="article.fail"/>
-                        <div v-if="article.l && !article.fail">
+                        
+                        <div v-if="loading">
                             <div class="resource_info_box clearfix">
                                 <div class="fl img_box">
                                     <img src="./img/teacher_img.jpg" alt="">
@@ -363,9 +357,8 @@
                             </h3>
                             <router-link :to="{name:'t_resource'}" class="title_more">更多</router-link>
                         </div>
-                        <loading v-if='!teachingResources.l'/>
-                        <fail v-if="teachingResources.fail"/>
-                        <div v-if="teachingResources.l && !teachingResources.fail">
+                        
+                        <div v-if="loading">
                             <div class="resource_info_box clearfix">
                                 <div class="fl img_box">
                                     <img src="./img/source_img.jpg" alt="">
@@ -391,7 +384,6 @@
                                     v-for="(item) in teachingResources.list"
                                     :key='item.id'
                                 >
-                                    
                                     <div class="type fl">{{item.category_name}}</div>
                                     <div class="title fl">
                                         <a href="">{{item.title}}</a>
@@ -414,9 +406,9 @@
                         <router-link :to='{name:"research"}' class="title_more">更多</router-link>
                     </div>
                     <div>
-                        <loading v-if='!activity.l'/>
-                        <fail v-if="activity.fail"/>
-                        <ul v-if="activity.l && !activity.fail" class="teaching_and_researching_activity">
+                        <!-- <loading v-if='!activity.l'/>
+                        <fail v-if="activity.fail"/> -->
+                        <ul v-if="loading" class="teaching_and_researching_activity">
                             <!-- 第一个不变  循环第二个 -->
                             <li class="clearfix">
                                 <div class="title fl">活动标题</div>
@@ -433,10 +425,10 @@
                                     <a href="">{{item.title}}</a>
                                 </div>
                                 <div class="name fl">
-                                    <a href="">{{item.creator_name}}</a>
+                                    <a href="">{{item.username}}</a>
                                 </div>
-                                <div class="io fl">{{item.process_status_text}}</div>
-                                <div class="start_end fl">{{item.start_time}}至{{item.stop_time}}</div>
+                                <div class="io fl" align='center'>{{item.detail.process_status_text}}</div>
+                                <div class="start_end fl">{{item.detail.start_time}} 至 {{item.detail.stop_time}}</div>
                             </li>
                         </ul>
                     </div>
@@ -451,9 +443,9 @@
                         <!-- <router-link :to='{name:"research"}' class="title_more">更多</router-link> -->
                     </div>
                     <div>
-                        <loading v-if='!lesson.l'/>
-                        <fail v-if="lesson.fail"/>
-                        <ul class="list_box clearfix" v-if="lesson.l && !lesson.fail">
+                        <!-- <loading v-if='!lesson.l'/>
+                        <fail v-if="lesson.fail"/> -->
+                        <ul class="list_box clearfix" v-if="loading">
                             <li 
                                 v-for="(item) in lesson.list"
                                 :key = 'item.id'
@@ -558,7 +550,15 @@
 </template>
 
 <script>
-import {getStudioData, getStudioDetail, getStudioLatest, getActivityList ,getStuidoMembers ,getStudioState} from '@api/index';
+import {
+    getStudioData, 
+    getStudioDetail, 
+    getStudioLatest, 
+    getActivityList,
+    getStuidoMembers,
+    getStudioState,
+    getStudioAllInfo,
+} from '@api/index';
 import Loading from '@global/Loading';
 import Fail from '@global/Fail'
 export default {
@@ -567,30 +567,21 @@ export default {
     data(){
         return {
             visitor_show_index:-1,
+            loading:false,
             announcement:{
-                l:false,
                 list:[],
-                fail:false
             },
             information:{
-                l:false,
                 list:[],
-                fail:false
             },
             activity:{
-                l:false,
                 list:[],
-                fail:false
             },
             latest:{
-                l:false,
                 list:[],
-                fail:false
             },
             studioInfo:{
-                l:false,
                 data:{},
-                fail:false
             },
             member:{
                 l:false,
@@ -598,34 +589,24 @@ export default {
                 fail:false
             },
             article:{
-                l:false,
                 list:[],
                 data:{},
-                fail:false
             },
             teachingResources:{
-                l:false,
                 list:[],
                 data:{},
-                fail:false
             },
             studioState:{
-                l:false,
                 data:{
                     comments:[],
                     visitors:[]
                 },
-                fail:false
             },
             achievements:{
-                l:false,
                 list:[],
-                fail:false
             },
             lesson:{
-                l:false,
                 list:[],
-                fail:false
             },
         }
     },
@@ -641,143 +622,198 @@ export default {
             this.visitor_show_index = -1;
         },
         firstLoading(){
-            let bodyList = this.$store.getters.bodyList;
-            // 通告
-            getStudioData({
-                id:this.$route.params.id,
-                category_id:bodyList['通告'].id,
-                pre_page:5
-            }).then(data=>{
-                console.log(data,'通告');
-                this.announcement.l = true;
-                if(data.status.code==0){
-                    this.announcement.list = data.data.list
-                }else{
-                    this.announcement.fail = true;
-                }
-            }).catch(error=>{
-                this.announcement.fail = true;
-            })
-            // 资讯
-            getStudioData({
-                id:this.$route.params.id,
-                category_id:bodyList['资讯'].id,
-                pre_page:7,
-                require_media:1
-
-            }).then(data=>{
-                console.log(data,'资讯');
-                this.information.l = true;
-                if(data.status.code==0){
-                    this.information.list = data.data.list
-                }else{
-                    this.information.fail = true;
-                }
-            }).catch(error=>{
-                this.information.fail = true;
-            })
-            getStudioData({
-                id:this.$route.params.id,
-                category_id:bodyList['成果展示'].id,
-                pre_page:7,
-                require_media:1
-
-            }).then(data=>{
-                console.log(data,'成果展示');
-                this.achievements.l = true;
-                if(data.status.code==0){
-                    this.achievements.list = data.data.list
-                }else{
-                    this.achievements.fail = true;
-                }
-            }).catch(error=>{
-                this.achievements.l = true;
-                this.achievements.fail = true;
-            })
-            setTimeout(()=>{
-                getStudioData({
-                    id:this.$route.params.id,
-                    category_id:bodyList['教师文章'].id,
-                    pre_page:6
-                }).then(data=>{
-                    console.log(data,'教师文章');
-                    this.article.l = true;
-                    if(data.status.code==0){
-                        this.article.data = data.data.list[0];
-                        this.article.list = data.data.list.slice(1);
-                    }else{
-                        this.article.fail = true;
-                    }
-                }).catch(error=>{
-                    this.article.fail = true;
-                });
-                getStudioData({
-                    id:this.$route.params.id,
-                    category_id:bodyList['教学资源'].id,
-                    pre_page:6
-                }).then(data=>{
-                    console.log(data,'教学资源');
-                    this.teachingResources.l = true;
-                    if(data.status.code==0){
-                        this.teachingResources.data = data.data.list[0];
-                        this.teachingResources.list = data.data.list.slice(1);
-                    }else{
-                        this.teachingResources.fail = true;
-                    }
-                }).catch(error=>{
-                    this.teachingResources.fail = true;
-                })
-                 // 教研活动
-                getActivityList({
-                    studio_id:this.$route.params.id,
-                    pre_page:5
-                }).then(data=>{
-                    console.log(data,'教研活动');
-                    this.activity.l = true;
-                    if(data.status.code==0){
-                        this.activity.list = data.data.list
-                    }else{
-                        this.activity.fail = true;
-                    }
-                }).catch(error=>{
-                    this.activity.fail = true;
-                })
-                
-            },2000)
             
-            // 工作室信息
-            getStudioDetail({
-                id:this.$route.params.id
-            }).then(data=>{
-                console.log(data,'工作室信息');
-                this.studioInfo.l = true;
-                if(data.status.code==0){
-                    this.studioInfo.data = data.data
-                }else{
-                    this.studioInfo.fail = true;
-                }
-            }).catch(error=>{
-                this.studioInfo.fail = true;
-            })
-           
-            setTimeout(()=>{
-                getStudioData({
-                    id:this.$route.params.id,
-                    category_id:bodyList['名师课堂'].id,
-                    pre_page:3,
-                    require_media:1
-                }).then(data=>{
-                    console.log(data,'名师课堂');
-                    this.lesson.l = true;
-                    if(data.status.code==0){
-                        this.lesson.list = data.data.list
-                    }else{
-                        this.lesson.fail = true;
-                    }
-                }).catch(error=>{
-                    this.lesson.l = true;
-                    this.lesson.fail = true;
+            getStudioAllInfo({
+                studio:this.$route.params.id,
+            }).then(res=>{
+                console.log(res,'studio');
+                this.loading = true;
+                let data = res.data;
+                this.information.list = data.info.list;
+                this.announcement.list = data.notice.list;
+                this.achievements.list = data.achievements.list;
+                this.article.list = data.articles.list.slice(1);
+                this.article.data = data.articles.list[0];
+                this.teachingResources.data = data.resource.list[0];
+                this.teachingResources.list = data.resource.list.slice(1);
+                this.activity.list = data.activities.list;
+                this.studioInfo.data = data.studio;
+                this.lesson.list = data.schoolrooms.list.slice(0,3);
+                this.studioState.data = data.jiade;
+                this.$nextTick(()=>{
+                var myChart = this.$echarts.init(document.getElementById('main'));
+                var option = {
+                    tooltip: {
+                        show: true,
+                        trigger: 'item',
+                        formatter: "{d}%",
+                    },
+                    series: [{
+                        type: 'pie',
+                        radius: '65%',
+                        center: ['50%', '50%'],
+                        radius: ['60%', '70%'],
+                        selectedMode: 'single',
+                        data: [{
+                                value: data.jiade.complete,
+                                name: '已完成',
+                                itemStyle: {
+                                    color: '#1b9fe2'
+                                }
+                            },
+                            {
+                                value: 100 - data.jiade.complete,
+                                name: '未完成',
+                                itemStyle: {
+                                    color: '#aaaaaa'
+                                }
+                            }
+                        ]
+                    }]
+                };
+                myChart.setOption(option);
                 })
+            }).catch(error=>{
+                console.log(error);
+            })
+
+            let bodyList = this.$store.getters.bodyList;
+            // // 通告
+            // getStudioData({
+            //     id:this.$route.params.id,
+            //     category_id:bodyList['通告'].id,
+            //     pre_page:5
+            // }).then(data=>{
+            //     console.log(data,'通告');
+            //     this.announcement.l = true;
+            //     if(data.status.code==0){
+            //         this.announcement.list = data.data.list
+            //     }else{
+            //         this.announcement.fail = true;
+            //     }
+            // }).catch(error=>{
+            //     this.announcement.fail = true;
+            // })
+            // // 资讯
+            // getStudioData({
+            //     id:this.$route.params.id,
+            //     category_id:bodyList['资讯'].id,
+            //     pre_page:7,
+            //     require_media:1
+
+            // }).then(data=>{
+            //     console.log(data,'资讯');
+            //     this.information.l = true;
+            //     if(data.status.code==0){
+            //         this.information.list = data.data.list
+            //     }else{
+            //         this.information.fail = true;
+            //     }
+            // }).catch(error=>{
+            //     this.information.fail = true;
+            // })
+            // getStudioData({
+            //     id:this.$route.params.id,
+            //     category_id:bodyList['成果展示'].id,
+            //     pre_page:7,
+            //     require_media:1
+
+            // }).then(data=>{
+            //     console.log(data,'成果展示');
+            //     this.achievements.l = true;
+            //     if(data.status.code==0){
+            //         this.achievements.list = data.data.list
+            //     }else{
+            //         this.achievements.fail = true;
+            //     }
+            // }).catch(error=>{
+            //     this.achievements.l = true;
+            //     this.achievements.fail = true;
+            // })
+            // setTimeout(()=>{
+            //     getStudioData({
+            //         id:this.$route.params.id,
+            //         category_id:bodyList['教师文章'].id,
+            //         pre_page:6
+            //     }).then(data=>{
+            //         console.log(data,'教师文章');
+            //         this.article.l = true;
+            //         if(data.status.code==0){
+            //             this.article.data = data.data.list[0];
+            //             this.article.list = data.data.list.slice(1);
+            //         }else{
+            //             this.article.fail = true;
+            //         }
+            //     }).catch(error=>{
+            //         this.article.fail = true;
+            //     });
+            //     getStudioData({
+            //         id:this.$route.params.id,
+            //         category_id:bodyList['教学资源'].id,
+            //         pre_page:6
+            //     }).then(data=>{
+            //         console.log(data,'教学资源');
+            //         this.teachingResources.l = true;
+            //         if(data.status.code==0){
+            //             this.teachingResources.data = data.data.list[0];
+            //             this.teachingResources.list = data.data.list.slice(1);
+            //         }else{
+            //             this.teachingResources.fail = true;
+            //         }
+            //     }).catch(error=>{
+            //         this.teachingResources.fail = true;
+            //     })
+            //      // 教研活动
+            //     getActivityList({
+            //         studio_id:this.$route.params.id,
+            //         pre_page:5
+            //     }).then(data=>{
+            //         console.log(data,'教研活动');
+            //         this.activity.l = true;
+            //         if(data.status.code==0){
+            //             this.activity.list = data.data.list
+            //         }else{
+            //             this.activity.fail = true;
+            //         }
+            //     }).catch(error=>{
+            //         this.activity.fail = true;
+            //     })
+                
+            // },2000)
+            
+            // // 工作室信息
+            // getStudioDetail({
+            //     id:this.$route.params.id
+            // }).then(data=>{
+            //     console.log(data,'工作室信息');
+            //     this.studioInfo.l = true;
+            //     if(data.status.code==0){
+            //         this.studioInfo.data = data.data
+            //     }else{
+            //         this.studioInfo.fail = true;
+            //     }
+            // }).catch(error=>{
+            //     this.studioInfo.fail = true;
+            // })
+           
+            // setTimeout(()=>{
+                // getStudioData({
+                //     id:this.$route.params.id,
+                //     category_id:bodyList['名师课堂'].id,
+                //     pre_page:3,
+                //     require_media:1
+                // }).then(data=>{
+                //     console.log(data,'名师课堂');
+                //     this.lesson.l = true;
+                //     if(data.status.code==0){
+                //         this.lesson.list = data.data.list
+                //     }else{
+                //         this.lesson.fail = true;
+                //     }
+                // }).catch(error=>{
+                //     this.lesson.l = true;
+                //     this.lesson.fail = true;
+                // })
                 // 成员列表
                 getStuidoMembers({
                     studio_id:this.$route.params.id,
@@ -794,74 +830,74 @@ export default {
                 }).catch(error=>{
                     this.member.fail = true;
                 })
-                // 最新动态
-                getStudioLatest({
-                    id:this.$route.params.id,
-                    require_user:1,
-                    pre_page:5
-                }).then(data=>{
-                    console.log(data,'最新动态')
-                    this.latest.l = true;
-                    if(data.status.code==0){
-                        this.latest.list = data.data.list
-                    }else{
-                        this.latest.fail = true;
-                    }
-                }).catch(error=>{
-                    this.latest.fail = true;
-                });
-            },3000)
+            //     // 最新动态
+            //     getStudioLatest({
+            //         id:this.$route.params.id,
+            //         require_user:1,
+            //         pre_page:5
+            //     }).then(data=>{
+            //         console.log(data,'最新动态')
+            //         this.latest.l = true;
+            //         if(data.status.code==0){
+            //             this.latest.list = data.data.list
+            //         }else{
+            //             this.latest.fail = true;
+            //         }
+            //     }).catch(error=>{
+            //         this.latest.fail = true;
+            //     });
+            // },3000)
         
-            getStudioState({
-                id:this.$route.params.id
-            }).then(data=>{
-                console.log(data,'0.0');
-                this.studioState.l = true;
-                if(data.status.code==0){
-                    var obj = data.data;
-                    this.studioState.data = obj;
-                    this.$nextTick(()=>{
-                        var myChart = this.$echarts.init(document.getElementById('main'));
-                        var option = {
-                            tooltip: {
-                                show: true,
-                                trigger: 'item',
-                                formatter: "{d}%",
+            // getStudioState({
+            //     id:this.$route.params.id
+            // }).then(data=>{
+            //     console.log(data,'0.0');
+            //     this.studioState.l = true;
+            //     if(data.status.code==0){
+            //         var obj = data.data;
+            //         this.studioState.data = obj;
+            //         this.$nextTick(()=>{
+            //             var myChart = this.$echarts.init(document.getElementById('main'));
+            //             var option = {
+            //                 tooltip: {
+            //                     show: true,
+            //                     trigger: 'item',
+            //                     formatter: "{d}%",
 
-                            },
-                            series: [{
-                                type: 'pie',
-                                radius: '65%',
-                                center: ['50%', '50%'],
-                                radius: ['60%', '70%'],
-                                selectedMode: 'single',
-                                data: [{
-                                        value: data.data.complete,
-                                        name: '已完成',
-                                        itemStyle: {
-                                            color: '#1b9fe2'
-                                        }
-                                    },
-                                    {
-                                        value: 100 - data.data.complete,
-                                        name: '未完成',
-                                        itemStyle: {
-                                            color: '#aaaaaa'
-                                        }
-                                    }
-                                ]
-                            }]
-                        };
-                        myChart.setOption(option);
-                    })
+            //                 },
+            //                 series: [{
+            //                     type: 'pie',
+            //                     radius: '65%',
+            //                     center: ['50%', '50%'],
+            //                     radius: ['60%', '70%'],
+            //                     selectedMode: 'single',
+            //                     data: [{
+            //                             value: data.data.complete,
+            //                             name: '已完成',
+            //                             itemStyle: {
+            //                                 color: '#1b9fe2'
+            //                             }
+            //                         },
+            //                         {
+            //                             value: 100 - data.data.complete,
+            //                             name: '未完成',
+            //                             itemStyle: {
+            //                                 color: '#aaaaaa'
+            //                             }
+            //                         }
+            //                     ]
+            //                 }]
+            //             };
+            //             myChart.setOption(option);
+            //         })
                     
-                }else{
-                    this.studioState.fail = true;
-                }
-            }).catch(error=>{
-                this.studioState.l = true;
-                this.studioState.fail = true;
-            })
+            //     }else{
+            //         this.studioState.fail = true;
+            //     }
+            // }).catch(error=>{
+            //     this.studioState.l = true;
+            //     this.studioState.fail = true;
+            // })
         }
     },
     mounted () {        
@@ -873,12 +909,12 @@ export default {
         }
     },
     computed:{
-        bodyList(){
-            return this.$store.getters.bodyList;
+        navL(){
+            return this.$store.getters.navL;
         }
     },
     watch:{
-        bodyList(){
+        navL(){
             // 初次加载需要等待导航请求结束，并且拿到bodylist
             console.log('导航已激活，加载首页数据')
             this.firstLoading();

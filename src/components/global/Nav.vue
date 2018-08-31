@@ -34,6 +34,7 @@
                 @mouseover="navHover(9)"
                 @mouseout="navOut"
                 @click='navClick'
+                v-show="navList.length>=9"
             >
                 <a href="javascript:;">更多</a>
                 <ul 
@@ -155,15 +156,12 @@ export default {
     created () {
         // this.fullscreenLoading = true;
         getCategory({
-            source:2,
-            source_id:this.$route.params.id,
-            pre_page:1000
+            studio:this.$route.params.id
         }).then(data=>{
             console.log(data);
             this.fullscreenLoading = false;
             if(data.status.code==0){
                 this.$store.commit('changeNavList',this.handleData(data.data.nav.list));
-                this.$store.commit('changeBodyList',this.handleData2(data.data.body.list));
                 this.$store.commit('changeNavL');
             }else{
                 this.$message.error('工作室导航请求出错,请稍后重试');

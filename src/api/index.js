@@ -31,6 +31,17 @@ export function getStudioList(payload){
         console.log(error)
     })
 };
+// http://institute.dljy.lzdev/api/index/index?studio=1
+// 获取首页所有内容
+
+export function getStudioAllInfo(payload){
+    return axios.get('/api/index/index',{
+        params:payload
+    }).then(data=>{
+        return data.data
+    })
+};
+
 // 获取研究院/工作室最新动态列表
 // 研究院URL：http://institute.dljy.com/source/api/institute_latest
 // 工作室URL：http://institute.dljy.com/source/api/studio_latest
@@ -126,7 +137,7 @@ export function getUserInfo(payload){
 
 // 获取研究院/工作室下所有栏目
 export function getCategory(payload){
-    return axios.get('/api/category/index',{
+    return axios.get('/api/index/nav',{
         params:payload
     }).then(data=>{
         return data.data
@@ -145,6 +156,22 @@ export function getStudioData(payload){
 // 获取工作室状态信息
 export function getStudioState(payload){
     return axios.get('/api/Imitation/data',{
+        params:payload
+    }).then(data=>{
+        return data.data;
+    })
+}
+// 获取工作室数据
+export function getStudioObj(payload){
+    return axios.get('/api/index/more',{
+        params:payload
+    }).then(data=>{
+        return data.data;
+    })
+}
+// 获取活动详情
+export function getActivityDetail(payload){
+    return axios.get('/activity/api/detail',{
         params:payload
     }).then(data=>{
         return data.data;
