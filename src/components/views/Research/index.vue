@@ -14,7 +14,7 @@
                         <el-tab-pane label="全部" name="first" v-loading="detailList.loading">
                             <div style="height:50px;" v-if="detailList.loading"></div>
                             <List 
-                                :list='detailList.list'  
+                                :list='detailList.list'
                                 @joinActivityClick = 'joinActivityClick'
                                 v-if="detailList.list.length>0"
                             />

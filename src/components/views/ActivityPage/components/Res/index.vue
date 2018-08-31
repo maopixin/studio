@@ -2,22 +2,22 @@
     <div class="step_box">
         <h4>
             <span>
-                活动文档
+                {{data.name}}
             </span>
         </h4>
         <ul class="describe">
             <li class="clearfix">
                 <span class="fl title">截止时间:</span>
-                <span class="fl info">2018-08-09 23:24</span>
+                <span class="fl info">{{data.end_time}}</span>
             </li>
             <li class="clearfix">
                 <span class="fl title">任务描述:</span>
-                <span class="fl info">123</span>
+                <span class="fl info">{{data.detail.description}}</span>
             </li>
         </ul>
-        <div class="doc-box">
+        <!-- <div class="doc-box">
             <p>哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</p>
-        </div>
+        </div> -->
         <h4>
             <span>
                 文档列表
@@ -51,6 +51,7 @@
 
 <script>
 export default {
+    props:['data'],
     data() {
       return {
           fileList:[]

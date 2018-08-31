@@ -161,20 +161,21 @@
                     <ul class="step_list fl">
                         <li 
                             :class="['box-shadow',{active:index==activityShowIndex}]"
-                            v-for="(item,index) in activityStep"
+                            v-for="(item,index) in data.tache"
                             :key="index"
                             @click="stepChange(index)"
-                        >{{item.title}}</li>
+                        >{{item.name}}</li>
                         
                     </ul>
                     <div 
                         class="step_content"
-                        v-loading="loading"
+                        v-if='!loading'
                     >
-                        <keep-alive>
-                            <component v-bind:is="currentTabComponent"></component>
-                        </keep-alive>
-                        <msg/>
+                        <component v-bind:is="currentTabComponent" :data="data.tache[activityShowIndex]"></component>
+                        <msg 
+                            :data="data.tache[activityShowIndex]"
+                            @addCommont='addCommont'
+                        />
                     </div>
                 </div>
             </div>
@@ -191,7 +192,7 @@ import Pic from './components/Pic';
 import Score from './components/Score';
 import Vote from './components/Vote';
 import Msg from './components/Msg';
-import {getActivityDetail} from '@api/index'
+import {getActivityDetail} from '@api/index';
 export default {
     components:{
        TextBox, Doc, Res, VideoBox, Pic, Score, Vote, Msg, 
@@ -201,7 +202,9 @@ export default {
             title:'活动详情',
             activityShowIndex:0,
             data:{
-                tache:[]
+                tache:[{
+
+                }]
             },
             typeList:{
                 1 : 'TextBox',
@@ -219,39 +222,70 @@ export default {
         }
     },
     methods:{
+        addCommont(str){
+            let info = this.$store.getters.userInfo;
+            this.data.tache[this.activityShowIndex].comments.data.unshift({
+                content:str,
+                utime:"刚刚",
+                create_user_name:info.nickname,
+                create_user_mediumAvatar:info.largeAvatar
+            })
+        },
         stepChange(index){
             this.activityShowIndex = index;
-            this.currentTabComponent = this.activityStep[index].type;
+            this.currentTabComponent = this.data.tache[index].my_type;
         },
         getType(index){
             switch(index){
-                case 1:
+                case '1':
                     return 'TextBox';
                     break;
-                case 2:
-                    return 'Doc';
+                case '2':
+                    return 'TextBox';
                     break;
-                case 3:
+                case '3':
                     return 'Res';
                     break;
-                case 4:
+                case '4':
                     return 'VideoBox';
                     break;
-                case 5:
+                case '5':
                     return 'Score';
                     break;
-                case 6:
+                case '6':
                     return '直播';
                     break;
-                case 7:
+                case '7':
                     return 'Pic';
                     break;
-                case 8:
+                case '8':
                     return "Vote";
                     break;
                 default:
                     return "TextBox"
             }
+        },
+        handelData(arr){
+            let newArr = [];
+            for (let i = 0; i < arr.length; i++) {
+                if(arr[i].tache_type==4){
+                    if(arr[i].detail.file_type=='image'){
+                        arr[i].my_type = 'Pic'
+                    }else if(arr[i].detail.file_type=='video'){
+                        arr[i].my_type = 'VideoBox'
+                    }else if(arr[i].detail.file_type=='doc'){
+                        arr[i].my_type = 'Doc'
+                    }else{
+                        arr[i].my_type = 'Doc'
+                    }
+                    newArr.push(JSON.parse(JSON.stringify(arr[i])))
+                }else{
+                    arr[i].my_type = this.getType(arr[i].tache_type)
+                    newArr.push(JSON.parse(JSON.stringify(arr[i])))
+                }
+            };
+            console.log(newArr);
+            return newArr;
         }
     },
     created(){
@@ -262,12 +296,12 @@ export default {
             console.log(data);
             this.loading = false;
             if(data.status.code==0){
-                let arr = [];
-                for (let i = 0; i < data.tache.length; i++) {
-                    
-                }
+                data.data.tache = this.handelData(data.data.tache);
                 this.data = data.data
             }
+        }).catch(error=>{
+            this.loading = false;
+
         })
     }
 }
@@ -356,7 +390,6 @@ export default {
                 .step_content{
                     float: left;
                     width: 761px;
-                    
                 }
                 .step_content /deep/ .step_box{
                     

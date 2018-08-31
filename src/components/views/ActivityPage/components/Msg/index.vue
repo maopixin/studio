@@ -3,7 +3,7 @@
         <h4 class="title">写评论</h4>
         <div class="leave_msg_box clearfix">
             <div class="fl person-head">
-                <img src="@/assets/img/person128*128.png" alt="">
+                <img :src="this.$store.getters.userInfo.largeAvatar" alt="">
             </div>
             <div class="fr msg_box">
                 <el-input
@@ -12,48 +12,56 @@
                     placeholder="我也来评论一句"
                     v-model="msg"
                     @input='change'
+                    @focus='focus'
                 >
                 </el-input>
                 <div class="msg_btn">
                     <el-tooltip class="item" effect="dark" content="全角字符(中文汉字及标点等)等于一个文字,两个半角字符(英文字母及标点、阿拉伯数字等)等于一个文字" placement="bottom-end">
                         <span>还能输入<em>{{textNum}}</em>个字</span>
                     </el-tooltip>
-                    <el-button type="primary">评论</el-button>
+                    <el-button 
+                        type="primary"
+                        @click='comment'
+                    >评论</el-button>
                 </div>
             </div>
         </div>
         <h4 class="title">最新评论</h4>
         <div>
             <ul class="msg-list">
-                <li class="msg-item">
+                <li 
+                    class="msg-item"
+                    v-for="(item) in data.comments.data"
+                    :key="item.id"
+                >
                     <div class="clearfix">
                         <div class="fl msg_head">
                             <a href="javascript:;">
-                                <img src="@/assets/img/person128*128.png" alt="">
+                                <img :src="item.create_user_mediumAvatar" alt="">
                             </a>
                         </div>
                         <div class="fr msg_content">
                             <div class="text">
-                                <a href="javascript:;" class="color">李月兰</a>：哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈
+                                <a href="javascript:;" class="color">{{item.create_user_name}}</a>：{{item.content}}
                             </div>
                             <div class="time_fn clearfix">
-                                <time class="fl color" datatime=''>2018-08-09 23:24</time>
+                                <time class="fl color" datatime=''>{{item.utime}}</time>
                                 <div class="fr fn-box">
                                     <div class="fl zan">
                                         <span class="fl"></span>
                                         （0）
                                     </div>
-                                    <div 
+                                    <!-- <div 
                                         class="fl color return ns"
                                         @click='reply'
                                     >
                                         回复
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <ul class="replay-list">
+                    <!-- <ul class="replay-list">
                         <li>
                             <div class="clearfix">
                                 <div class="fl msg_head">
@@ -128,7 +136,7 @@
                         <div class="btn-box">
                             <el-button type="primary">回复</el-button>
                         </div>
-                    </div>
+                    </div> -->
                 </li>
             </ul>
         </div>
@@ -136,14 +144,17 @@
 </template>
 
 <script>
+import {activityUserComment} from '@api/index'
 export default {
+    props:['data'],
     data(){
         return {
             msg: '',
             textNum:140,
             textNumShow:140,
             msg2:'',
-            msg2tip:'回复 xxx'
+            msg2tip:'回复 xxx',
+            first:true
         }
     },
     methods:{
@@ -198,6 +209,47 @@ export default {
         },
         reply(){
             return false;
+        },
+        comment(){
+            if(this.msg.trim()==''){
+                this.$message({
+                    message: '请输入内容再进行评论',
+                    type: 'warning'
+                });
+            }else{
+                activityUserComment({
+                    activity_tache_id:this.data.id,
+                    content:this.msg.trim()
+                }).then(data=>{
+                    console.log(data);
+                    if(data.status.code==0){
+                        this.$message({
+                            message: '评论成功',
+                            type: 'success'
+                        });
+                        this.$emit('addCommont',this.msg);
+                        this.msg = '';
+                        this.textNum = 140;
+                    }else{
+                        this.$message.error(this.$tips(data.data));
+                    }
+                }).catch(error=>{
+                    this.$message.error('评论出错，请稍后尝试');
+                })
+            }
+        },
+        focus(){
+            if(!this.$store.getters.userInfo.nickname && this.first){
+                this.first = false;
+                this.$alert('发表评论需要登录，请您先进行登录', '未登录', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(() => {
+                    window.open('http://account.dljy.com/user/login/login');
+                }).catch(()=>{
+                    console.log('取消登录')
+                })
+            }
         }
     },
 }
@@ -273,9 +325,12 @@ export default {
                 .time_fn{
                     line-height: 18px;
                     margin-bottom: 40px;
+                    time{
+                        font-size: 14px;
+                    }
                     .fn-box{
                         .zan{
-                            margin-right: 40px;
+                            // margin-right: 40px;
                             color: #b3b3b3;
                             span{
                                 width: 18px;

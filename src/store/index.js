@@ -5,7 +5,8 @@ export default new Vuex.Store({
   state: {
     navList:[],
     bodyList:[],
-    navL:false
+    navL:false,
+    userInfo:{}
   },
   getters: {
     navList: state => {
@@ -17,6 +18,9 @@ export default new Vuex.Store({
     navL: state => {
       return state.navL
     },
+    userInfo: state => {
+      return state.userInfo
+    }
   },
   mutations: {
     changeNavList(state,payload) {
@@ -27,6 +31,9 @@ export default new Vuex.Store({
     },
     changeNavL(state){
       state.navL = true;
-    }
+    },
+    changeuserInfo(state,payload){
+      state.userInfo = payload
+    },
   }
 });

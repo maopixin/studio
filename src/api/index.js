@@ -177,3 +177,16 @@ export function getActivityDetail(payload){
         return data.data;
     })
 }
+
+// 添加评论
+export function activityUserComment(payload){
+    return axios.post('/api/activityUserComment/create',payload).then(data=>{
+        return data.data;
+    })
+}
+// 添加评价
+export function activitiyUserAppraisal(payload){
+    return axios.post('/api/activityUserAppraisal/create',payload).then(data=>{
+        return data.data;
+    })
+}

@@ -11,7 +11,9 @@
             </div>
             <div class="activity_info fl">
                 <div class="title clearfix">
-                    <h4 class="fl">{{item.title}}</h4>
+                    <h4 class="fl">
+                        <router-link :to="{name:'activityPage',params:{activityId:item.id}}">{{item.title}}</router-link>
+                    </h4>
                     <span class="fl" :class="statusClass[item.process_status]">{{item.process_status_text}}</span>
                 </div>
                 <div class="time">

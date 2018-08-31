@@ -42,7 +42,13 @@ export default {
         getUserInfo().then(data=>{
             if(data.status.code==0){
                 this.userInfo = true;
-                this.name = data.data.user.nickname
+                this.name = data.data.user.nickname;
+                this.$store.commit('changeuserInfo',data.data.user)
+            }else{
+                this.$message({
+                    message: '登录信息获取失败',
+                    type: 'warning'
+                });
             }
         })
     }

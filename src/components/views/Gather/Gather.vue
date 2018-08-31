@@ -182,29 +182,15 @@ export default {
         }
     },
     computed:{
-        // navL(){
-        //     return this.$store.getters.navL;
-        // }
+        
     },
     created(){
-        // 初次加载需要等待导航请求结束，并且拿到bodylist ,如果为假 代表nav请求未结束，此时会走watch
-        // if(this.$store.getters.navL){
-        //     let index = this.$getQuery('mid');
-        //     this.activeF = index;
-        //     this.firstLoading(index);
-        // }
         let index = this.$getQuery('mid');
         this.activeF = index;
         this.firstLoading(index);
     },
-    // "/api/index/more?studio=1&category_name=成果展示"
     watch:{
-        // navL(){
-        //     // 初次加载需要等待导航请求结束，并且拿到bodylist
-        //     let index = this.$getQuery('mid');
-        //     this.activeF = index;
-        //     this.firstLoading(index);
-        // }
+        
     }
 }
 </script>

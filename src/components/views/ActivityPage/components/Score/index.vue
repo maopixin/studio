@@ -2,21 +2,17 @@
     <div class="step_box">
         <h4>
             <span>
-                活动文档
+                {{data.name}}
             </span>
         </h4>
         <ul class="describe">
             <li class="clearfix">
                 <span class="fl title">截止时间:</span>
-                <span class="fl info">2018-08-09 23:24</span>
+                <span class="fl info">{{data.end_time}}</span>
             </li>
             <li class="clearfix">
                 <span class="fl title">任务描述:</span>
-                <span class="fl info">123</span>
-            </li>
-            <li class="clearfix">
-                <span class="fl title">任务主题:</span>
-                <span class="fl info">123</span>
+                <span class="fl info">{{data.detail.description}}</span>
             </li>
         </ul>
         <div class="score-box">
@@ -33,7 +29,7 @@
                 </div>
             </div>
             <div class="clearfix">
-                <div class="fl label">收获</div>
+                <div class="fl label">{{data.detail.comment_text}}</div>
                 <span class="fl">：</span>
                 <div class="score-content fl">
                     <div class="input-box">
@@ -54,16 +50,39 @@
 </template>
 
 <script>
+import {activitiyUserAppraisal} from '@api/index'
 export default {
+    props:['data'],
     data(){
         return {
-            rate:null,
-            harvest:''
+            rate:0,
+            harvest:'',
+            rateText:['','worst','low','ordinary','better','top']
         }
     },
     methods:{
         upDataRate(){
+            if( this.rate > 0 && this.harvest.trim()!==''){
+                activitiyUserAppraisal({
+                    activity_appraisal_id:this.data.detail.id,
+                    description:this.harvest.trim(),
+                    appraisal:this.rateText[this.rate]
+                }).then(data=>{
+                    console.log(`满意度：${this.rate}星</br>${this.data.detail.comment_text}：${this.harvest}`);
+                    if(data.status.code==0){
+                        console.log(1)
+                        this.$notify({
+                            title: '评价成功',
+                            message: `满意度：${this.rate}星  ; ${this.data.detail.comment_text}：${this.harvest}`,
+                            duration: 0
+                        });
+                        this.rate = 0;
+                        this.harvest = '';
+                    }
+                }).catch(error=>{
 
+                })
+            }
         }
     }
 }
