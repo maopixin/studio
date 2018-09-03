@@ -9,8 +9,13 @@
         </div>
         <div class="sub-nav fr">
             <div class="input-box">
-                <el-input placeholder="请输入内容" v-model="seacrValue" class="input">
-                    <el-button slot="append" icon="el-icon-search"></el-button>
+                <el-input 
+                    placeholder="请输入内容" 
+                    v-model="seacrValue" 
+                    class="input"
+                    @focus='search'
+                >
+                    <el-button slot="append" icon="el-icon-search" @click='search'></el-button>
                 </el-input>
             </div>
             <div class="part" data-type='login' style="" v-if='!userInfo'>
@@ -51,6 +56,11 @@ export default {
                 });
             }
         })
+    },
+    methods:{
+        search(){
+            this.$message('搜索暂未开放');
+        }
     }
 }
 </script>

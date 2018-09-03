@@ -1,7 +1,7 @@
 <template>
     <div 
         class="layui-main"
-        v-loading="loading"
+        v-loading="!loading"
     >
         <!-- 左右布局启动 -->
         <div class="studio_box clearfix">
@@ -319,7 +319,9 @@
                                 <div class="fl img_box">
                                     <img src="./img/teacher_img.jpg" alt="">
                                 </div>
-                                <div class="fr resource_info">
+                                <div class="fr resource_info"
+                                    v-if="article.data"
+                                >
                                     <div class="title">
                                         <a href="">{{article.data.title}}</a>
                                     </div>
@@ -359,7 +361,7 @@
                         </div>
                         
                         <div v-if="loading">
-                            <div class="resource_info_box clearfix">
+                            <div class="resource_info_box clearfix" v-if="teachingResources.data">
                                 <div class="fl img_box">
                                     <img src="./img/source_img.jpg" alt="">
                                 </div>
@@ -450,7 +452,7 @@
                                 v-for="(item) in lesson.list"
                                 :key = 'item.id'
                             >
-                                <a href="" class="video_show_box">
+                                <a :href="item._link" target="_black" class="video_show_box">
                                     <img :src="item.media.middle" alt="">
                                     <div class="video_play">
                                         <div class="play">
@@ -462,7 +464,7 @@
                                 <div class="list_info clearfix">
                                     <em class="teacher_name">主讲人：{{item.username}}</em>
                                     <em class="time">{{item.utime.y+ '-' + item.utime.m + '-' + item.utime.d}}</em>
-                                    <a href="javascript:;">点击听课</a>
+                                    <a :href="item._link" target="_black">点击听课</a>
                                 </div>
                             </li>
                         </ul>

@@ -1,11 +1,6 @@
 <template>
     <div>
-        <loading
-            v-if="!navL"
-        />
-        <div
-            v-if="navL"
-        >
+        <div>
             <Crumbs :title='menuList[activeF].title'/>
             <el-container class="content">
                 <el-row class="tac" :gutter="20">
@@ -118,7 +113,7 @@ export default {
             ],
             activeF:'0',
             pre_page:10,
-            getType:['资讯','通告','成果展示']
+            getType:['资讯','通告','成果展示'],
         }
     },
     methods:{

@@ -1,11 +1,6 @@
 <template>
     <div>
-        <loading
-            v-if="!navL"
-        />
-        <div
-            v-if="navL"
-        >
+        <div>
             <Crumbs :title='menuList[activeIndexF].title'/>
             <el-container class="content">
                 <el-row class="tac" :gutter="20">
@@ -81,7 +76,7 @@
 import Crumbs from '@/components/global/crumbs';
 import Loading from '@global/Loading';
 import Fail from '@global/Fail';
-import {getStudioData} from '@api/index';
+import {getStudioObj} from '@api/index';
 export default {
     name:'characteristic',
     components: {
@@ -119,9 +114,9 @@ export default {
             let index = this.activeIndexF;
             let st = this.menuList[index].title;
             this.menuList[index].l = true;
-            getStudioData({
-                id:this.$route.params.id,
-                category_id:this.bodyList[st].id,
+            getStudioObj({
+                studio:this.$route.params.id,
+                category_name:'教师文章',
                 pre_page:this.pre_page,
                 page:page
             }).then(data=>{
@@ -138,60 +133,30 @@ export default {
         }
     },
     created(){
-        if(this.$store.getters.navL){
-            let index = this.activeIndexF;
-            let st = this.menuList[index].title;
-            this.menuList[index].l = true;
-            getStudioData({
-                id:this.$route.params.id,
-                category_id:this.bodyList[st].id,
-                pre_page:this.pre_page
-            }).then(data=>{
-                this.menuList[index].l = false;
-                if(data.status.code==0){
-                    this.menuList[index].list = data.data.list;
-                    this.menuList[index].total = Number(data.data.total);
-                }else{
-                    this.menuList[index].fail = true;
-                }
-            }).catch(error=>{
+        let index = this.activeIndexF;
+        let st = this.menuList[index].title;
+        this.menuList[index].l = true;
+        getStudioObj({
+            studio:this.$route.params.id,
+            category_name:'教师文章',
+            pre_page:this.pre_page
+        }).then(data=>{
+            this.menuList[index].l = false;
+            if(data.status.code==0){
+                this.menuList[index].list = data.data.list;
+                this.menuList[index].total = Number(data.data.total);
+            }else{
                 this.menuList[index].fail = true;
-            });
-        }
-        
+            }
+        }).catch(error=>{
+            this.menuList[index].fail = true;
+        });
     },
     watch:{
-        bodyList(){
-            let index = this.activeIndexF;
-            let st = this.menuList[index].title;
-
-            this.menuList[index].l = true;
-            getStudioData({
-                id:this.$route.params.id,
-                category_id:this.bodyList[st].id,
-                pre_page:this.pre_page
-            }).then(data=>{
-
-                this.menuList[index].l = false;
-                if(data.status.code==0){
-
-                    this.menuList[index].list = data.data.list;
-                    this.menuList[index].total = Number(data.data.total);
-                }else{
-                    this.menuList[index].fail = true;
-                }
-            }).catch(error=>{
-                this.menuList[index].fail = true;
-            });
-        }
+        
     },
     computed:{
-        bodyList(){
-            return this.$store.getters.bodyList;
-        },
-        navL(){
-            return this.$store.getters.navL;
-        }
+        
     },
 }
 </script>

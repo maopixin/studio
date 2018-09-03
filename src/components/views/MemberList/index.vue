@@ -1,24 +1,50 @@
 <template>
     <div>
-        <crumbs/>
+        <crumbs title='工作室成员'/>
         <div class="content">
             <el-container class="tab-top">
                 <el-tabs v-model="active.name" @tab-click="handleClick">
-                    <el-tab-pane
-                        v-for="(e,i) in list"
-                        :key='i'
-                        :label="e.label"
-                        :name="e.value"
-                        v-loading="!e.list.loading"
-                    >
-                        <type-box :list='e.list.list' @follow='followClick'/>
+                    <el-tab-pane label="全部" name='all'>
+                        <type-box :list='all' @follow='followClick'/>
+                    </el-tab-pane>
+                    <el-tab-pane label="管理员" name='admin'>
+                        <type-box :list='admin' @follow='followClick'/>
+                    </el-tab-pane>
+                    <el-tab-pane label="学科带头人" name='subject'>
+                        <type-box :list='subject' @follow='followClick'/>
+                    </el-tab-pane>
+                    <el-tab-pane label="普通成员" name='member'>
+                        <type-box :list='member' @follow='followClick'/>
+                    </el-tab-pane>
+                    <el-tab-pane label="专家" name='expert'>
+                        <type-box :list='expert' @follow='followClick'/>
+                    </el-tab-pane>
+                    <el-tab-pane label="助教" name='assistant'>
+                        <type-box :list='assistant' @follow='followClick'/>
                     </el-tab-pane>
                 </el-tabs>
                 <el-main class="search-box">
                     <div class="search_box">
-                        <el-input placeholder="搜索成员" v-model="searchValue" class="input-with-select">
-                            <el-button slot="append" icon="el-icon-search"></el-button>
-                        </el-input>
+                        <el-autocomplete
+                            class="inline-input"
+                            v-model="searchValue"
+                            :fetch-suggestions="querySearch"
+                            placeholder="搜索成员"
+                            :trigger-on-focus="false"
+                            @select="handleSelect"
+                        >
+                            <el-tooltip class="item" slot="suffix" effect="dark" content="点击展示" placement="bottom-start">
+                                <i
+                                    class="el-icon-edit el-input__icon"
+                                    
+                                    @click="handleIconClick">
+                                </i>
+                            </el-tooltip>
+                            <template slot-scope="{ item }">
+                                <div class="name">{{ item.title }}</div>
+                                <span class="addr">{{ item.duty }}</span>
+                            </template>
+                        </el-autocomplete>
                     </div>
                 </el-main>
             </el-container>
@@ -42,94 +68,18 @@ export default {
         active:{
             name:'all',
         },
-        list:[
-            {
-                label:'全部',
-                value:'all',
-                list:{
-                    loading:false,
-                    list:[]
-                }
-            },
-            {
-                label:'管理员',
-                value:'admin',
-                type:1,
-                list:{
-                    loading:false,
-                    list:[]
-                }
-            },
-            {
-                label:'学科带头人',
-                value:'subject',
-                type:2,
-                list:{
-                    loading:false,
-                    list:[]
-                }
-            },
-            {
-                label:'普通成员',
-                value:'member',
-                type:3,
-                list:{
-                    loading:false,
-                    list:[]
-                }
-            },
-            {
-                label:'专家',
-                value:'expert',
-                type:4,
-                list:{
-                    loading:false,
-                    list:[]
-                }
-            },
-            {
-                label:'助教',
-                value:'assistant',
-                type:5,
-                list:{
-                    loading:false,
-                    list:[]
-                }
-            },
-        ],
         searchValue:'',
+        loading:true,
+        memberList:[],
+        memberListCopy:[],
+        showSearch:false,
       };
     },
     methods: {
       handleClick(tab,event) {
-        if(!this.list[tab.index].list.loading){
-            let loadingInstance = Loading.service({target:document.getElementById('pane-'+this.list[tab.index].value),lock:true,fullscreen:false});
-            getStuidoMembers({
-                studio_id:this.$route.params.id,
-                duty_code:this.list[tab.index].type,
-                pre_page:1000
-            }).then(data=>{
-                loadingInstance.close();
-                if(data.status.code==0){
-                    this.list[tab.index].list.list = data.data.list;
-                    this.list[tab.index].list.loading = true;
-                }else{
-                    var str = ''
-                    for (const key in data.data) {
-                        str += data.data[key]
-                    }
-                    this.$notify.error({
-                        title: '错误',
-                        message: str
-                    });
-                }
-            }).catch(error=>{
-                this.$notify.error({
-                    title: '错误',
-                    message: '请求出错'
-                });
-            })
-        }   
+          if(this.searchValue=='' && this.showSearch){
+              this.memberList = this.memberListCopy;
+          }
       },
       followClick(obj){
           if(obj.type=='关注'){
@@ -138,11 +88,20 @@ export default {
             }).then(data=>{
                 console.log(data)
                 if(data.status.code==0){
+                    console.log(obj,111)
                     this.$notify({
-                        title: '成功',
-                        message: '关注成功',
+                        title: '关注成功',
+                        message: '您已成功关注: '+obj.name,
                         type: 'success'
                     });
+                    for (let i = 0; i < this.memberList.length; i++) {
+                        if(this.memberList[i].id == obj.id){
+                            var obj2 = this.memberList[i];
+                            obj2.is_follow_mine = 1;
+                            this.$set(this.memberList,i,obj2);
+                            return false;
+                        }
+                    }
                 }else{
                     console.log(this.$fn)
                     var _this = this;
@@ -165,10 +124,18 @@ export default {
                 console.log(data)
                 if(data.status.code==0){
                     this.$notify({
-                        title: '成功',
-                        message: '取消成功',
+                        title: '取消成功',
+                        message: '您已成功取消关注: '+obj.name,
                         type: 'success'
                     });
+                    for (let i = 0; i < this.memberList.length; i++) {
+                        if(this.memberList[i].id == obj.id){
+                            var obj2 = this.memberList[i];
+                            obj2.is_follow_mine = 0;
+                            this.$set(this.memberList,i,obj2);
+                            return false;
+                        }
+                    }
                 }else{
                     this.$notify.error({
                         title: '错误',
@@ -182,16 +149,46 @@ export default {
                 });
             })
           }
-      }
+      },
+        handelData(arr){
+            let follows = this.$store.getters.userInfo.follows;
+            for (let i = 0; i < follows.length; i++) {
+                for (let k = 0; k < arr.length; k++) {
+                    console.log(arr[k].id == follows[i].follow_user_id,arr[k].id , follows[i].follow_user_id)
+                    if(arr[k].id == follows[i].follow_user_id){
+                        arr[k].is_follow_mine = 1;
+                    }
+                }
+            };
+            return arr;
+        },
+        querySearch(queryString, cb){
+            let arr = queryString ? this.memberList.filter(e=>{
+                return e.title.toLowerCase().indexOf(queryString.toLowerCase())>=0
+            }) : this.memberList;
+            cb(arr);
+        },
+        handleSelect(item){
+            this.searchValue = item.title;
+            this.memberListCopy = this.memberList;
+            this.memberList = [item];
+            this.showSearch = true;
+        },
+        handleIconClick(){
+            this.searchValue = '';
+            this.memberList = this.memberListCopy
+        }
     },
     created(){
+        console.log(this.$store.getters.userInfo)
         getStuidoMembers({
             studio_id:this.$route.params.id,
             pre_page:1000
         }).then(data=>{
             if(data.status.code==0){
-                this.list[0].list.loading = true;
-                this.list[0].list.list = data.data.list;
+                let list = this.handelData(data.data.list);
+                this.loading = false;
+                this.memberList = list;
             }else{
                 var str = ''
                 for (const key in data.data) {
@@ -203,12 +200,43 @@ export default {
                 });
             }
         }).catch(error=>{
+            console.log(error)
             this.list[0].list.loading = true;
             this.$notify.error({
                 title: '错误',
                 message: '请求出错'
             });
         })
+    },
+    computed:{
+        all(){
+            return this.memberList;
+        },
+        admin(){
+            return this.memberList.filter(e=>{
+                return e.duty == '管理员';
+            });
+        },
+        subject(){
+            return this.memberList.filter(e=>{
+                return e.duty == '学科带头人';
+            });
+        },
+        member(){
+            return this.memberList.filter(e=>{
+                return e.duty == '普通成员';
+            });
+        },
+        expert(){
+            return this.memberList.filter(e=>{
+                return e.duty == '专家';
+            });
+        },
+        assistant(){
+            return this.memberList.filter(e=>{
+                return e.duty == '助教';
+            });
+        },
     }
 }
 </script>
@@ -245,6 +273,16 @@ export default {
         background-color: #fff;
         position: relative;
         overflow: visible;
+    }
+    .name {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      line-height:18px;
+    }
+    .addr {
+      font-size: 12px;
+      color: #b4b4b4;
+      line-height:18px;
     }
 </style>
 

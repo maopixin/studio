@@ -178,7 +178,8 @@ export default {
             console.log(data,'工作室信息');
             this.studioInfo.l = true;
             if(data.status.code==0){
-                this.studioInfo.data = data.data
+                this.studioInfo.data = data.data;
+                this.$store.commit('changeLogo',data.data.logo);
             }else{
                 this.studioInfo.fail = true;
             }

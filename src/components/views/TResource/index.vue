@@ -1,7 +1,6 @@
 <template>
     <div>
-        <loading v-if="!navL"/>
-        <div v-else>
+        <div>
             <Crumbs :title='menuList[activeIndexF].title'/>
             <el-container class="content">
                 <el-row class="tac" :gutter="20">
@@ -77,7 +76,7 @@
 import Crumbs from "@/components/global/crumbs";
 import Loading from '@global/Loading';
 import Fail from '@global/Fail';
-import {getStudioData} from '@api/index'
+import {getStudioObj} from '@api/index'
 export default {
     components: {
         Crumbs,
@@ -100,12 +99,7 @@ export default {
         }
     },
     computed:{
-        bodyList(){
-            return this.$store.getters.bodyList;
-        },
-        navL(){
-            return this.$store.getters.navL;
-        }
+        
     },
     methods: {
         handleOpen(key, keyPath) {
@@ -125,9 +119,9 @@ export default {
             let index = this.activeIndexF;
             let st = this.menuList[index].title;
             this.menuList[index].l = true;
-            getStudioData({
-                id:this.$route.params.id,
-                category_id:this.bodyList[st].id,
+            getStudioObj({
+                studio:this.$route.params.id,
+                category_name:'教学资源',
                 pre_page:this.pre_page,
                 page
             }).then(data=>{
@@ -148,30 +142,30 @@ export default {
         }
     },
     created(){
-       if(this.navL){
-            let index = this.activeIndexF;
-            let st = this.menuList[index].title;
-            this.menuList[index].l = true;
-            getStudioData({
-                id:this.$route.params.id,
-                category_id:this.bodyList[st].id,
-                pre_page:this.pre_page
-            }).then(data=>{
-                this.menuList[index].l = false;
-                if(data.status.code==0){
-                    let obj = data.data.list;
-                    obj.forEach(e => {
-                        e.file_type = this.getFileType(e.title);
-                    });
-                    this.menuList[index].list = obj;
-                    this.menuList[index].total = Number(data.data.total);
-                }else{
-                    this.menuList[index].fail = true;
-                }
-            }).catch(error=>{
+       
+        let index = this.activeIndexF;
+        let st = this.menuList[index].title;
+        this.menuList[index].l = true;
+        getStudioObj({
+            studio:this.$route.params.id,
+            category_name:'教学资源',
+            pre_page:this.pre_page
+        }).then(data=>{
+            this.menuList[index].l = false;
+            if(data.status.code==0){
+                let obj = data.data.list;
+                obj.forEach(e => {
+                    e.file_type = this.getFileType(e.title);
+                });
+                this.menuList[index].list = obj;
+                this.menuList[index].total = Number(data.data.total);
+            }else{
                 this.menuList[index].fail = true;
-            });
-        }
+            }
+        }).catch(error=>{
+            this.menuList[index].fail = true;
+        });
+        
     },
     watch:{
         bodyList(){
@@ -234,8 +228,8 @@ export default {
             line-height: 50px;
         }
         .icon{
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             background-repeat: no-repeat;
             background-size: cover;
             margin-right: 50px;
@@ -284,6 +278,9 @@ export default {
         }
         .mp4{
             background-image: url('./icon/mp4.png');
+        }
+        .mpg{
+            background-image: url('./icon/mpg.png');
         }
         .name{
             width: 318px;

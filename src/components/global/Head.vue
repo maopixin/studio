@@ -2,7 +2,7 @@
     <div class="top">
         <header-use></header-use>
         <div class="studio_background">
-            <img src="../../assets/img/head_bg1.jpg" alt="">
+            <img :src="this.$store.getters.logo" alt="">
         </div>
         <Nav :list='list' bgColor='#1b9fe2'/>
     </div>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Crumbs/>
+        <Crumbs :title='activeName'/>
         <el-container class="content">
             <el-row class="tac" :gutter="20">
                 <el-col :span="24">
@@ -41,12 +41,12 @@
                             :key = 'item.id'
                         >
                             <span class="title">
-                                <a href="">{{item.title}}</a>
+                                <a :href="item._link" target="_black">{{item.title}}</a>
                             </span>
                             <span class="name">
-                                <a href="">name</a>
+                                <a href="">{{item.username}}</a>
                             </span>
-                            <span class="time">time</span>
+                            <span class="time">{{item.udate}}</span>
                         </li>
                     </ul>
                     <el-pagination
@@ -239,6 +239,9 @@ export default {
         .name{
             width: 88px;
             text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .time{
             width: 136px;

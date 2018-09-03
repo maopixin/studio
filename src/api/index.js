@@ -118,7 +118,7 @@ export function followPerson(payload){
 }
 // 取消关注
 export function followCancel(payload){
-    return axios.post('/api/follow/concel',payload).then(data=>{
+    return axios.post('/api/follow/cancel',payload).then(data=>{
         return data.data
     }).catch(error=>{
         console.log(error)

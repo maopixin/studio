@@ -6,7 +6,8 @@ export default new Vuex.Store({
     navList:[],
     bodyList:[],
     navL:false,
-    userInfo:{}
+    userInfo:{},
+    logo:''
   },
   getters: {
     navList: state => {
@@ -20,6 +21,9 @@ export default new Vuex.Store({
     },
     userInfo: state => {
       return state.userInfo
+    },
+    logo: state =>{
+      return state.logo
     }
   },
   mutations: {
@@ -34,6 +38,9 @@ export default new Vuex.Store({
     },
     changeuserInfo(state,payload){
       state.userInfo = payload
+    },
+    changeLogo(state,payload){
+      state.logo = payload
     },
   }
 });

@@ -33,7 +33,7 @@
                     <span class="identity fl">{{item.duty}}</span>
                     <span class="company fl">{{item.company||'无'}}</span>
                     <span class="integral fl">{{item.integral}}</span>
-                    <span class="social-contact fl"><el-button type="primary" @click='handelFoloweClick({type:"关注",id:item.id})'>关注</el-button></span>
+                    <span class="social-contact fl"><el-button type="primary" @click='handelFoloweClick({type:item.is_follow_mine?"已关注":"关注",id:item.id,name:item.title})'>{{item.is_follow_mine?"已关注":"关注"}}</el-button></span>
                 </li>
             </ul>
         </div>
