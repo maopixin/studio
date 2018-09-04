@@ -1,7 +1,7 @@
 <template>
     <div>
         <crumbs title='工作室成员'/>
-        <div class="content">
+        <div class="content box-shadow">
             <el-container class="tab-top">
                 <el-tabs v-model="active.name" @tab-click="handleClick">
                     <el-tab-pane label="全部" name='all'>
@@ -33,7 +33,7 @@
                             :trigger-on-focus="false"
                             @select="handleSelect"
                         >
-                            <el-tooltip class="item" slot="suffix" effect="dark" content="点击展示" placement="bottom-start">
+                            <el-tooltip class="item" slot="suffix" effect="dark" content="点击展示全部成员" placement="bottom-start">
                                 <i
                                     class="el-icon-edit el-input__icon"
                                     
@@ -250,7 +250,7 @@ export default {
         }
         .el-tabs__content{
             width: 1140px;
-            position: absolute;
+            // position: absolute;
             background-color: #fff;
         }
     }

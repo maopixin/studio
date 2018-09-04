@@ -6,16 +6,20 @@
         <router-view/>
       </keep-alive>
     </transition>
+    <Footer/>
   </div>
+
 </template>
 
 <script>
   import Head from './global/Head.vue';
-  import Content from '@/components/global/Content'
+  import Content from '@/components/global/Content';
+  import Footer from '@global/Footer.vue';
   export default {
     name: "Index",
     components: {
-      Head
+      Head,
+      Footer
     },  
     data() {
       return {

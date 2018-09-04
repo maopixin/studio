@@ -1,5 +1,5 @@
 <template>
-    <div class="fail_box">数据加载失败</div>
+    <div class="fail_box">暂无更多数据</div>
 </template>
 
 <script>

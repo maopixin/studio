@@ -33,7 +33,8 @@
                 <div>
                     <loading v-if="l"/>
                     <fail v-if="fail"/>
-                    <ul v-if="!l && !fail" class="information_list_box">
+                    <not-more v-if="!l && !fail && data.list.length<=0"/>
+                    <ul v-if="!l && !fail && data.list.length>0" class="information_list_box">
                         <!-- *10 -->
                         <li 
                             class="clearfix"
@@ -54,7 +55,7 @@
                         layout="prev, pager, next"
                         :total="Number(data.total)"
                         class="page_box"
-                        v-show="!this.l"
+                        v-if="!l && !fail && data.list.length>0"
                         :page-size='pre_page'
                         @current-change='pageChange'
                     >
@@ -69,13 +70,15 @@
 import Crumbs from "@/components/global/crumbs";
 import Loading from '@global/Loading';
 import Fail from '@global/Fail'
+import NotMore from '@global/NotMore'
 import {getStudioData} from '@api/index'
 export default {
     name:'information',
     components: {
         Crumbs,
         Loading,
-        Fail
+        Fail,
+        NotMore
     },
     data(){
         return {

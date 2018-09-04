@@ -40,7 +40,8 @@
                         </div>
                         <loading v-show="menuList[activeIndexF].l"/>
                         <fail v-show="menuList[activeIndexF].fail"/>
-                        <div v-show="!menuList[activeIndexF].l && !menuList[activeIndexF].fail">
+                        <not-more v-if="!menuList[activeIndexF].l && !menuList[activeIndexF].fail && menuList[activeIndexF].list.length<=0"/>
+                        <div v-show="!menuList[activeIndexF].l && !menuList[activeIndexF].fail && menuList[activeIndexF].list.length>0">
                             <ul class="characteristic_list">
                                 <li 
                                     class="clearfix"
@@ -76,13 +77,15 @@
 import Crumbs from '@/components/global/crumbs';
 import Loading from '@global/Loading';
 import Fail from '@global/Fail';
+import NotMore from '@global/NotMore'
 import {getStudioObj} from '@api/index';
 export default {
     name:'characteristic',
     components: {
         Crumbs,
         Loading,
-        Fail
+        Fail,
+        NotMore
     },
     data(){
         return {

@@ -28,7 +28,7 @@
                                 @current-change='detailListChange'
                             >
                             </el-pagination>
-                            <div v-if="detailList.list.length<=0&&detailList.loading==false" style="text-align:center;">暂无更多数据</div>
+                            <div v-if="detailList.list.length<=0&&!detailList.loading" style="text-align:center;">暂无更多数据</div>
                         </el-tab-pane>
                         <el-tab-pane label="未开始" name="second" v-loading="unStartList.loading">
                             <div style="height:50px;" v-if="unStartList.loading"></div>

@@ -57,7 +57,7 @@
                         
                         <div v-if="loading" class="info_box">
                             <div class="info clearfix">
-                                <img src="http://yun.zjer.cn/uploads/snsPhotos/snscover/551e070cc5593_100.jpg" alt="">
+                                <img :src="studioInfo.data.user.mediumAvatar" alt="">
                                 <div class="text">
                                     <span class="name">
                                         {{studioInfo.data.name}}
@@ -230,7 +230,7 @@
                             <div class="carousel_box" v-if="loading">
                                 <el-carousel indicator-position="outside" height='186px'>
                                     <el-carousel-item v-for="item in information.list" :key="item.id">
-                                        <a href="">
+                                        <a :href="item._link" target="_black" v-if="item.media">
                                             <img :src="item.media.small" alt="">
                                         </a>
                                         <span>{{item.title}}</span>
@@ -244,7 +244,7 @@
                                         :key='item.id'
 
                                     >
-                                        <a href="">
+                                        <a :href="item._link" target="_black">
                                             {{item.title}}
                                         </a>
                                     </li>
@@ -272,7 +272,7 @@
                                         <em>{{item.utime.y}}</em>
                                     </span>
                                     <span class="new_title">
-                                        <a href="">
+                                        <a :href="item._link" target="_black">
                                             {{ item.title || '无标题' }}
                                         </a>
                                     </span>
@@ -295,7 +295,7 @@
                     <div class="clearfix three_box" v-show="loading">
                         <el-carousel :interval="4000" type="card" height="200px">
                             <el-carousel-item v-for="item in achievements.list" :key="item.id">
-                                <a href="">
+                                <a :href="item._link" target='_black'>
                                     <img :src="item.media.middle" alt="">
                                     <span class="name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{item.title}}</span>
                                 </a>
@@ -320,10 +320,10 @@
                                     <img src="./img/teacher_img.jpg" alt="">
                                 </div>
                                 <div class="fr resource_info"
-                                    v-if="article.data"
+                                    v-if="article.first"
                                 >
                                     <div class="title">
-                                        <a href="">{{article.data.title}}</a>
+                                        <a :href="article.data._link" target="_black">{{article.data.title}}</a>
                                     </div>
                                     <div class="sys">简介简介简介简介简介简介简介简介简介简介简介简介</div>
                                     <div class="name_time">
@@ -344,7 +344,9 @@
                                     :key = 'item.id'
                                 >
                                     <div class="type fl">{{item.category_name}}</div>
-                                    <div class="title fl">{{item.title}}</div>
+                                    <div class="title fl">
+                                        <a :href="item._link" target="_black">{{item.title}}</a>
+                                    </div>
                                     <div class="name fl">{{item.username}}</div>
                                     <div class="time fl">{{article.data.utime.m + '-' + article.data.utime.d}}</div>
                                 </li>
@@ -361,13 +363,13 @@
                         </div>
                         
                         <div v-if="loading">
-                            <div class="resource_info_box clearfix" v-if="teachingResources.data">
+                            <div class="resource_info_box clearfix" v-if="teachingResources.first">
                                 <div class="fl img_box">
                                     <img src="./img/source_img.jpg" alt="">
                                 </div>
                                 <div class="fr resource_info">
                                     <div class="title">
-                                        <a href="">{{teachingResources.data.title}}</a>
+                                        <a :href="teachingResources.data._link" target="_black">{{teachingResources.data.title}}</a>
                                     </div>
                                     <div class="sys">简介简介简介简介简介简介简介简介简介简介简介简介</div>
                                     <div class="name_time">
@@ -388,7 +390,7 @@
                                 >
                                     <div class="type fl">{{item.category_name}}</div>
                                     <div class="title fl">
-                                        <a href="">{{item.title}}</a>
+                                        <a :href="item._link" target="_black">{{item.title}}</a>
                                     </div>
                                     <div class="name fl">{{item.username}}</div>
                                     <div class="time fl">{{item.hits}}次</div>
@@ -424,7 +426,7 @@
                                 :key = 'item.id'
                             >
                                 <div class="title fl">
-                                    <a href="">{{item.title}}</a>
+                                    <router-link :to="{name:'activityPage',params:{activityId:item.id}}">{{item.title}}</router-link>
                                 </div>
                                 <div class="name fl">
                                     <a href="">{{item.username}}</a>
@@ -593,10 +595,12 @@ export default {
             article:{
                 list:[],
                 data:{},
+                first:false
             },
             teachingResources:{
                 list:[],
                 data:{},
+                first:false
             },
             studioState:{
                 data:{
@@ -634,9 +638,15 @@ export default {
                 this.information.list = data.info.list;
                 this.announcement.list = data.notice.list;
                 this.achievements.list = data.achievements.list;
+                if(data.articles.list.length>0){
+                    this.article.data = data.articles.list[0];
+                    this.article.first = true;
+                }
                 this.article.list = data.articles.list.slice(1);
-                this.article.data = data.articles.list[0];
-                this.teachingResources.data = data.resource.list[0];
+                if(data.resource.list.length>0){
+                    this.teachingResources.data = data.resource.list[0];
+                    this.teachingResources.first = true;
+                }
                 this.teachingResources.list = data.resource.list.slice(1);
                 this.activity.list = data.activities.list;
                 this.studioInfo.data = data.studio;
@@ -680,226 +690,23 @@ export default {
             })
 
             let bodyList = this.$store.getters.bodyList;
-            // // 通告
-            // getStudioData({
-            //     id:this.$route.params.id,
-            //     category_id:bodyList['通告'].id,
-            //     pre_page:5
-            // }).then(data=>{
-            //     console.log(data,'通告');
-            //     this.announcement.l = true;
-            //     if(data.status.code==0){
-            //         this.announcement.list = data.data.list
-            //     }else{
-            //         this.announcement.fail = true;
-            //     }
-            // }).catch(error=>{
-            //     this.announcement.fail = true;
-            // })
-            // // 资讯
-            // getStudioData({
-            //     id:this.$route.params.id,
-            //     category_id:bodyList['资讯'].id,
-            //     pre_page:7,
-            //     require_media:1
-
-            // }).then(data=>{
-            //     console.log(data,'资讯');
-            //     this.information.l = true;
-            //     if(data.status.code==0){
-            //         this.information.list = data.data.list
-            //     }else{
-            //         this.information.fail = true;
-            //     }
-            // }).catch(error=>{
-            //     this.information.fail = true;
-            // })
-            // getStudioData({
-            //     id:this.$route.params.id,
-            //     category_id:bodyList['成果展示'].id,
-            //     pre_page:7,
-            //     require_media:1
-
-            // }).then(data=>{
-            //     console.log(data,'成果展示');
-            //     this.achievements.l = true;
-            //     if(data.status.code==0){
-            //         this.achievements.list = data.data.list
-            //     }else{
-            //         this.achievements.fail = true;
-            //     }
-            // }).catch(error=>{
-            //     this.achievements.l = true;
-            //     this.achievements.fail = true;
-            // })
-            // setTimeout(()=>{
-            //     getStudioData({
-            //         id:this.$route.params.id,
-            //         category_id:bodyList['教师文章'].id,
-            //         pre_page:6
-            //     }).then(data=>{
-            //         console.log(data,'教师文章');
-            //         this.article.l = true;
-            //         if(data.status.code==0){
-            //             this.article.data = data.data.list[0];
-            //             this.article.list = data.data.list.slice(1);
-            //         }else{
-            //             this.article.fail = true;
-            //         }
-            //     }).catch(error=>{
-            //         this.article.fail = true;
-            //     });
-            //     getStudioData({
-            //         id:this.$route.params.id,
-            //         category_id:bodyList['教学资源'].id,
-            //         pre_page:6
-            //     }).then(data=>{
-            //         console.log(data,'教学资源');
-            //         this.teachingResources.l = true;
-            //         if(data.status.code==0){
-            //             this.teachingResources.data = data.data.list[0];
-            //             this.teachingResources.list = data.data.list.slice(1);
-            //         }else{
-            //             this.teachingResources.fail = true;
-            //         }
-            //     }).catch(error=>{
-            //         this.teachingResources.fail = true;
-            //     })
-            //      // 教研活动
-            //     getActivityList({
-            //         studio_id:this.$route.params.id,
-            //         pre_page:5
-            //     }).then(data=>{
-            //         console.log(data,'教研活动');
-            //         this.activity.l = true;
-            //         if(data.status.code==0){
-            //             this.activity.list = data.data.list
-            //         }else{
-            //             this.activity.fail = true;
-            //         }
-            //     }).catch(error=>{
-            //         this.activity.fail = true;
-            //     })
-                
-            // },2000)
             
-            // // 工作室信息
-            // getStudioDetail({
-            //     id:this.$route.params.id
-            // }).then(data=>{
-            //     console.log(data,'工作室信息');
-            //     this.studioInfo.l = true;
-            //     if(data.status.code==0){
-            //         this.studioInfo.data = data.data
-            //     }else{
-            //         this.studioInfo.fail = true;
-            //     }
-            // }).catch(error=>{
-            //     this.studioInfo.fail = true;
-            // })
-           
-            // setTimeout(()=>{
-                // getStudioData({
-                //     id:this.$route.params.id,
-                //     category_id:bodyList['名师课堂'].id,
-                //     pre_page:3,
-                //     require_media:1
-                // }).then(data=>{
-                //     console.log(data,'名师课堂');
-                //     this.lesson.l = true;
-                //     if(data.status.code==0){
-                //         this.lesson.list = data.data.list
-                //     }else{
-                //         this.lesson.fail = true;
-                //     }
-                // }).catch(error=>{
-                //     this.lesson.l = true;
-                //     this.lesson.fail = true;
-                // })
-                // 成员列表
-                getStuidoMembers({
-                    studio_id:this.$route.params.id,
-                    pre_page:7
-                }).then(data=>{
-                    console.log(data,'成员列表');
-                    this.member.l = true;
-                    if(data.status.code==0){
-                        console.log(data)
-                        this.member.list = data.data.list
-                    }else{
-                        this.member.fail = true
-                    }
-                }).catch(error=>{
-                    this.member.fail = true;
-                })
-            //     // 最新动态
-            //     getStudioLatest({
-            //         id:this.$route.params.id,
-            //         require_user:1,
-            //         pre_page:5
-            //     }).then(data=>{
-            //         console.log(data,'最新动态')
-            //         this.latest.l = true;
-            //         if(data.status.code==0){
-            //             this.latest.list = data.data.list
-            //         }else{
-            //             this.latest.fail = true;
-            //         }
-            //     }).catch(error=>{
-            //         this.latest.fail = true;
-            //     });
-            // },3000)
-        
-            // getStudioState({
-            //     id:this.$route.params.id
-            // }).then(data=>{
-            //     console.log(data,'0.0');
-            //     this.studioState.l = true;
-            //     if(data.status.code==0){
-            //         var obj = data.data;
-            //         this.studioState.data = obj;
-            //         this.$nextTick(()=>{
-            //             var myChart = this.$echarts.init(document.getElementById('main'));
-            //             var option = {
-            //                 tooltip: {
-            //                     show: true,
-            //                     trigger: 'item',
-            //                     formatter: "{d}%",
-
-            //                 },
-            //                 series: [{
-            //                     type: 'pie',
-            //                     radius: '65%',
-            //                     center: ['50%', '50%'],
-            //                     radius: ['60%', '70%'],
-            //                     selectedMode: 'single',
-            //                     data: [{
-            //                             value: data.data.complete,
-            //                             name: '已完成',
-            //                             itemStyle: {
-            //                                 color: '#1b9fe2'
-            //                             }
-            //                         },
-            //                         {
-            //                             value: 100 - data.data.complete,
-            //                             name: '未完成',
-            //                             itemStyle: {
-            //                                 color: '#aaaaaa'
-            //                             }
-            //                         }
-            //                     ]
-            //                 }]
-            //             };
-            //             myChart.setOption(option);
-            //         })
-                    
-            //     }else{
-            //         this.studioState.fail = true;
-            //     }
-            // }).catch(error=>{
-            //     this.studioState.l = true;
-            //     this.studioState.fail = true;
-            // })
+            // 成员列表
+            getStuidoMembers({
+                studio_id:this.$route.params.id,
+                pre_page:7
+            }).then(data=>{
+                console.log(data,'成员列表');
+                this.member.l = true;
+                if(data.status.code==0){
+                    console.log(data)
+                    this.member.list = data.data.list
+                }else{
+                    this.member.fail = true
+                }
+            }).catch(error=>{
+                this.member.fail = true;
+            })
         }
     },
     mounted () {        
@@ -1411,12 +1218,23 @@ export default {
     background-color: #fff;
     li{
         width: 237px;
+        position: relative;
         a{
             background-color: red;
         }
-        img{
-            width: 100%;
+        .video_show_box{
+            display: block;
             height: 206px;
+        }
+        img{
+            width: auto;
+            height: auto;
+            min-width: 237px;
+            min-height: 206px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
         }
         .name{
             text-align: center;

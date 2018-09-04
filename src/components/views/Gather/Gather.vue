@@ -37,6 +37,7 @@
                         v-show="activeF==index"
                         :key='index'
                     >
+                        <not-more v-if="item.list.length<=0"/>
                         <ul 
                             class="information_list_box"
                             v-show="!menuList[index].l"
@@ -75,13 +76,15 @@
 <script>
 import Crumbs from "@/components/global/crumbs";
 import Loading from '@global/Loading';
-import Fail from '@global/Fail'
-import {getStudioObj} from '@api/index'
+import Fail from '@global/Fail';
+import NotMore from '@global/NotMore'
+import {getStudioObj} from '@api/index';
 export default {
     components:{
         Crumbs,
         Loading,
-        Fail
+        Fail,
+        NotMore
     },
     data(){
         return {

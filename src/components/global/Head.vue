@@ -18,7 +18,7 @@ export default {
       HeaderUse
   },
   data() {
-    return {
+    return  {
         activeIndex: '1',
         list:[
             {
