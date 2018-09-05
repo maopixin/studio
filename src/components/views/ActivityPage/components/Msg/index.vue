@@ -28,7 +28,8 @@
         </div>
         <h4 class="title">最新评论</h4>
         <div>
-            <ul class="msg-list">
+            <not-more v-if="data.comments.data.length<=0"/>
+            <ul class="msg-list" v-if="data.comments.data.length>0">
                 <li 
                     class="msg-item"
                     v-for="(item) in data.comments.data"
@@ -145,7 +146,11 @@
 
 <script>
 import {activityUserComment} from '@api/index'
+import NotMore from '@global/NotMore'
 export default {
+    components:{
+        NotMore
+    },
     props:['data'],
     data(){
         return {

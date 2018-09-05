@@ -42,7 +42,7 @@
                             :key = 'item.id'
                         >
                             <span class="title">
-                                <a :href="item._link" target="_black">{{item.title}}</a>
+                                <a :href="item._link" target="_blank">{{item.title}}</a>
                             </span>
                             <span class="name">
                                 <a href="">{{item.username}}</a>

@@ -1,7 +1,10 @@
 'use strict'
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
-const path = require('path')
+const path = require('path');
+
+// http://gzs.dljy.com
+// http://institute.dljy.lzdev
 
 module.exports = {
   dev: {
@@ -11,32 +14,32 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/studio/api/': {
-        target: 'http://institute.dljy.lzdev',  // 接口域名
+        target: 'http://gzs.dljy.com',  // 接口域名
         //secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true,  //是否跨域
       },
       '/source/api/': {
-        target: 'http://institute.dljy.lzdev',  // 接口域名
+        target: 'http://gzs.dljy.com',  // 接口域名
         //secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true,  //是否跨域
       },
       '/activity/api/': {
-        target: 'http://institute.dljy.lzdev',  // 接口域名
+        target: 'http://gzs.dljy.com',  // 接口域名
         //secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true,  //是否跨域
       },
       '/activity_tache/api/': {
-        target: 'http://institute.dljy.lzdev',  // 接口域名
+        target: 'http://gzs.dljy.com',  // 接口域名
         //secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true,  //是否跨域
       },
       '/activity_tache_resource/api/': {
-        target: 'http://institute.dljy.lzdev',  // 接口域名
+        target: 'http://gzs.dljy.com',  // 接口域名
         //secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true,  //是否跨域
       },
       '/api/': {
-        target: 'http://institute.dljy.lzdev',  // 接口域名
+        target: 'http://gzs.dljy.com',  // 接口域名
         //secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true,  //是否跨域
       },

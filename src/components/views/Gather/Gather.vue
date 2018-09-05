@@ -49,7 +49,7 @@
                                 :key="e.id"
                             >
                                 <span class="title">
-                                    <a :href="e._link" target="_blank">{{e.title}}</a>
+                                    <a :href="e._link" target="_blank" rel="noopener noreferrer">{{e.title}}</a>
                                 </span>
                                 <span class="name">
                                     <a>{{e.username}}</a>

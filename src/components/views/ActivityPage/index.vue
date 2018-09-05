@@ -41,7 +41,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="margin_t notice p">
+            <div class="margin_t notice p" v-if="false">
                 <h4 class="title">
                     活动公告
                 </h4>
@@ -83,7 +83,7 @@
                     </p>
                 </div>
             </div>
-            <div class="margin_t notice p">
+            <div class="margin_t notice p" v-if="false">
                 <h4 class="title">
                     活动资源
                 </h4>
@@ -122,17 +122,17 @@
                     </ul>
                 </div>
             </div>
-            <div class="margin_t notice p">
+            <div class="margin_t notice p" v-if="false">
                 <h4 class="title">
                     活动总结
                 </h4>
                 <div class="p_content">
                     <p>
-                        爱上了大大路上看到啦开始的拉开
+                        活动总结
                     </p>
                 </div>
             </div>
-            <div class="margin_t notice p">
+            <div class="margin_t notice p" v-if="false">
                 <h4 class="title">
                     缩略图
                 </h4>
@@ -164,7 +164,11 @@
                             v-for="(item,index) in data.tache"
                             :key="index"
                             @click="stepChange(index)"
-                        >{{item.name}}</li>
+                        >
+                            <div>
+                                {{item.name}}
+                            </div>
+                        </li>
                         
                     </ul>
                     <div 
@@ -202,9 +206,7 @@ export default {
             title:'活动详情',
             activityShowIndex:0,
             data:{
-                tache:[{
-
-                }]
+                tache:[]
             },
             typeList:{
                 1 : 'TextBox',
@@ -457,8 +459,8 @@ export default {
                 .step_list{
                     width: 240px;
                     text-align: center;
-                    font-size: 20px;
-                    line-height: 78px;
+                    font-size: 14px;
+                    line-height: 60px;
                     margin-right: 63px;
                     li{
                         overflow: visible;
@@ -467,6 +469,12 @@ export default {
                         color: #fff;
                         margin-bottom: 48px;
                         position: relative;
+                        div{
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            padding: 0 1em;
+                        }
                         &:before{
                             content: "";
                             position: absolute;
@@ -484,14 +492,19 @@ export default {
                     .active{
                         background-color: #2893c9;
                         box-shadow: none;
+                        div{
+                            position: relative;
+                            z-index: 1;
+                        }
                         &:after{
                             content:'';
                             position: absolute;
+                            z-index: 0;
                             top: 0;
                             right: -39px;
                             width: 0;
                             height: 0;
-                            border: 39px solid #fff;
+                            border: 30px solid #fff;
                             border-left-color: #2893c9;
                         }
                     }

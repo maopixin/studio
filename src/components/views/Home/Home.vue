@@ -230,7 +230,7 @@
                             <div class="carousel_box" v-if="loading">
                                 <el-carousel indicator-position="outside" height='186px'>
                                     <el-carousel-item v-for="item in information.list" :key="item.id">
-                                        <a :href="item._link" target="_black" v-if="item.media">
+                                        <a :href="item._link" target="_blank" v-if="item.media" rel="noopener noreferrer">
                                             <img :src="item.media.small" alt="">
                                         </a>
                                         <span>{{item.title}}</span>
@@ -244,7 +244,7 @@
                                         :key='item.id'
 
                                     >
-                                        <a :href="item._link" target="_black">
+                                        <a :href="item._link" target="_blank" rel="noopener noreferrer">
                                             {{item.title}}
                                         </a>
                                     </li>
@@ -272,7 +272,7 @@
                                         <em>{{item.utime.y}}</em>
                                     </span>
                                     <span class="new_title">
-                                        <a :href="item._link" target="_black">
+                                        <a :href="item._link" target="_blank" rel="noopener noreferrer">
                                             {{ item.title || '无标题' }}
                                         </a>
                                     </span>
@@ -295,7 +295,7 @@
                     <div class="clearfix three_box" v-show="loading">
                         <el-carousel :interval="4000" type="card" height="200px">
                             <el-carousel-item v-for="item in achievements.list" :key="item.id">
-                                <a :href="item._link" target='_black'>
+                                <a :href="item._link" target='_blank' rel="noopener noreferrer">
                                     <img :src="item.media.middle" alt="">
                                     <span class="name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{item.title}}</span>
                                 </a>
@@ -323,7 +323,7 @@
                                     v-if="article.first"
                                 >
                                     <div class="title">
-                                        <a :href="article.data._link" target="_black">{{article.data.title}}</a>
+                                        <a :href="article.data._link" target="_blank" rel="noopener noreferrer">{{article.data.title}}</a>
                                     </div>
                                     <div class="sys">简介简介简介简介简介简介简介简介简介简介简介简介</div>
                                     <div class="name_time">
@@ -345,7 +345,7 @@
                                 >
                                     <div class="type fl">{{item.category_name}}</div>
                                     <div class="title fl">
-                                        <a :href="item._link" target="_black">{{item.title}}</a>
+                                        <a :href="item._link" target="_blank" rel="noopener noreferrer">{{item.title}}</a>
                                     </div>
                                     <div class="name fl">{{item.username}}</div>
                                     <div class="time fl">{{article.data.utime.m + '-' + article.data.utime.d}}</div>
@@ -369,7 +369,7 @@
                                 </div>
                                 <div class="fr resource_info">
                                     <div class="title">
-                                        <a :href="teachingResources.data._link" target="_black">{{teachingResources.data.title}}</a>
+                                        <a :href="teachingResources.data._link" target="_blank" rel="noopener noreferrer">{{teachingResources.data.title}}</a>
                                     </div>
                                     <div class="sys">简介简介简介简介简介简介简介简介简介简介简介简介</div>
                                     <div class="name_time">
@@ -390,7 +390,7 @@
                                 >
                                     <div class="type fl">{{item.category_name}}</div>
                                     <div class="title fl">
-                                        <a :href="item._link" target="_black">{{item.title}}</a>
+                                        <a :href="item._link" target="_blank" rel="noopener noreferrer">{{item.title}}</a>
                                     </div>
                                     <div class="name fl">{{item.username}}</div>
                                     <div class="time fl">{{item.hits}}次</div>
@@ -429,7 +429,7 @@
                                     <router-link :to="{name:'activityPage',params:{activityId:item.id}}">{{item.title}}</router-link>
                                 </div>
                                 <div class="name fl">
-                                    <a href="">{{item.username}}</a>
+                                    <a href="javascript:;" rel="noopener noreferrer">{{item.username}}</a>
                                 </div>
                                 <div class="io fl" align='center'>{{item.detail.process_status_text}}</div>
                                 <div class="start_end fl">{{item.detail.start_time}} 至 {{item.detail.stop_time}}</div>
@@ -454,7 +454,7 @@
                                 v-for="(item) in lesson.list"
                                 :key = 'item.id'
                             >
-                                <a :href="item._link" target="_black" class="video_show_box">
+                                <a :href="item._link" target="_blank" rel="" class="video_show_box">
                                     <img :src="item.media.middle" alt="">
                                     <div class="video_play">
                                         <div class="play">
@@ -466,7 +466,7 @@
                                 <div class="list_info clearfix">
                                     <em class="teacher_name">主讲人：{{item.username}}</em>
                                     <em class="time">{{item.utime.y+ '-' + item.utime.m + '-' + item.utime.d}}</em>
-                                    <a :href="item._link" target="_black">点击听课</a>
+                                    <a :href="item._link" target="_blank" rel="noopener noreferrer">点击听课</a>
                                 </div>
                             </li>
                         </ul>

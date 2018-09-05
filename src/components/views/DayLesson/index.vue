@@ -25,7 +25,7 @@
                         <div class="lesson-teacher">授课人：毛丕新</div>
                         <div class="lesson-evaluate">点评：讲的很好</div>
                         <div class="join-a">
-                            <a href="">点击听课</a>
+                            <a href="" target="_blank">点击听课</a>
                         </div>
                     </div>
                 </li>

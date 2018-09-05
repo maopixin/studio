@@ -35,12 +35,16 @@
             :with-credentials='true'
             :file-list="fileList">
             <el-button size="small" type="primary">上传文件</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传word文件，且不超过xxxkb</div>
+            <div slot="tip" class="el-upload__tip"></div>
         </el-upload>
         <ul class="doc-list">
-            <li class="clearfix type-doc">
+            <li 
+                class="clearfix type-doc"
+                v-for="(item) in data.detail.user_resources.data"
+                :key='item.id'
+            >
                 <span class="type fl">活动文档：</span>
-                <span class="fl"><a href="">doc-list</a></span>
+                <span class="fl"><a href="">{{item.filename}}</a></span>
                 <span class="fr">
                     <a href="javascript:;"><img src="@/assets/icon/down.png" alt=""></a>
                 </span>
