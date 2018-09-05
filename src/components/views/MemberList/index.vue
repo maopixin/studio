@@ -201,7 +201,7 @@ export default {
             }
         }).catch(error=>{
             console.log(error)
-            this.list[0].list.loading = true;
+            this.loading = true;
             this.$notify.error({
                 title: '错误',
                 message: '请求出错'
@@ -250,7 +250,6 @@ export default {
         }
         .el-tabs__content{
             width: 1140px;
-            // position: absolute;
             background-color: #fff;
         }
     }
@@ -258,6 +257,9 @@ export default {
         padding: 0;
         height: 68px;
         border-bottom: 2px solid #e4e7ed;
+        position: absolute;
+        top: 0;
+        right: 0;
         .search_box{
             width: 224px;
             margin-top: 22px;

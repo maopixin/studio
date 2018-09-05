@@ -426,7 +426,7 @@
                                 :key = 'item.id'
                             >
                                 <div class="title fl">
-                                    <router-link :to="{name:'activityPage',params:{activityId:item.id}}">{{item.title}}</router-link>
+                                    <router-link :to="{name:'activityPage',params:{activityId:item.source_id}}">{{item.title}}</router-link>
                                 </div>
                                 <div class="name fl">
                                     <a href="javascript:;" rel="noopener noreferrer">{{item.username}}</a>

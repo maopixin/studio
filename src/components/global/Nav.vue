@@ -146,10 +146,9 @@ export default {
             ],
             routerType:{
                 "1":'information',
-                "2":"information",
+                "2":"resource",
                 "3":"information",
-                "4":'information',
-                "5":'resource',
+                "4":'research',
             }
         }
     },

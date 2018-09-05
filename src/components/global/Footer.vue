@@ -72,7 +72,7 @@ export default {};
   background: #efefef;
   min-width: 1020px;
   width: 100%;
-  margin-top: 100px;
+  margin-top: 60px;
   padding: 25px 0;
   color: #666;
 }

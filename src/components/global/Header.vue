@@ -19,13 +19,13 @@
                 </el-input>
             </div>
             <div class="part" data-type='login' style="" v-if='!userInfo'>
-                <a href="http://account.dljy.com/user/login/login">登录</a>
+                <a href="javascript:;" @click='login'>登录</a>
                 /
-                <a href="http://account.dljy.com/user/login/register" class="orange">注册</a>
+                <a href="javascript:;" @click='zc' class="orange">注册</a>
             </div>
             <div class="part" data-type='logined' v-if='userInfo'>
-                <a href="http://meet.dljy.com" data-user='logined' style="margin-right:20px;">{{name}}</a>
-                <a href="http://account.dljy.com/user/login/logout" class="orange">退出</a>
+                <a href="http://meet.dljy.com" data-user='logined' style="display:inline-block;line-height:21px;vertical-align:middle;margin-right:20px;width:85px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{name}}</a>
+                <a href="javascript:;" @click='loout' class="orange" style="display:inline-block;vertical-align:middle;">退出</a>
             </div>
         </div>
     </div>
@@ -34,6 +34,7 @@
 
 <script>
 import {getUserInfo} from '@api/index'
+const jsonp = require('jsonp');
 export default {
     name:'header-use',
     data(){
@@ -46,8 +47,7 @@ export default {
     created(){
         getUserInfo().then(data=>{
             if(data.status.code==0){
-                this.userInfo = true;
-                this.name = data.data.user.nickname;
+                
                 this.$store.commit('changeuserInfo',data.data.user)
             }else{
                 this.$message({
@@ -56,11 +56,41 @@ export default {
                 });
             }
         })
+        jsonp('http://account.dljy.com/user/api/get_login_user', null, (err, data) => {
+            if (err) {
+                this.$message({
+                    message: '登录信息获取失败',
+                    type: 'warning'
+                });
+            } else {
+                console.log(data,12312)
+                if(data.status.code==0){
+                    if(data.data.is_login){
+                        this.userInfo = true;
+                        this.name = data.data.user.nickname;
+                    }
+                }else{
+                    this.$message({
+                        message: '登录信息获取失败',
+                        type: 'warning'
+                    });
+                }
+            }
+        });
     },
     methods:{
         search(){
             this.$message('搜索暂未开放');
-        }
+        },
+        login(){
+            window.location.href = 'http://account.dljy.com/user/login/login?goto='+window.location.href;
+        },
+        zc(){
+            window.location.href = 'http://account.dljy.com/user/login/register?goto='+window.location.href;
+        },
+        loout(){
+            window.location.href = 'http://account.dljy.com/user/login/logout?goto='+window.location.href;
+        },
     }
 }
 </script>
@@ -80,6 +110,7 @@ export default {
         padding: 7px 0 0 0;
         display: inline-block;
         vertical-align: middle;
+        
     }
 }
 .teacher-class{
