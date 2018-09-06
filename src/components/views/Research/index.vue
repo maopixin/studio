@@ -96,7 +96,7 @@
 import Crumbs from "@/components/global/crumbs";
 import List from './components/List';
 import ExampleList from '@/components/global/ExampleList.vue';
-import {getActivityList,joinActivity} from '@api/index.js';
+import {getActivityList,joinActivity,getUserJoined} from '@api/index.js';
 export default {
     name:'research',
     components: {
@@ -115,6 +115,13 @@ export default {
       };
     },
     created(){
+        console.log(this.$store.getters.userInfo.get_login)
+        if(this.$store.getters.userInfo.get_login){
+            // getUserJoined().then(data=>{
+            //     console.log(data)
+            // })
+        }
+        
         getActivityList({
             page:1,
             pre_page:this.pre_page

@@ -226,7 +226,6 @@
                             <router-link :to='{name:"gather",query:{mid:"0"}}' class="title_more">更多</router-link>
                         </div>
                         <div class="clearfix news_boxs">
-                            
                             <div class="carousel_box" v-if="loading">
                                 <el-carousel indicator-position="outside" height='186px'>
                                     <el-carousel-item v-for="item in information.list" :key="item.id">
@@ -585,7 +584,11 @@ export default {
                 list:[],
             },
             studioInfo:{
-                data:{},
+                data:{
+                    user:{
+
+                    }
+                },
             },
             member:{
                 l:false,
@@ -633,7 +636,7 @@ export default {
                 studio:this.$route.params.id,
             }).then(res=>{
                 console.log(res,'studio');
-                this.loading = true;
+                
                 let data = res.data;
                 this.information.list = data.info.list;
                 this.announcement.list = data.notice.list;
@@ -649,9 +652,10 @@ export default {
                 }
                 this.teachingResources.list = data.resource.list.slice(1);
                 this.activity.list = data.activities.list;
-                this.studioInfo.data = data.studio;
+                this.studioInfo.data = data.studio.data;
                 this.lesson.list = data.schoolrooms.list.slice(0,3);
                 this.studioState.data = data.jiade;
+                this.loading = true;
                 this.$nextTick(()=>{
                 var myChart = this.$echarts.init(document.getElementById('main'));
                 var option = {
@@ -1155,7 +1159,7 @@ export default {
 .carousel_box{
     position: relative;
     margin-top: 30px;
-    padding: 40px 20px 40px;
+    padding: 40px 20px 23px;
     background-color: #fff;
     width: 248px;
     img{

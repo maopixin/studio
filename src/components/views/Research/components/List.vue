@@ -50,6 +50,9 @@ export default {
         handleJoinActivityClick(id){
             this.$emit('joinActivityClick',id)
         }
+    },
+    created(){
+        console.log(this.list,12313212)
     }
 }
 </script>

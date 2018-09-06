@@ -3,7 +3,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 const path = require('path');
 
-// http://gzs.dljy.com
+// http://institute.dljy.lzdev
 // http://institute.dljy.lzdev
 
 module.exports = {

@@ -116,7 +116,7 @@ export default {
         },
         getFileType(str){
             var pos = str.replace(/.+\./, "");
-            return pos;
+            return pos.toLowerCase();
         },
         pageChange(page){
             let index = this.activeIndexF;

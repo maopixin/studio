@@ -55,7 +55,7 @@
                         layout="prev, pager, next"
                         :total="Number(data.total)"
                         class="page_box"
-                        v-if="!l && !fail && data.list.length>0"
+                        v-show="!l && !fail && data.list.length>0"
                         :page-size='pre_page'
                         @current-change='pageChange'
                     >
@@ -131,8 +131,6 @@ export default {
     },
     watch:{
         menuList(){
-            console.log('计算属性变化')
-
             this.getList()
         }
     },
@@ -215,6 +213,9 @@ export default {
 }
 .content{
     position: relative;
+}
+.tac{
+    width: 285px;
 }
 .information_list{
     background-color: #fff;

@@ -27,25 +27,32 @@
                 <div class="title_box">
                     <h3 class="column_title">
                         <div class="t_l">LINE</div>
-                        <div class="t_c">专题资源</div>
+                        <div class="t_c">{{menuList.child[activeIndexF].name}}</div>
                     </h3>
                 </div>
-                <div>
-                    <ul class="resource_list">
-                        <li>
+                <div
+                    
+                >
+                    <ul class="resource_list"
+                        v-loading='loading'
+                    >
+                        <li
+                            v-for="(item) in data.list"
+                            :key='item.id'
+                        >
                             <!-- word ppt pdf -->
-                            <span class="icon word"></span>
+                            <span class="icon" :class="item.file_type"></span>
                             <span class="name">
-                                <a href="">资源名称</a>
+                                <a :href="item._link">{{item.title}}</a>
                             </span>
-                            <span class="type">PDF</span>
+                            <span class="type">{{item.file_type}}</span>
                             <span class="person">
-                                <a href="">name</a>
+                                <a href="">{{item.username}}</a>
                             </span>
-                            <span class="time">2018-06-60</span>
+                            <span class="time">{{item.udate}}</span>
                             <span class="down_num">
                                 <a href="">
-                                    <em></em>下载10次
+                                    <em></em>下载{{item.hits}}次
                                 </a>
                             </span>
                         </li>
@@ -53,8 +60,9 @@
                     <el-pagination
                         background
                         layout="prev, pager, next"
-                        :total="500"
+                        :total="data.total"
                         class="page_box"
+                        @current-change='pageChange'
                     >
                     </el-pagination>
                 </div>
@@ -72,13 +80,21 @@ export default {
     },
     data(){
         return {
-            
+            data:{
+                list:[],
+                total:0
+            },
+            loading:true
         }
     },
     computed:{
         menuList(){
-            let data = this.$getNavNow(this.$store.getters.navList,this.$getQuery('navId'));
+            let data = this.$getNavNow(this.$store.getters.navList,this.$route.query.navId || this.$getQuery('navId'));
             if(data){
+                data.child.unshift({
+                    name:'全部',
+                    id:this.$getQuery('navId')
+                })
                 return data;
             }else{
                 this.$router.push({name:'notFound'});
@@ -112,16 +128,60 @@ export default {
                     mId:this.menuList.child[index].id
                 }
             })
+        },
+        getFileType(str){
+            var pos = str.replace(/.+\./, "");
+            return pos.toLowerCase();
+        },
+        getList(){
+            this.loading = true;
+            getStudioData({
+                id:this.$route.params.id,
+                category_id:this.$route.query.mId,
+                pre_page:10
+            }).then(data=>{
+                this.loading = false;
+                if(data.status.code==0){
+                    data.data.total = Number(data.data.total);
+                    data.data.list.forEach(e => {
+                        e.file_type = this.getFileType(e.title);
+                    });
+                    this.data = data.data;
+                }else{
+
+                }
+            }).catch(error=>{
+                console.log(error);
+            })
+        },
+        pageChange(index){
+             this.loading = true;
+            getStudioData({
+                id:this.$route.params.id,
+                category_id:this.$route.query.mId,
+                pre_page:10,
+                page:index
+            }).then(data=>{
+                this.loading = false;
+                if(data.status.code==0){
+                    data.data.total = Number(data.data.total);
+                    data.data.list.forEach(e => {
+                        e.file_type = this.getFileType(e.title);
+                    });
+                    this.data = data.data;
+                }
+            })
+        }
+    },
+    watch:{
+        menuList(){
+            this.getList()
         }
     },
     created(){
-        getStudioData({
-            id:this.$route.params.id,
-            category_type_name:'专题资源',
-            category_id:this.$route.query.mId
-        }).then(data=>{
-            console.log(data)
-        })
+        if(this.$store.getters.navL){
+            this.getList();
+        }
     }
 };
 </script>
@@ -164,18 +224,60 @@ export default {
             background-size: cover;
             margin-right: 50px;
         }
+        .avi{
+            background-image: url('../TResource/icon/avi.png');
+        }
+        .doc{
+            background-image: url('../TResource/icon/doc.png');
+        }
+        .exe{
+            background-image: url('../TResource/icon/exe.png');
+        }
+        .html{
+            background-image: url('../TResource/icon/html.png');
+        }
+        .rar{
+            background-image: url('../TResource/icon/rar.png');
+        }
+        .rm{
+            background-image: url('../TResource/icon/rm.png');
+        }
+        .txt{
+            background-image: url('../TResource/icon/txt.png');
+        }
+        .wmv{
+            background-image: url('../TResource/icon/wmv.png');
+        }
+        .xls{
+            background-image: url('../TResource/icon/xls.png');
+        }
         .word{
-            background-image: url('./icon/word.png');
+            background-image: url('../TResource/icon/word.png');
         }
         .pdf{
-            background-image: url('./icon/pdf.png');
+            background-image: url('../TResource/icon/pdf.png');
         }
         .ppt{
-            background-image: url('./icon/ppt.png');
+            background-image: url('../TResource/icon/ppt.png');
+        }
+        .zip{
+            background-image: url('../TResource/icon/zip.png');
+        }
+        .pptx{
+            background-image: url('../TResource/icon/pptx.png');
+        }
+        .mp4{
+            background-image: url('../TResource/icon/mp4.png');
+        }
+        .mpg{
+            background-image: url('../TResource/icon/mpg.png');
         }
         .name{
             width: 318px;
             color: #1b9fe2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             a{
                 color:inherit;
             }

@@ -177,7 +177,12 @@ export function getActivityDetail(payload){
         return data.data;
     })
 }
-
+// 获取已参与活动
+export function getUserJoined(){
+    return axios.get('/api/activity_auth/user_joined').then(data=>{
+        return data.data;
+    })
+}
 // 添加评论
 export function activityUserComment(payload){
     return axios.post('/api/activityUserComment/create',payload).then(data=>{

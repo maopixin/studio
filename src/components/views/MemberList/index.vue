@@ -82,6 +82,13 @@ export default {
           }
       },
       followClick(obj){
+          if(!this.$store.getters.userInfo.get_login){
+                this.$notify.info({
+                    title: '消息',
+                    message: '当前未登录,请您先登录'
+                });
+                return false;
+          }
           if(obj.type=='关注'){
             followPerson({
                 follow_user_id:obj.id
@@ -114,7 +121,7 @@ export default {
                 console.log(error)
                 this.$notify.error({
                     title: '错误',
-                    message: '请求出错'
+                    message: '关注成员出错'
                 });
             })
           }else{
@@ -145,7 +152,7 @@ export default {
             }).catch(()=>{
                 this.$notify.error({
                     title: '错误',
-                    message: '请求出错'
+                    message: '取消成员关注出错'
                 });
             })
           }
@@ -186,7 +193,12 @@ export default {
             pre_page:1000
         }).then(data=>{
             if(data.status.code==0){
-                let list = this.handelData(data.data.list);
+                var list = [];
+                if(this.$store.getters.userInfo.get_login){
+                    list = this.handelData(data.data.list);
+                }else{
+                    list = data.data.list
+                }
                 this.loading = false;
                 this.memberList = list;
             }else{
@@ -204,7 +216,7 @@ export default {
             this.loading = true;
             this.$notify.error({
                 title: '错误',
-                message: '请求出错'
+                message: '成员列表请求出错'
             });
         })
     },

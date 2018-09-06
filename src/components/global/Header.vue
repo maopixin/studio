@@ -45,17 +45,7 @@ export default {
         }
     },
     created(){
-        getUserInfo().then(data=>{
-            if(data.status.code==0){
-                
-                this.$store.commit('changeuserInfo',data.data.user)
-            }else{
-                this.$message({
-                    message: '登录信息获取失败',
-                    type: 'warning'
-                });
-            }
-        })
+        
         jsonp('http://account.dljy.com/user/api/get_login_user', null, (err, data) => {
             if (err) {
                 this.$message({
@@ -68,6 +58,17 @@ export default {
                     if(data.data.is_login){
                         this.userInfo = true;
                         this.name = data.data.user.nickname;
+                        getUserInfo().then(data=>{
+                            if(data.status.code==0){
+                                data.data.user.get_login = true;
+                                this.$store.commit('changeuserInfo',data.data.user);
+                            }else{
+                                this.$message({
+                                    message: '登录信息获取失败',
+                                    type: 'warning'
+                                });
+                            }
+                        })
                     }
                 }else{
                     this.$message({
