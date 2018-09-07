@@ -2,12 +2,12 @@
     <ul>
         <li 
             class="clearfix" 
-            v-for="(item,index) in 6"
+            v-for="(item,index) in list.slice(0,6)"
             :key='index'
         >
             <span class="num">{{index+1}}</span>
             <span class="title">
-                <a href="">考拉设计的快乐俺家打开链接阿迪了；</a>
+                <router-link :to="{name:'activityPage',params:{activityId:item.id}}">{{item.title}}</router-link>
             </span>
         </li>
     </ul>
@@ -15,7 +15,7 @@
 
 <script>
 export default {
-
+    props:['list']
 }
 </script>
 

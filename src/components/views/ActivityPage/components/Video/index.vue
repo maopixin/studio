@@ -25,7 +25,7 @@
             <div class="video-info clearfix">
                 <span class="fl">{{item.filename}}</span>
                 <span class="fr">
-                    <a href="javascript:;">
+                    <a :href="'/index/file/download?activity_user_resource='+item.id" target="_blank">
                         <img src="@/assets/icon/down.png" alt="">
                         下载
                     </a>

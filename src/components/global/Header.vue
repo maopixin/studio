@@ -62,12 +62,9 @@ export default {
                             if(data.status.code==0){
                                 data.data.user.get_login = true;
                                 this.$store.commit('changeuserInfo',data.data.user);
-                            }else{
-                                this.$message({
-                                    message: '登录信息获取失败',
-                                    type: 'warning'
-                                });
                             }
+                        }).catch(error=>{
+                            console.log(error,'登录信息请求出错');
                         })
                     }
                 }else{

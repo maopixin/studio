@@ -14,7 +14,7 @@
                         <el-tab-pane label="全部" name="first" v-loading="detailList.loading">
                             <div style="height:50px;" v-if="detailList.loading"></div>
                             <List 
-                                :list='detailList.list'
+                                :list='all'
                                 @joinActivityClick = 'joinActivityClick'
                                 v-if="detailList.list.length>0"
                             />
@@ -46,7 +46,11 @@
                         </el-tab-pane>
                         <el-tab-pane label="进行中" name="third" v-loading="goingList.loading">
                             <div style="height:50px;" v-if="goingList.loading"></div>
-                            <List :list='goingList.list' v-if="goingList.list.length>0"/>
+                            <List 
+                                :list='going' 
+                                @joinActivityClick = 'joinActivityClick'
+                                v-if="goingList.list.length>0"
+                            />
                             <el-pagination
                                 v-if="goingList.list.length>0"
                                 background
@@ -85,7 +89,7 @@
                     </h3>
                 </div>
                 <div>
-                    <ExampleList/>
+                    <ExampleList :list='overList.list'/>
                 </div>
             </div>
         </div>
@@ -96,7 +100,7 @@
 import Crumbs from "@/components/global/crumbs";
 import List from './components/List';
 import ExampleList from '@/components/global/ExampleList.vue';
-import {getActivityList,joinActivity,getUserJoined} from '@api/index.js';
+import {getActivityList,joinActivity,getUserJoined,quitActivity} from '@api/index.js';
 export default {
     name:'research',
     components: {
@@ -111,23 +115,61 @@ export default {
         unStartList:{list:[],loading:true},
         goingList:{list:[],loading:true},
         overList:{list:[],loading:true},
+        userJoined:[],
         pre_page:5,
       };
     },
-    created(){
-        console.log(this.$store.getters.userInfo.get_login)
-        if(this.$store.getters.userInfo.get_login){
-            // getUserJoined().then(data=>{
-            //     console.log(data)
-            // })
+    computed:{
+        all(){
+            return this.detailList.list.map(e=>{
+                for (let i = 0; i < this.userJoined.length; i++) {
+                    if(e.id==this.userJoined[i].activity_id){
+                        e.have_been_involved_mine = true;
+                        break;
+                    }else{
+                        e.have_been_involved_mine = false;
+                    }
+                };
+                if(this.userJoined.length<=0){
+                   e.have_been_involved_mine = false; 
+                }
+                return e;
+            })
+        },
+        going(){
+            return this.goingList.list.map(e=>{
+                for (let i = 0; i < this.userJoined.length; i++) {
+                    if(e.id==this.userJoined[i].activity_id){
+                        e.have_been_involved_mine = true;
+                        break;
+                    }else{
+                        e.have_been_involved_mine = false;
+                    }
+                }
+                if(this.userJoined.length<=0){
+                   e.have_been_involved_mine = false; 
+                }
+                return e;
+            })
         }
-        
+    },
+    created(){
+        // console.log(this.$store.getters.userInfo.get_login)
+        // if(this.$store.getters.userInfo.get_login){
+            
+        // };
+        getUserJoined().then(data=>{
+            if(data.status.code==0){
+                this.userJoined = data.data.list;
+            }
+        })
         getActivityList({
             page:1,
             pre_page:this.pre_page
         }).then(data=>{
             this.detailList.loading = false;
             if(data.status.code==0){
+
                 this.detailList = data.data;
             }else{
                 this.$notify.error({
@@ -256,33 +298,100 @@ export default {
             }
         });
       },
-      joinActivityClick(id){
-          console.log(id)
-          joinActivity({
-              activity_id:id
-          }).then(data=>{
-              console.log(data);
-              if(data.status.code==0){
-                  
-                  this.$notify({
-                    title: '成功',
-                    message: '参与活动成功',
-                    type: 'success'
-                  });
-              }else{
-                let str = '';
-                for(let i in data.data){
-                    str += data.data[i]
+      joinActivityClick(obj){
+          let {id,go} = obj
+          if(go){
+            quitActivity({
+                activity_id:id
+            }).then(data=>{
+                console.log(data);
+                if(data.status.code==0){
+                    this.$notify({
+                        title: '成功',
+                        message: '取消活动成功',
+                        type: 'success'
+                    });
+                    this.userJoined = this.userJoined.filter(e=>{
+                        console.log(e.activity_id,id)
+                        return e.activity_id !== id
+                    });
+                    this.detailList.list = this.detailList.list.map(e=>{
+                        if(e.id==id){
+                            e.partner_cnt = data.data.cnt
+                        };
+                        return e;
+                    });
+                    this.goingList.list = this.goingList.list.map(e=>{
+                        if(e.id==id){
+                            e.partner_cnt = data.data.cnt
+                        };
+                        return e;
+                    })
+                }else{
+                    let str = '';
+                    for(let i in data.data){
+                        str += data.data[i]
+                    }
+                    this.$notify.error({
+                    title: '错误',
+                    message: str
+                    });
                 }
-                this.$notify.error({
-                  title: '错误',
-                  message: str
-                });
-              }
 
-          }).catch(error=>{
-              console.log(error)
-          })
+            }).catch(error=>{
+                console.log(error)
+            })
+          }else{
+            joinActivity({
+                activity_id:id
+            }).then(data=>{
+                console.log(data);
+                if(data.status.code==0){
+                    this.$notify({
+                        title: '成功',
+                        message: '参与活动成功',
+                        type: 'success'
+                    });
+                    this.userJoined = [...this.userJoined,{activity_id:id}];
+                    this.detailList.list = this.detailList.list.map(e=>{
+                        if(e.id==id){
+                            e.partner_cnt = data.data.cnt
+                        };
+                        return e;
+                    });
+                    this.goingList.list = this.goingList.list.map(e=>{
+                        if(e.id==id){
+                            e.partner_cnt = data.data.cnt
+                        };
+                        return e;
+                    })
+                }else{
+                    if(data.status.code==10105){
+                        this.$confirm('参与教研活动需要登录，是否需要登录？', '未登录', {
+                            distinguishCancelAndClose: true,
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消'
+                        })
+                        .then(() => {
+                            window.location.href='http://account.dljy.com/user/login/login?goto='+window.location.href;
+                        })
+                       
+                    }else{
+                        let str = '';
+                        for(let i in data.data){
+                            str += data.data[i]
+                        }
+                        this.$notify.error({
+                        title: '错误',
+                        message: str
+                        });
+                    }
+                }
+
+            }).catch(error=>{
+                console.log(error)
+            })
+          }
       }
     }
 }

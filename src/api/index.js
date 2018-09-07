@@ -1,12 +1,13 @@
 import axios from 'axios';
 axios.defaults.withCredentials = true;
-// axios.interceptors.request.use(
-//     config => {
-//         return config;
-//     },
-//     err => {
-//         return Promise.reject(err);
-//     });
+axios.interceptors.request.use(
+    config => {
+        config.headers['X-Requested-With'] = 'XMLHttpRequest';
+        return config;
+    },
+    err => {
+        return Promise.reject(err);
+    });
 
 // // http response 服务器响应拦截器，这里拦截401错误，并重新跳入登页重新获取token
 // axios.interceptors.response.use(
@@ -84,6 +85,14 @@ export function joinActivity(payload){
         return error;
     })
 }
+// 取消参加活动
+export function quitActivity(payload){
+    return axios.post('/api/activity_auth/quit',payload).then(data=>{
+        return data.data;
+    }).catch(error=>{
+        return error;
+    })
+}
 // 获取工作室详情
 export function getStudioDetail(payload){
     return axios.get('/studio/api/detail',{
@@ -127,7 +136,10 @@ export function followCancel(payload){
 // 获取用户信息
 export function getUserInfo(payload){
     return axios.get('/api/user/info',{
-        params:payload
+        params:payload,
+        headers:{
+            isAjax: true
+        }
     }).then(data=>{
         return data.data
     }).catch(error=>{
@@ -192,6 +204,21 @@ export function activityUserComment(payload){
 // 添加评价
 export function activitiyUserAppraisal(payload){
     return axios.post('/api/activityUserAppraisal/create',payload).then(data=>{
+        return data.data;
+    })
+}
+// 获取更多课程
+export function getLessonMore(payload){
+    return axios.get('/api/schoolRoom/more',{
+        params:payload
+    }).then(data=>{
+        return data.data;
+    })
+} 
+export function getLessonIndex(payload){
+    return axios.get('/api/schoolRoom/index',{
+        params:payload
+    }).then(data=>{
         return data.data;
     })
 }

@@ -286,7 +286,7 @@ export default {
                     newArr.push(JSON.parse(JSON.stringify(arr[i])))
                 }
             };
-            console.log(newArr);
+            this.currentTabComponent = newArr[0].my_type;
             return newArr;
         }
     },

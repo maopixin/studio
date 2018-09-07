@@ -30,9 +30,9 @@
                 :key='item.id'
             >
                 <span class="type fl">活动文档：</span>
-                <span class="fl"><a href="">{{item.filename}}</a></span>
+                <span class="fl"><a :href="'/index/file/download?activity_user_resource='+item.id" target="_blank">{{item.filename}}</a></span>
                 <span class="fr">
-                    <a href="javascript:;"><img src="@/assets/icon/down.png" alt=""></a>
+                    <a :href="'/file/download?activity_user_resource='+item.id" target="_blank"><img src="@/assets/icon/down.png" alt=""></a>
                 </span>
             </li>
         </ul>
@@ -46,7 +46,7 @@ export default {
 
     },
     created(){
-        console.log(this.data)
+
     }
 }
 </script>

@@ -324,7 +324,7 @@
                                     <div class="title">
                                         <a :href="article.data._link" target="_blank" rel="noopener noreferrer">{{article.data.title}}</a>
                                     </div>
-                                    <div class="sys">简介简介简介简介简介简介简介简介简介简介简介简介</div>
+                                    <div class="sys">{{article.data.media?article.data.media.body:''}}</div>
                                     <div class="name_time">
                                         <span class="name fl">{{article.data.username}}</span>
                                         <span class="time fl">{{article.data.utime.m + '-' + article.data.utime.d}}</span>
@@ -443,7 +443,7 @@
                             <div class="t_l">LINE</div>
                             <div class="t_c">名师课堂</div>
                         </h3>
-                        <!-- <router-link :to='{name:"research"}' class="title_more">更多</router-link> -->
+                        <router-link :to='{name:"classroom"}' class="title_more">更多</router-link>
                     </div>
                     <div>
                         <!-- <loading v-if='!lesson.l'/>
@@ -652,7 +652,7 @@ export default {
                 }
                 this.teachingResources.list = data.resource.list.slice(1);
                 this.activity.list = data.activities.list;
-                this.studioInfo.data = data.studio.data;
+                this.studioInfo.data = data.studio;
                 this.lesson.list = data.schoolrooms.list.slice(0,3);
                 this.studioState.data = data.jiade;
                 this.loading = true;
@@ -1075,9 +1075,11 @@ export default {
     background-color: #fff;
     a{
         display: block;
-        position: relative;
+        width: 365px;
+        height: 200px;
     }
     img{
+        display: block;
         width: 365px;
         height: 200px;
     }
@@ -1162,10 +1164,19 @@ export default {
     padding: 40px 20px 23px;
     background-color: #fff;
     width: 248px;
-    img{
+    .el-carousel__item a{
         display: block;
-        width: 100%;
-        height: 100%;
+        position: relative;
+        width: 248px;
+        height: 186px;
+    }
+    img{
+        min-width: 248px;
+        height: 186px;
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform: translate(-50%,-50%);
     }
     span{
         position: absolute;
@@ -1281,7 +1292,11 @@ export default {
         .sys{
             font-size: 12px;
             line-height: 22px;
+            height: 44px;
+            overflow: hidden;
             color: #8c8c8c;
+            white-space: wrap;
+            word-wrap: break-word;
         }
         .name_time{
             font-size: 14px;

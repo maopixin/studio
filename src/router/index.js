@@ -119,6 +119,11 @@ export default new Router({
           path:'gather',
           name:'gather',
           component:Gather
+        },
+        {
+          path:'curriculum',
+          name:'curriculum',
+          component:DayLesson
         }
       ]
     },

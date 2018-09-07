@@ -32,7 +32,7 @@ export default {
 }
 </script>
 
-<style lang='less'>
+<style lang='less' scoped>
     .pic-box{
         padding: 30px 0;
         li{

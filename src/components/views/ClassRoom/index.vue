@@ -1,6 +1,6 @@
 <template>
     <div>
-        <crumbs/>
+        <crumbs title='名师课堂'/>
         <div class="content">
             <el-row :gutter='20'>
                 <el-col :span='16'>
@@ -10,7 +10,7 @@
                                 <div class="t_l">LINE</div>
                                 <div class="t_c">名师面对面</div>
                             </h3>
-                            <a href="" class="title_more">更多</a>
+                            <!-- <a href="" class="title_more">更多</a> -->
                         </div>
                         <div class="video-box">
                             <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -18,10 +18,11 @@
                                 <el-tab-pane label="精彩回放" name="second"></el-tab-pane>
                             </el-tabs>
                             <div class="video-list">
-                                <h4 class="title">
+                                <!-- <h4 class="title">
                                     名师面对面是针对教师专业发展的线上直播主题研修活动
-                                </h4>
-                                <div class="video_list">
+                                </h4> -->
+                                <not-more/>
+                                <!-- <div class="video_list">
                                     <el-row :gutter='8'>
                                         <el-col 
                                             :span='8'
@@ -45,7 +46,7 @@
                                             </div>
                                         </el-col>
                                     </el-row>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -73,14 +74,15 @@
                         <div class="t_l">LINE</div>
                         <div class="t_c">名师带你学</div>
                     </h3>
-                    <a href="" class="title_more">更多</a>
+                    <!-- <a href="" class="title_more">更多</a> -->
                 </div>
                 <div>
                     <el-tabs v-model="activeName2" @tab-click="handleClick">
                         <el-tab-pane label="直播预告" name="first"></el-tab-pane>
                         <el-tab-pane label="精彩回放" name="second"></el-tab-pane>
                     </el-tabs>
-                    <el-row :gutter='20' class="video_list study_list">
+                    <not-more/>
+                    <!-- <el-row :gutter='20' class="video_list study_list">
                         <el-col 
                             :span='6'
                             v-for="(item,index) in 4"
@@ -102,7 +104,7 @@
                                 </div>
                             </div>
                         </el-col>
-                    </el-row>
+                    </el-row> -->
                 </div>
             </div>
             <div class="demand box-shadow">
@@ -111,31 +113,22 @@
                         <div class="t_l">LINE</div>
                         <div class="t_c">点播课堂</div>
                     </h3>
-                    <a href="" class="title_more">更多</a>
+                    <router-link class="title_more" :to="{name:'curriculum',query:this.query}">更多</router-link>
                 </div>
-                <div class="total-lesson-box box-shadow">
-                    <el-tabs v-model="activeName3" type="card" @tab-click="handleClick">
-                        <el-tab-pane label="全部" name="first">
-                            <demand-type-one></demand-type-one>
+                <div 
+                    class="total-lesson-box box-shadow"
+                    v-loading='loading'
+                >
+                    <el-tabs v-model="activeName3" type="card" @tab-click="handleClicks" v-if="!loading">
+                        <el-tab-pane 
+                            v-for="(item) in list"
+                            :key="item.id"
+                            :label="item.name"
+                            :name="item.name"
+                        >
+                            <demand-type-one :list='data[item.id].list'></demand-type-one>
                         </el-tab-pane>
-                        <el-tab-pane label="自拍视频" name="second">
-
-                        </el-tab-pane>
-                        <el-tab-pane label="网络教学视频" name="third">
-
-                        </el-tab-pane>
-                        <el-tab-pane label="专题讲座" name="fourth">
-
-                        </el-tab-pane>
-                        <el-tab-pane label="评上说课" name="fifth">
-
-                        </el-tab-pane>
-                        <el-tab-pane label="说课" name="sixth">
-
-                        </el-tab-pane>
-                        <el-tab-pane label="微课程" name="seveth">
-
-                        </el-tab-pane>
+                        
                     </el-tabs>
                 </div>
             </div>
@@ -146,6 +139,9 @@
 <script>
 import Crumbs from '@global/crumbs'
 import DemandTypeOne from './components/DemandTypeOne'
+import NotMore from '@global/NotMore'
+import Fail from '@global/Fail'
+import {getLessonIndex} from '@api/index'
 import Vue from 'vue'
 import 'vue-event-calendar/dist/style.css' //1.1.10之后的版本，css被放在了单独的文件中，方便替换
 import vueEventCalendar from 'vue-event-calendar'
@@ -155,31 +151,46 @@ export default {
     components: {
         Crumbs,
         DemandTypeOne,
+        NotMore,
+        Fail
     },
     data() {
         return {
             activeName: 'first',
             activeName2:'first',
-            activeName3:'first',
+            activeName3:'全部',
             demoEvents: [
-                {
-                    date:'2018/07/12',
-                    title:''
-                },
-                {
-                    date: '2018/6/28',
-                    title: '',
-                },
-                {
-                    date: '2018/6/27',
-                    title: ''
-                }
-            ]
+                // {
+                //     date:'2018/9/08',
+                //     title:''
+                // },
+                // {
+                //     date: '2018/9/28',
+                //     title: '',
+                // },
+                // {
+                //     date: '2018/9/27',
+                //     title: ''
+                // }
+            ],
+            data:{},
+            loading:true,
+            query:{
+                navId:null,
+                mId:'all'
+            },
+            navid:null
         };
     },
     methods: {
         handleClick(tab, event) {
-            console.log(tab, event);
+            
+        },
+        handleClicks(tab, event){
+            this.query = {
+                navId:this.navid,
+                mId:this.list[tab.index].id
+            }
         },
         handleDayChanged(day){
             this.demoEvents.forEach(e => {
@@ -187,6 +198,36 @@ export default {
                     //do something
                 }
             });
+        },
+        getList(){
+            this.loading = true;
+            getLessonIndex({
+                studio:this.$route.params.id
+            }).then(data=>{
+                this.data = data.data.data;
+                this.loading = false;
+            })
+        },
+        
+    },
+    created () {
+        this.getList()
+    },
+    computed:{
+        list(){
+            let list = [
+                {
+                    name:'全部',
+                    id:'all',
+                }
+            ];
+            this.$store.getters.navList.forEach(e=>{
+                if(e.type_code == 3){
+                    this.navid = e.id;
+                    list =  [...list,...e.child];
+                }
+            });
+            return list;
         }
     }
 }
@@ -205,6 +246,7 @@ export default {
     }
     .video-list{
         padding: 0 20px;
+        height: 359px;
         .title{
             font-size: 16px;
             line-height: 68px;
@@ -215,6 +257,7 @@ export default {
         padding-bottom: 50px;
         .pic-box{
             position: relative;
+            padding: 0 !important;
             img{
                 display: block;
                 width: 100%;

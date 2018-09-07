@@ -236,7 +236,18 @@ export default {
                         this.msg = '';
                         this.textNum = 140;
                     }else{
-                        this.$message.error(this.$tips(data.data));
+                        if(data.status.code==10105){
+                            this.$alert('发表评论需要登录，请您先进行登录', '未登录', {
+                                confirmButtonText: '确定',
+                                cancelButtonText: '取消',
+                            }).then(() => {
+                                window.open('http://account.dljy.com/user/login/login?goto='+window.location.href);
+                            }).catch(()=>{
+                                console.log('取消登录')
+                            })
+                        }else{
+                            this.$message.error(this.$tips(data.data));
+                        }
                     }
                 }).catch(error=>{
                     this.$message.error('评论出错，请稍后尝试');
@@ -250,7 +261,7 @@ export default {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                 }).then(() => {
-                    window.open('http://account.dljy.com/user/login/login');
+                    window.location.href = 'http://account.dljy.com/user/login/login?goto='+window.location.href;
                 }).catch(()=>{
                     console.log('取消登录')
                 })

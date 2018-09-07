@@ -25,26 +25,28 @@
         </h4>
         <el-upload
             class="upload-demo"
-            action="/public/File/upload"
+            :action="'/index/file/upload?studio_id='+this.$route.params.id+'&activity_tache_id='+this.data.id"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
+            :on-success='success'
             :before-remove="beforeRemove"
             multiple
             :limit="3"
             :on-exceed="handleExceed"
             :with-credentials='true'
-            :file-list="fileList">
+            :file-list="fileList"
+        >
             <el-button size="small" type="primary">上传文件</el-button>
-            <div slot="tip" class="el-upload__tip"></div>
+            <div slot="tip" class="el-upload__tip">只能上传{{data.detail.upload_limit}}文件</div>
         </el-upload>
         <ul class="doc-list">
             <li 
                 class="clearfix type-doc"
-                v-for="(item) in data.detail.user_resources.data"
+                v-for="(item) in flist"
                 :key='item.id'
             >
                 <span class="type fl">活动文档：</span>
-                <span class="fl"><a href="">{{item.filename}}</a></span>
+                <span class="fl"><a :href="item.source_path">{{item.filename}}</a></span>
                 <span class="fr">
                     <a href="javascript:;"><img src="@/assets/icon/down.png" alt=""></a>
                 </span>
@@ -58,7 +60,8 @@ export default {
     props:['data'],
     data() {
       return {
-          fileList:[]
+          fileList:[],
+          list:[]
       };
     },
     methods: {
@@ -73,7 +76,25 @@ export default {
       },
       beforeRemove(file, fileList) {
         return this.$confirm(`确定移除 ${ file.name }？`);
+      },
+      success(response, file, fileList){
+          console.log(response);
+        if(response.status.code==0){
+            this.$message({
+                message: '文件上传成功',
+                type: 'success'
+            });
+            this.list = [...this.list,response.data.data];
+            this.fileList = [];
+        }else{
+            this.$message.error('上传失败');
+        }
       }
+    },
+    computed:{
+        flist(){
+            return [...this.list,...this.data.detail.user_resources.data]
+        }
     }
 }
 </script>

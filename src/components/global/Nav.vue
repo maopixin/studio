@@ -25,7 +25,7 @@
                         v-for="(value,i) in item.child"
                         :key='i'
                     >
-                        <router-link :to='{name:routerType[item.type_code],query:{navId:item.id,mId:value.id}}'>{{value.name}}</router-link>
+                        <router-link :to='{name:routerType[value.type_code],query:{navId:item.id,mId:value.id}}'>{{value.name}}</router-link>
                     </li>
                 </ul>
             </li>
@@ -147,8 +147,9 @@ export default {
             routerType:{
                 "1":'information',
                 "2":"resource",
-                "3":"information",
+                "3":"classroom",
                 "4":'research',
+                'mine_1':'curriculum'
             }
         }
     },
@@ -199,6 +200,9 @@ export default {
             newArr.forEach(e =>{
                 let id = e.id;
                 arr.forEach(e1 => {
+                    if(e1.type_code==3 && e1.parent_id!=0){
+                        e1.type_code = 'mine_1'
+                    }
                     if(e1.parent_id==id){
                         e.child.push(e1)
                     }

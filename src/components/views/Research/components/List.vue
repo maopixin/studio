@@ -25,7 +25,8 @@
                 </div>
                 <div class="sys">
                     <span class="fl">活动描述：{{item.description}}</span>
-                    <a href="javasxript:;" @click='handleJoinActivityClick(item.id)' v-if='item.process_status==1'>立即参与</a>
+                    <a @click='handleJoinActivityClick(item.id,item.have_been_involved_mine)' v-if='item.process_status==1'>{{item.have_been_involved_mine?'取消参与':'立即参与'}}</a>
+                    <!--  -->
                 </div>
             </div>
         </li>
@@ -47,12 +48,12 @@ export default {
         }
     },
     methods:{
-        handleJoinActivityClick(id){
-            this.$emit('joinActivityClick',id)
+        handleJoinActivityClick(id,go){
+            this.$emit('joinActivityClick',{id,go});
         }
     },
     created(){
-        console.log(this.list,12313212)
+        
     }
 }
 </script>
@@ -143,6 +144,7 @@ export default {
                     text-overflow: ellipsis;
                 }
                 a{
+                    cursor: pointer;
                     width: 96px;
                     height: 30px;
                     background-color: red;

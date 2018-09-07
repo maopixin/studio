@@ -43,18 +43,18 @@
                             <!-- word ppt pdf -->
                             <span class="icon" :class="item.file_type"></span>
                             <span class="name">
-                                <a :href="item._link">{{item.title}}</a>
+                                <a :href="item._link" target="_blank">{{item.title}}</a>
                             </span>
                             <span class="type">{{item.file_type}}</span>
                             <span class="person">
                                 <a href="">{{item.username}}</a>
                             </span>
                             <span class="time">{{item.udate}}</span>
-                            <span class="down_num">
+                            <!-- <span class="down_num">
                                 <a href="">
                                     <em></em>下载{{item.hits}}次
                                 </a>
-                            </span>
+                            </span> -->
                         </li>
                     </ul>
                     <el-pagination
@@ -251,6 +251,9 @@ export default {
         .xls{
             background-image: url('../TResource/icon/xls.png');
         }
+        .xlsx{
+            background-image: url('../TResource/icon/xls.png');
+        }
         .word{
             background-image: url('../TResource/icon/word.png');
         }
@@ -274,6 +277,7 @@ export default {
         }
         .name{
             width: 318px;
+            width: 436px;
             color: #1b9fe2;
             white-space: nowrap;
             overflow: hidden;
