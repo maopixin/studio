@@ -82,6 +82,10 @@ export default {
                 }).catch(error=>{
 
                 })
+            }else if(this.rate<=0){
+                this.$message('请先打分再进行提交');
+            }else if(this.harvest.trim()==''){
+                this.$message('请输入内容再进行提交');
             }
         }
     }

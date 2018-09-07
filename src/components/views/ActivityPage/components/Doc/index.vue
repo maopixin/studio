@@ -32,7 +32,7 @@
                 <span class="type fl">活动文档：</span>
                 <span class="fl"><a :href="'/index/file/download?activity_user_resource='+item.id" target="_blank">{{item.filename}}</a></span>
                 <span class="fr">
-                    <a :href="'/file/download?activity_user_resource='+item.id" target="_blank"><img src="@/assets/icon/down.png" alt=""></a>
+                    <a :href="'/index/file/download?activity_user_resource='+item.id" target="_blank"><img src="@/assets/icon/down.png" alt=""></a>
                 </span>
             </li>
         </ul>

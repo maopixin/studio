@@ -29,15 +29,17 @@
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :on-success='success'
+            :on-error='uperror'
             :before-remove="beforeRemove"
             multiple
             :limit="3"
             :on-exceed="handleExceed"
             :with-credentials='true'
             :file-list="fileList"
+            :disabled='!this.$store.getters.userInfo.get_login'
         >
-            <el-button size="small" type="primary">上传文件</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传{{data.detail.upload_limit}}文件</div>
+            <el-button size="small" type="primary" @click='beforeUpload'>上传文件</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传{{data.detail.upload_limit.join('、')}}文件</div>
         </el-upload>
         <ul class="doc-list">
             <li 
@@ -46,9 +48,9 @@
                 :key='item.id'
             >
                 <span class="type fl">活动文档：</span>
-                <span class="fl"><a :href="item.source_path">{{item.filename}}</a></span>
+                <span class="fl"><a :href="'/index/file/download?activity_user_resource='+item.id" target="_blank">{{item.filename}}</a></span>
                 <span class="fr">
-                    <a href="javascript:;"><img src="@/assets/icon/down.png" alt=""></a>
+                    <a :href="'/index/file/download?activity_user_resource='+item.id" target="_blank"><img src="@/assets/icon/down.png" alt=""></a>
                 </span>
             </li>
         </ul>
@@ -77,18 +79,39 @@ export default {
       beforeRemove(file, fileList) {
         return this.$confirm(`确定移除 ${ file.name }？`);
       },
+      beforeUpload(){
+            if(!this.$store.getters.userInfo.get_login){
+                this.$alert('上传文件需要登录，请您先进行登录', '未登录', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(() => {
+                    window.location.href = 'http://account.dljy.com/user/login/login?goto='+window.location.href;
+                }).catch(()=>{
+                    console.log('取消登录')
+                })
+            }
+      },
       success(response, file, fileList){
-          console.log(response);
-        if(response.status.code==0){
-            this.$message({
-                message: '文件上传成功',
-                type: 'success'
-            });
-            this.list = [...this.list,response.data.data];
+        if(!response.status){
+            this.$message.error('文件上传失败');
             this.fileList = [];
         }else{
-            this.$message.error('上传失败');
+            if(response.status.code==0){
+                this.$message({
+                    message: '文件上传成功',
+                    type: 'success'
+                });
+                this.list = [...this.list,response.data.data];
+                this.fileList = [];
+            }else{
+                this.$message.error('文件上传失败');
+                this.fileList = [];
+            }
         }
+      },
+      uperror(err, file, fileList){
+        this.$message.error('文件上传失败');
+        this.fileList = [];
       }
     },
     computed:{

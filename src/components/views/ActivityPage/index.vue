@@ -13,7 +13,7 @@
             <div class="activity_info clearfix box-shadow">
                 <div class="pic_box fl">
                     <img :src="data.cover" alt="">
-                    <span class="ac_type on_line">线上</span>
+                    <!-- <span class="ac_type on_line">线上</span> -->
                 </div>
                 <div class="fr ac_info">
                     <h3 class="title">{{data.title}}</h3>
@@ -347,6 +347,12 @@ export default {
                 }
                 .on_line{
                     background-image: url('./img/on_line.png')
+                }
+                .under_line{
+                    background-image: url('./img/under_line.png')
+                }
+                .total{
+                    background-image: url('./img/total.png')
                 }
             }
             .ac_info{

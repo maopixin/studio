@@ -48,10 +48,10 @@
                             <div class="time_fn clearfix">
                                 <time class="fl color" datatime=''>{{item.utime}}</time>
                                 <div class="fr fn-box">
-                                    <div class="fl zan">
+                                    <!-- <div class="fl zan">
                                         <span class="fl"></span>
                                         （0）
-                                    </div>
+                                    </div> -->
                                     <!-- <div 
                                         class="fl color return ns"
                                         @click='reply'

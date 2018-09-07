@@ -6,8 +6,10 @@
             :key='index'
         >
             <div class="pic_box fl">
-                <img :src="item.cover" alt="">
-                <span>{{item.type_text}}</span>
+                <router-link :to="{name:'activityPage',params:{activityId:item.id}}">
+                    <img :src="item.cover" alt="">
+                    <span>{{item.address.slice(0,2)}}</span>
+                </router-link>
             </div>
             <div class="activity_info fl">
                 <div class="title clearfix">
