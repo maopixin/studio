@@ -314,12 +314,15 @@
                         </div>
                         
                         <div v-if="loading">
-                            <div class="resource_info_box clearfix">
+                            <div 
+                                class="resource_info_box clearfix"
+                                v-if="article.first"
+                            >
                                 <div class="fl img_box">
                                     <img src="./img/teacher_img.jpg" alt="">
                                 </div>
                                 <div class="fr resource_info"
-                                    v-if="article.first"
+                                    
                                 >
                                     <div class="title">
                                         <a :href="article.data._link" target="_blank" rel="noopener noreferrer">{{article.data.title}}</a>
@@ -370,7 +373,7 @@
                                     <div class="title">
                                         <a :href="teachingResources.data._link" target="_blank" rel="noopener noreferrer">{{teachingResources.data.title}}</a>
                                     </div>
-                                    <div class="sys">简介简介简介简介简介简介简介简介简介简介简介简介</div>
+                                    <div class="sys">{{teachingResources.data.media?teachingResources.data.media.body:''}}</div>
                                     <div class="name_time">
                                         <span class="name fl">{{teachingResources.data.username}}</span>
                                         <span class="time fl">{{teachingResources.data.utime.m + '-' + teachingResources.data.utime.d}}</span>
@@ -631,12 +634,12 @@ export default {
             this.visitor_show_index = -1;
         },
         firstLoading(){
-            
             getStudioAllInfo({
                 studio:this.$route.params.id,
             }).then(res=>{
                 console.log(res,'studio');
                 
+                this.loading = true;
                 let data = res.data;
                 this.information.list = data.info.list;
                 this.announcement.list = data.notice.list;
@@ -655,7 +658,7 @@ export default {
                 this.studioInfo.data = data.studio;
                 this.lesson.list = data.schoolrooms.list.slice(0,3);
                 this.studioState.data = data.jiade;
-                this.loading = true;
+                
                 this.$nextTick(()=>{
                 var myChart = this.$echarts.init(document.getElementById('main'));
                 var option = {
@@ -690,6 +693,7 @@ export default {
                 myChart.setOption(option);
                 })
             }).catch(error=>{
+                this.loading = true;
                 console.log(error);
             })
 
@@ -709,6 +713,7 @@ export default {
                     this.member.fail = true
                 }
             }).catch(error=>{
+                this.member.l = true;
                 this.member.fail = true;
             })
         }
@@ -1117,6 +1122,8 @@ export default {
 }
 .studio_new_list{
     padding: 28px 20px 3px;
+    box-sizing: border-box;
+    height: 279px;
     background-color: #fff;
     font-size: 0;
     li{

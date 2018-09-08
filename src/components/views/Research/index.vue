@@ -301,46 +301,8 @@ export default {
       joinActivityClick(obj){
           let {id,go} = obj
           if(go){
-            quitActivity({
-                activity_id:id
-            }).then(data=>{
-                console.log(data);
-                if(data.status.code==0){
-                    this.$notify({
-                        title: '成功',
-                        message: '取消活动成功',
-                        type: 'success'
-                    });
-                    this.userJoined = this.userJoined.filter(e=>{
-                        console.log(e.activity_id,id)
-                        return e.activity_id !== id
-                    });
-                    this.detailList.list = this.detailList.list.map(e=>{
-                        if(e.id==id){
-                            e.partner_cnt = data.data.cnt
-                        };
-                        return e;
-                    });
-                    this.goingList.list = this.goingList.list.map(e=>{
-                        if(e.id==id){
-                            e.partner_cnt = data.data.cnt
-                        };
-                        return e;
-                    })
-                }else{
-                    let str = '';
-                    for(let i in data.data){
-                        str += data.data[i]
-                    }
-                    this.$notify.error({
-                    title: '错误',
-                    message: str
-                    });
-                }
-
-            }).catch(error=>{
-                console.log(error)
-            })
+            return false;
+            
           }else{
             joinActivity({
                 activity_id:id

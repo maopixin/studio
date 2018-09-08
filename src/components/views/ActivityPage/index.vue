@@ -39,6 +39,14 @@
                             <span class="blue">{{data.start_time}} 至 {{data.stop_time}}</span>
                         </li>
                     </ul>
+                    <div align='right' v-if="showJoin">
+                        <el-button type="danger" round class="red" @click="join(data.id)">立即参与</el-button>
+                    </div>
+                    <el-tooltip class="sign_out_box" effect="dark" content="点击取消参与" placement="bottom-end">
+                        <div class="sign_out" @click='cancelJoin(data.id)' v-if="showSign">
+                            取消参与
+                        </div>
+                    </el-tooltip>
                 </div>
             </div>
             <div class="margin_t notice p" v-if="false">
@@ -196,7 +204,7 @@ import Pic from './components/Pic';
 import Score from './components/Score';
 import Vote from './components/Vote';
 import Msg from './components/Msg';
-import {getActivityDetail} from '@api/index';
+import {getActivityDetail,quitActivity,getUserJoined,joinActivity} from '@api/index';
 export default {
     components:{
        TextBox, Doc, Res, VideoBox, Pic, Score, Vote, Msg, 
@@ -220,7 +228,8 @@ export default {
             },
             
             currentTabComponent:'TextBox',
-            loading:true
+            loading:true,
+            userJoined:[]
         }
     },
     methods:{
@@ -288,6 +297,84 @@ export default {
             };
             this.currentTabComponent = newArr[0].my_type;
             return newArr;
+        },
+        cancelJoin(id){
+            this.$confirm('确定取消参与吗？', '取消参与活动', {
+                distinguishCancelAndClose: true,
+                confirmButtonText: '确定',
+                cancelButtonText: '取消'
+            })
+            .then(() => {
+                quitActivity({
+                    activity_id:id
+                }).then(data=>{
+                    console.log(data);
+                    if(data.status.code==0){
+                        this.$notify({
+                            title: '成功',
+                            message: '取消活动成功',
+                            type: 'success'
+                        });
+                        this.userJoined = this.userJoined.filter(e=>{
+                            return e.activity_id !== id
+                        });
+                    }else{
+                        let str = '';
+                        for(let i in data.data){
+                            str += data.data[i]
+                        }
+                        this.$notify.error({
+                        title: '错误',
+                        message: str
+                        });
+                    }
+
+                }).catch(error=>{
+                    console.log(error)
+                })
+            })
+            .catch(action => {
+                
+            });
+            
+        },
+        join(id){
+            joinActivity({
+                activity_id:id
+            }).then(data=>{
+                if(data.status.code==0){
+                    this.$notify({
+                        title: '成功',
+                        message: '参与活动成功',
+                        type: 'success'
+                    });
+                    this.userJoined = [...this.userJoined,{activity_id:id}];
+                }else{
+                    if(data.status.code==10105){
+                        this.$confirm('参与教研活动需要登录，是否需要登录？', '未登录', {
+                            distinguishCancelAndClose: true,
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消'
+                        })
+                        .then(() => {
+                            window.location.href='http://account.dljy.com/user/login/login?goto='+window.location.href;
+                        })
+                       
+                    }else{
+                        let str = '';
+                        for(let i in data.data){
+                            str += data.data[i]
+                        }
+                        this.$notify.error({
+                        title: '错误',
+                        message: str
+                        });
+                    }
+                }
+
+            }).catch(error=>{
+                console.log(error)
+            })
         }
     },
     created(){
@@ -295,7 +382,6 @@ export default {
             studio_id:this.$route.params.id,
             id:this.$route.params.activityId
         }).then(data=>{
-            console.log(data);
             this.loading = false;
             if(data.status.code==0){
                 data.data.tache = this.handelData(data.data.tache);
@@ -304,7 +390,36 @@ export default {
         }).catch(error=>{
             this.loading = false;
 
+        });
+        getUserJoined().then(data=>{
+            if(data.status.code==0){
+                this.userJoined = data.data.list;
+            }
         })
+    },
+    computed:{
+        showSign(){
+            let show = false;
+            for (let i = 0; i < this.userJoined.length; i++) {
+                if(this.userJoined[i].activity_id==this.$route.params.activityId){
+                    show = true;
+                }
+            };
+            return show;
+        },
+        showJoin(){
+            let show = true;
+            if(this.data.process_status!=1){
+                return false;
+            }
+            for (let i = 0; i < this.userJoined.length; i++) {
+                if(this.userJoined[i].activity_id==this.$route.params.activityId){
+                    show = false;
+                }
+            };
+            console.log(show)
+            return show;
+        }
     }
 }
 </script>
@@ -357,6 +472,21 @@ export default {
             }
             .ac_info{
                 width: 720px;
+                position: relative;
+                .sign_out{
+                    position: absolute;
+                    cursor: pointer;
+                    width: 16px;
+                    height: 16px;
+                    right: 0;
+                    bottom: 0;
+                    background: url('./img/sign_out_normal.png') no-repeat center center;
+                    background-size: 16px;
+                    text-indent: -9999999px;
+                }
+                .red{
+                    background-color: red;
+                }
                 .title{
                     font-size: 22px;
                     line-height: 52px;

@@ -27,7 +27,8 @@
                 </div>
                 <div class="sys">
                     <span class="fl">活动描述：{{item.description}}</span>
-                    <a @click='handleJoinActivityClick(item.id,item.have_been_involved_mine)' v-if='item.process_status==1'>{{item.have_been_involved_mine?'取消参与':'立即参与'}}</a>
+                    <a @click='handleJoinActivityClick(item.id,item.have_been_involved_mine)' v-if='item.process_status==1 && !item.have_been_involved_mine'>立即参与</a>
+                    <router-link :to="{name:'activityPage',params:{activityId:item.id}}" v-if="item.process_status==1 && item.have_been_involved_mine">进入活动</router-link>
                     <!--  -->
                 </div>
             </div>
@@ -55,7 +56,12 @@ export default {
         }
     },
     created(){
-        
+
+    },
+    computed:{
+        studioId(){
+            return this.$route.params.id;
+        }
     }
 }
 </script>

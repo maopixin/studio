@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Crumbs :title='activeName'/>
+        <Crumbs :title='Breadcrumb'/>
         <el-container class="content">
             <el-row class="tac" :gutter="20">
                 <el-col :span="24">
@@ -89,7 +89,8 @@ export default {
                 list:[],
                 total:0
             },
-            activeName:''
+            activeName:'',
+            Breadcrumb:''
         }
     },
     created(){
@@ -101,6 +102,7 @@ export default {
     computed:{
         menuList(){
             let data = this.$getNavNow(this.$store.getters.navList,this.$route.query.navId || this.$getQuery('navId'));
+            this.Breadcrumb = data.name;
             if(data){
                 data.child.unshift({
                     name:'全部',
