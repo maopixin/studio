@@ -1123,7 +1123,7 @@ export default {
 .studio_new_list{
     padding: 28px 20px 3px;
     box-sizing: border-box;
-    height: 279px;
+    height: 331px;
     background-color: #fff;
     font-size: 0;
     li{
