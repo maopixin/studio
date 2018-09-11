@@ -222,3 +222,10 @@ export function getLessonIndex(payload){
         return data.data;
     })
 }
+
+// /api/studio/registry
+export function studioApply(payload){
+    return axios.post('/api/studio/registry',payload).then(data=>{
+        return data.data;
+    })
+}

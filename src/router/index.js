@@ -25,6 +25,7 @@ const BriefIntroduce = () => import('@views/BriefIntroduce')
 const StudioList = () => import('@views/StudioList')
 const Gather = () => import('@views/Gather/Gather')
 const ActivityPage = () => import('@views/ActivityPage')
+const StudioApply = () => import('@views/StudioApply')
 
 Vue.use(Router);
 
@@ -126,6 +127,11 @@ export default new Router({
           component:DayLesson
         }
       ]
+    },
+    {
+      path:'/apply',
+      name:'StudioApply',
+      component: StudioApply
     },
     // {
     //   path:'/institute',
