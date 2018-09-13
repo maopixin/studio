@@ -84,7 +84,7 @@ export default {
         this.$refs['form'].validate((valid) => {
           if (valid) {
             studioApply({
-                persion_name:this.form.name,
+                person_name:this.form.name,
                 phone:this.form.tel,
                 school:this.form.school,
                 duty:this.form.title,

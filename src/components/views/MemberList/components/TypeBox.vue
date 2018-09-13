@@ -28,7 +28,7 @@
                         <span class="fl">{{index+1}}</span>
                         <img class="fl" :src="item.smallAvatar" alt=""/>
                     </span>
-                    <span class="name fl">{{item.title||'无'}}</span>
+                    <span class="name fl">{{item.nickname||'无'}}</span>
                     <span class="sex fl">{{item.gender}}</span>
                     <span class="identity fl">{{item.duty}}</span>
                     <span class="company fl">{{item.company||'无'}}</span>
@@ -84,6 +84,7 @@ export default {
             line-height: 66px;
             background-color: #fff;
             color: #333333;
+            overflow: hidden;
             &:nth-child(2n){
                 background-color: #f5f6f7;
             }
@@ -149,6 +150,7 @@ export default {
                 width: 145px;
                 text-align: center;
                 margin-right: 50px;
+
             }
             .company{
                 width: 280px;

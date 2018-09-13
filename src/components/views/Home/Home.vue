@@ -88,7 +88,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <a href="javascript:;" @click="()=>{this.$message('加入工作室功能未开放')}" class="join" id="btn">
+                            <a href="javascript:;" @click="joinStudio" class="join" id="btn">
                                 <span class="text">申请加入工作室</span>
                             </a>
                         </div>
@@ -241,7 +241,6 @@
                                     <li 
                                         v-for="(item) in information.list"
                                         :key='item.id'
-
                                     >
                                         <a :href="item._link" target="_blank" rel="noopener noreferrer">
                                             {{item.title}}
@@ -548,7 +547,6 @@
                             </ul>
                         </div>
                     </div>
-
                 </div> -->
             </div>
         </div>
@@ -564,6 +562,7 @@ import {
     getStuidoMembers,
     getStudioState,
     getStudioAllInfo,
+    studioJoin
 } from '@api/index';
 import Loading from '@global/Loading';
 import Fail from '@global/Fail'
@@ -627,6 +626,29 @@ export default {
         Fail
     },
     methods:{
+        joinStudio(){
+            if(this.$store.getters.userInfo.get_login){
+                studioJoin().then(data=>{
+                    if(data.status.code==0){
+                        this.$message({
+                            message: '加入工作室申请提交成功',
+                            type: 'success'
+                        });
+                    }else{
+                        this.$message('提交失败');
+                    }
+                })
+            }else{
+                this.$confirm('参与教研活动需要登录，是否需要登录？', '未登录', {
+                    distinguishCancelAndClose: true,
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消'
+                })
+                .then(() => {
+                    window.location.href='http://account.dljy.com/user/login/login?goto='+window.location.href;
+                })
+            }
+        },
         HandelHover(i){
             this.visitor_show_index = i;
         },

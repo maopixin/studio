@@ -154,10 +154,6 @@ export default {
         }
     },
     created(){
-        // console.log(this.$store.getters.userInfo.get_login)
-        // if(this.$store.getters.userInfo.get_login){
-            
-        // };
         getUserJoined().then(data=>{
             if(data.status.code==0){
                 this.userJoined = data.data.list;

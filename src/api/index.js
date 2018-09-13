@@ -229,3 +229,10 @@ export function studioApply(payload){
         return data.data;
     })
 }
+
+// /api/user/joinStudio
+export function studioJoin(payload){
+    return axios.get('/api/user/joinStudio').then(data=>{
+        return data.data;
+    })
+}
