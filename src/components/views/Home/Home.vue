@@ -88,8 +88,11 @@
                                     </a>
                                 </div>
                             </div>
-                            <a href="javascript:;" @click="joinStudio" class="join" id="btn">
+                            <a href="javascript:;" @click="joinStudio" class="join" v-if="showState.join">
                                 <span class="text">申请加入工作室</span>
+                            </a>
+                            <a href="http://gzs.dljy.com/admin/index/index" target="_blank" class="join" v-if="showState.back">
+                                <span class="text">后台管理</span>
                             </a>
                         </div>
                     </div>
@@ -628,18 +631,20 @@ export default {
     methods:{
         joinStudio(){
             if(this.$store.getters.userInfo.get_login){
-                studioJoin().then(data=>{
+                studioJoin({
+                    studio_id:this.$route.params.id,
+                }).then(data=>{
                     if(data.status.code==0){
                         this.$message({
                             message: '加入工作室申请提交成功',
                             type: 'success'
                         });
                     }else{
-                        this.$message('提交失败');
+                        this.$message(data.data.studio_user_apply);
                     }
                 })
             }else{
-                this.$confirm('参与教研活动需要登录，是否需要登录？', '未登录', {
+                this.$confirm('此操作需要登录，是否需要登录？', '未登录', {
                     distinguishCancelAndClose: true,
                     confirmButtonText: '确定',
                     cancelButtonText: '取消'
@@ -751,6 +756,24 @@ export default {
     computed:{
         navL(){
             return this.$store.getters.navL;
+        },
+        showState(){
+            var state = {
+                join:true,
+                back:false
+            };
+            if(this.$store.getters.userInfo.get_login){
+                let list = this.$store.getters.userInfo.user_relations;
+                for (let i = 0; i < list.length; i++) {
+                    if(list[i].studio_id==this.$route.params.id){
+                        state.join = false;
+                        if(list[i].role_id>0){
+                            state.back = true
+                        }
+                    }
+                }
+            }
+            return state;
         }
     },
     watch:{

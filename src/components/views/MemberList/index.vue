@@ -41,7 +41,7 @@
                                 </i>
                             </el-tooltip>
                             <template slot-scope="{ item }">
-                                <div class="name">{{ item.title }}</div>
+                                <div class="name">{{ item.nickname }}</div>
                                 <span class="addr">{{ item.duty }}</span>
                             </template>
                         </el-autocomplete>
@@ -171,13 +171,12 @@ export default {
         },
         querySearch(queryString, cb){
             let arr = queryString ? this.memberList.filter(e=>{
-                return e.title.toLowerCase().indexOf(queryString.toLowerCase())>=0
+                return e.nickname.toLowerCase().indexOf(queryString.toLowerCase())>=0
             }) : this.memberList;
             cb(arr);
         },
         handleSelect(item){
-            this.searchValue = item.title;
-            this.memberListCopy = this.memberList;
+            this.searchValue = item.nickname;
             this.memberList = [item];
             this.showSearch = true;
         },
@@ -201,6 +200,7 @@ export default {
                 }
                 this.loading = false;
                 this.memberList = list;
+                this.memberListCopy = list;
             }else{
                 var str = ''
                 for (const key in data.data) {

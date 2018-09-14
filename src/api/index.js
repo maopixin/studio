@@ -232,7 +232,7 @@ export function studioApply(payload){
 
 // /api/user/joinStudio
 export function studioJoin(payload){
-    return axios.get('/api/user/joinStudio').then(data=>{
+    return axios.post('/api/user/joinStudio',payload).then(data=>{
         return data.data;
     })
 }
