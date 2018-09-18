@@ -15,7 +15,6 @@
                 <span class="fl info">{{data.detail.description}}</span>
             </li>
         </ul>
-
     </div>
 </template>
 

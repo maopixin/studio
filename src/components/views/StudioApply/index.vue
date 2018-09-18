@@ -96,7 +96,7 @@ export default {
                         type: 'success'
                     });
                     setTimeout(()=>{
-                        history.back()
+                        window.location.href = 'http://www.dljy.com'
                     },2000)
                 }
             })
