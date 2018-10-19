@@ -54,47 +54,46 @@
                         </h3>
                     </div>
                     <div>
-                        
-                        <div v-if="loading" class="info_box">
-                            <div class="info clearfix">
-                                <img :src="studioInfo.data.user.mediumAvatar" alt="">
-                                <div class="text">
-                                    <span class="name">
-                                        {{studioInfo.data.name}}
-                                        <!-- <router-link :to='{name:"introduce"}'>{{studioInfo.data.name}}</router-link> -->
-                                    </span>
-                                    <span class="type">{{studioInfo.data.subject_major}}</span>
-                                </div>
+                    <div v-if="loading" class="info_box">
+                        <div class="info clearfix">
+                            <img :src="studioInfo.data.user.mediumAvatar" alt="">
+                            <div class="text">
+                                <span class="name">
+                                    {{studioInfo.data.name}}
+                                    <!-- <router-link :to='{name:"introduce"}'>{{studioInfo.data.name}}</router-link> -->
+                                </span>
+                                <span class="type">{{studioInfo.data.subject_major}}</span>
                             </div>
-                            <div class="num clearfix">
-                                <div>
-                                    <a href="javascript:;">
-                                        <span>{{studioInfo.data.member_count}}</span>
-                                        <span>成员</span>
-                                    </a>
-                                </div>
-                                <em></em>
-                                <div>
-                                    <a href="javascript:;">
-                                        <span>{{studioInfo.data.resource_count}}</span>
-                                        <span>资源</span>
-                                    </a>
-                                </div>
-                                <em></em>
-                                <div>
-                                    <a href="javascript:;">
-                                        <span>{{studioInfo.data.info_count}}</span>
-                                        <span>文章</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <a href="javascript:;" @click="joinStudio" class="join" v-if="showState.join">
-                                <span class="text">申请加入工作室</span>
-                            </a>
-                            <a href="http://gzs.dljy.com/admin/index/index" target="_blank" class="join" v-if="showState.back">
-                                <span class="text">后台管理</span>
-                            </a>
                         </div>
+                        <div class="num clearfix">
+                            <div>
+                                <a href="javascript:;">
+                                    <span>{{studioInfo.data.member_count}}</span>
+                                    <span>成员</span>
+                                </a>
+                            </div>
+                            <em></em>
+                            <div>
+                                <a href="javascript:;">
+                                    <span>{{studioInfo.data.resource_count}}</span>
+                                    <span>资源</span>
+                                </a>
+                            </div>
+                            <em></em>
+                            <div>
+                                <a href="javascript:;">
+                                    <span>{{studioInfo.data.info_count}}</span>
+                                    <span>文章</span>
+                                </a>
+                            </div>
+                        </div>
+                        <a href="javascript:;" @click="joinStudio" class="join" v-if="showState.join">
+                            <span class="text">申请加入工作室</span>
+                        </a>
+                        <a href="http://gzs.dljy.com/admin/index/index" target="_blank" class="join" v-if="showState.back">
+                            <span class="text">后台管理</span>
+                        </a>
+                    </div>
                     </div>
                 </div>
                 <!-- 成员排行 -->
@@ -132,27 +131,26 @@
                         </h3>
                     </div>
                     <div>
-                        
                         <ul class="statistics_list" v-show="loading">
                             <li>
                                 <span class="fl">成员数</span>
-                                <span class="fr">{{studioState.data.member_count}}</span>
+                                <span class="fr">{{studioInfo.data.member_count}}</span>
                             </li>
                             <li>
                                 <span class="fl">文章数</span>
-                                <span class="fr">{{studioState.data.article_count}}</span>
+                                <span class="fr">{{computedData["1"].cnt}}</span>
                             </li>
                             <li>
                                 <span class="fl">资源数</span>
-                                <span class="fr">{{studioState.data.resource_count}}</span>
+                                <span class="fr">{{computedData["2"].cnt}}</span>
                             </li>
                             <li>
                                 <span class="fl">名师课堂数</span>
-                                <span class="fr">{{studioState.data.course_count}}</span>
+                                <span class="fr">{{computedData["3"].cnt}}</span>
                             </li>
                             <li>
                                 <span class="fl">教研活动数</span>
-                                <span class="fr">{{studioState.data.activity_count}}</span>
+                                <span class="fr">{{computedData["4"].cnt}}</span>
                             </li>
                             <li>
                                 <span class="fl">话题数</span>
@@ -622,6 +620,9 @@ export default {
             lesson:{
                 list:[],
             },
+            computedData:{
+
+            }
         }
     },
     components:{
@@ -685,7 +686,7 @@ export default {
                 this.studioInfo.data = data.studio;
                 this.lesson.list = data.schoolrooms.list.slice(0,3);
                 this.studioState.data = data.jiade;
-                
+                this.computedData = data.computed;
                 this.$nextTick(()=>{
                 var myChart = this.$echarts.init(document.getElementById('main'));
                 var option = {
@@ -849,6 +850,9 @@ export default {
         .text{
             float: left;
             padding-left: 14px;
+            width: 160px;
+            overflow: hidden;
+            white-space: nowrap;
             span{
                 display: block;
             }
@@ -1258,7 +1262,7 @@ export default {
 
 .news_boxs{
     background-color: #fff;
-    
+    height: 331px;
 }
 .new_list_text{
     background-color: #fff;
