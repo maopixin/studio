@@ -9,8 +9,8 @@ axios.interceptors.request.use(
         return Promise.reject(err);
     });
 
-// http response 服务器响应拦截器，这里拦截401错误，并重新跳入登页重新获取token 
-// asd
+// http 0response 服务器响应拦截器，这里拦截401错误，并重新跳入登页重新获取token 
+// 
 // axios.interceptors.response.use(
 //     response => {
 //         return response;
