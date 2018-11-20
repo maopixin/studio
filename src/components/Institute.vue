@@ -4,15 +4,18 @@
         <div class="Institute__content">
             <router-view></router-view>
         </div>
+        <Footer/>
     </div>
     
 </template>
 
 <script>
 import HeaderUse from '@global/Header'
+import Footer from '@global/Footer'
 export default {
     components: {
-        HeaderUse
+        HeaderUse,
+        Footer
     },
     data(){
         return {

@@ -1,7 +1,7 @@
 <template>
     <div>
-        <Crumbs></Crumbs>
-        <div>
+        <!-- <Crumbs title='工作室列表'/> -->
+        <div style="padding-top:30px;">
             <div class="content clearfix">
             <div class="left fl">
                 <div class="filter_box box-shadow">
@@ -68,7 +68,7 @@
                     </div>
                     <ul class="studio_list" :class="showType">
                         <li 
-                            v-for="(item,index) in 3"
+                            v-for="(item,index) in 5"
                             :key='index'
 
                         >
@@ -96,10 +96,17 @@
                             <a class="join_btn" href="">申请加入</a>
                         </li>
                     </ul>
-                    <div id="page_box" class="clearfix"></div>
+                    <div id="page_box" class="clearfix">
+                        <el-pagination
+                            background
+                            layout="prev, pager, next"
+                            :total="1000"
+                        >
+                        </el-pagination>
+                    </div>
                 </div>
             </div>
-            <div class="right fr box-shadow">
+            <!-- <div class="right fr box-shadow">
                 <div class="title_box">
                     <h3 class="column_title">
                         <div class="t_l">LINE</div>
@@ -133,7 +140,7 @@
                         <span class="visit_num">231231</span>
                     </dd>
                 </dl>
-            </div>
+            </div> -->
         </div>
         </div>
     </div>
@@ -162,6 +169,7 @@ export default {
     methods:{
         areaClickHandle(index,text){
             this.area = index+1;
+            return false;
         },
         lvClickHandle(index,text){
             this.lv = index+1;
@@ -185,13 +193,15 @@ export default {
 
 <style lang='less' scoped>
 .left{
-    width: 870px;
+    // width: 870px;
+    width: 1140px;
 }
 .right{
-    width: 250px;
+    // width: 250px;
     // padding-right: 20px;
 }
 .filter_box{
+    user-select:none;
     background-color: #fff;
     border-top: 1px solid #d3d3d3;
     font-size: 12px;
@@ -229,6 +239,9 @@ export default {
         font-size: 14px;
         background-color: #fff;
         border-bottom: 1px solid #ccc;
+        .rank_filter{
+            user-select:none;
+        }
     }
     dt,dd{
         float: left;
@@ -302,9 +315,10 @@ export default {
         }
         .studio_head_pic{
             float: left;
-            width: 64px;
-            height: 64px;
+            width: 82px;
+            height: 82px;
             margin-right: 16px;
+            border-radius: 4px;
         }
         .studio_info{
             float: left;
@@ -357,6 +371,7 @@ export default {
             font-size: 14px;
             font-weight: 600;
             text-align: center;
+            border-radius: 4px;
             background-color: #1b9fe2;
             color: #fff;
             &:hover{
@@ -373,9 +388,9 @@ export default {
         float: left;
         width: 256px;
         box-shadow: 0 0 5px #ccc;
-        margin-right: 28px;
+        margin-right: 23px;
         margin-bottom: 30px;
-        &:nth-child(3n){
+        &:nth-child(4n){
             margin-right: 0px;
         }
         .studio_head_pic{

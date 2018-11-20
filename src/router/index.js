@@ -133,38 +133,38 @@ export default new Router({
       name:'StudioApply',
       component: StudioApply
     },
-    // {
-    //   path:'/institute',
-    //   name:'institute',
-    //   component:Institute,
-    //   children:[
-    //     {
-    //       path:'home/:id?',
-    //       name:'home',
-    //       component:InstituteHome
-    //     },
-    //     {
-    //       path:'daylesson',
-    //       name:'daylesson',
-    //       component:DayLesson
-    //     },
-    //     {
-    //       path:'studioinformation',
-    //       name:'studioinformation',
-    //       component:StudioInformation
-    //     },
-    //     {
-    //       path:'subjectleader',
-    //       name:'subjectleader',
-    //       component:SubjectLeader
-    //     },
-    //     {
-    //       path:'list',
-    //       name:'list',
-    //       component:StudioList
-    //     }
-    //   ]
-    // }
+    {
+      path:'/institute',
+      name:'institute',
+      component:Institute,
+      children:[
+        {
+          path:'home/:id?',
+          name:'home',
+          component:InstituteHome
+        },
+        {
+          path:'daylesson',
+          name:'daylesson',
+          component:DayLesson
+        },
+        {
+          path:'studioinformation',
+          name:'studioinformation',
+          component:StudioInformation
+        },
+        {
+          path:'subjectleader',
+          name:'subjectleader',
+          component:SubjectLeader
+        },
+        {
+          path:'list',
+          name:'list',
+          component:StudioList
+        }
+      ]
+    }
   ],
   scrollBehavior(to ,from , savedPosition){
     if(to.name==='msgboard'){
