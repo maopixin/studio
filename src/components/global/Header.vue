@@ -36,7 +36,7 @@
 import {getUserInfo} from '@api/index'
 const jsonp = require('jsonp');
 export default {
-    name:'header-use',
+    name:'header-use',      
     data(){
         return {
             seacrValue:'',

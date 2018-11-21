@@ -621,7 +621,18 @@ export default {
                 list:[],
             },
             computedData:{
-
+                "1":{
+                    cnt:0
+                },
+                "2":{
+                    cnt:0
+                },
+                "3":{
+                    cnt:0
+                },
+                "4":{
+                    cnt:0
+                },
             }
         }
     },
@@ -686,7 +697,9 @@ export default {
                 this.studioInfo.data = data.studio;
                 this.lesson.list = data.schoolrooms.list.slice(0,3);
                 this.studioState.data = data.jiade;
-                this.computedData = data.computed;
+                if(data.computed){
+                    this.computedData = data.computed;
+                }
                 this.$nextTick(()=>{
                 var myChart = this.$echarts.init(document.getElementById('main'));
                 var option = {
@@ -746,7 +759,7 @@ export default {
             })
         }
     },
-    mounted () {        
+    mounted () {
         if(this.$store.getters.navL){
             console.log('导航已激活，加载首页数据')
             this.firstLoading();
@@ -782,7 +795,7 @@ export default {
             // 初次加载需要等待导航请求结束，并且拿到bodylist
             console.log('导航已激活，加载首页数据')
             this.firstLoading();
-        }
+        },
     }
 }
 </script>

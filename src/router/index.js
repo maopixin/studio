@@ -39,6 +39,7 @@ export default new Router({
     },
     {
       path: '/institute/studio/:id',
+      name:"studio",
       component: Studio,
       children:[
         {
@@ -138,26 +139,26 @@ export default new Router({
       name:'institute',
       component:Institute,
       children:[
-        {
-          path:'home/:id?',
-          name:'home',
-          component:InstituteHome
-        },
-        {
-          path:'daylesson',
-          name:'daylesson',
-          component:DayLesson
-        },
-        {
-          path:'studioinformation',
-          name:'studioinformation',
-          component:StudioInformation
-        },
-        {
-          path:'subjectleader',
-          name:'subjectleader',
-          component:SubjectLeader
-        },
+        // {
+        //   path:'home/:id?',
+        //   name:'home',
+        //   component:InstituteHome
+        // },
+        // {
+        //   path:'daylesson',
+        //   name:'daylesson',
+        //   component:DayLesson
+        // },
+        // {
+        //   path:'studioinformation',
+        //   name:'studioinformation',
+        //   component:StudioInformation
+        // },
+        // {
+        //   path:'subjectleader',
+        //   name:'subjectleader',
+        //   component:SubjectLeader
+        // },
         {
           path:'list',
           name:'list',

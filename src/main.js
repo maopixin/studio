@@ -25,7 +25,7 @@ Vue.prototype.$getQuery = getQuery;
 
 Vue.use(ElementUI,{ size: 'small', zIndex: 3000 });
 Vue.use(VueAxios,axios);
-Vue.use(MetaInfo)
+Vue.use(MetaInfo);
 
 Vue.config.productionTip = false;
 

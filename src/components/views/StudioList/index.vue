@@ -4,7 +4,7 @@
         <div style="padding-top:30px;">
             <div class="content clearfix">
             <div class="left fl">
-                <div class="filter_box box-shadow">
+                <!-- <div class="filter_box box-shadow">
                     <div class="filter_item clearfix">
                         <h3 class="title fl">区域：</h3>
                         <ul class="filter_list fl" data-filter='area'>
@@ -39,9 +39,13 @@
                             >北京市</li>
                         </ul>
                     </div>
-                </div>
+                    
+                </div> -->
                 <div class="studio_box margin_t">
-                    <div class="studio_box_head clearfix">
+                    <div 
+                        class="studio_box_head clearfix" 
+                        
+                    >
                         <dl class="fl rank_filter">
                             <dt>排序</dt>
                             <dd
@@ -56,51 +60,80 @@
                                 ></span>
                             </dd>
                         </dl>
-                        <div class="fr show_style_box">
-                            显示方式
-                            <span class="r" :class="{'active' : showType=='r'}" @click='showClickHandle("r")'>
-
-                            </span>
-                            <span class='l' :class="{'active' : showType=='l'}" @click='showClickHandle("l")'>
-
-                            </span>
+                        <div class="fr studio_list_search">
+                            <el-autocomplete
+                                class="inline-input"
+                                v-model="seacrValue"
+                                :fetch-suggestions="querySearch"
+                                placeholder="请输入工作室名称"
+                                :trigger-on-focus="false"
+                                @select="handleSelect"
+                            >
+                                <i
+                                    class="el-icon-edit el-input__icon"
+                                    slot="suffix"
+                                    @click="handleIconClick">
+                                </i>
+                                <template slot-scope="{ item }">
+                                    <div class="name">{{ item.name }}</div>
+                                    <span class="addr">{{ item.synopsis }}</span>
+                                </template>
+                            </el-autocomplete>
+                            <!-- <el-input 
+                                placeholder="请输入工作室名称" 
+                                v-model="seacrValue" 
+                                class="input"
+                            >
+                                
+                            </el-input> -->
                         </div>
                     </div>
-                    <ul class="studio_list" :class="showType">
+                    <ul 
+                        class="studio_list" 
+                        :class="showType"
+                        v-loading="loading"
+                        element-loading-text="拼命加载中"
+                        element-loading-background="rgba(255, 255, 255, 0.8)"
+                    >
                         <li 
-                            v-for="(item,index) in 5"
-                            :key='index'
-
+                            v-for="(item) in data.list"
+                            :key='item.id'
                         >
-                            <a href=""><img class="studio_head_pic" src="http://yun.zjer.cn/uploads/snsPhotos/snscover/551e070cc5593_200.jpg" alt=""></a>
+                            <!-- {name:'studio',params: { id: item.id }} -->
+                            <router-link class="pic_url" :to="'/institute/studio/'+item.id">
+                                <img class="studio_head_pic" :src="item.logo" alt="">
+                            </router-link>
+                            <!-- <a class="" href=""></a> -->
                             <div class="studio_info">
                                 <div class="top">
                                     <span class="studio_name">
-                                        <a href="">工作室名称</a>
+                                        <a href="">{{item.name}}</a>
                                     </span>
-                                    <span class="studio_type">数学</span>
+                                    <span class="studio_type">{{item.subject_major}}</span>
                                     <span class="studio_area">地区</span>
                                 </div>
                                 <div class="middle">
                                     <span class="member">
-                                        成员：<span>23123</span>
+                                        成员：<span>{{item.member_cnt}}</span>
                                     </span>
                                     <span class="visit_num">
-                                        访问量：<span>211231</span>
+                                        访问量：<span>{{item.pv}}</span>
                                     </span>
                                 </div>
                                 <div class="bottom">
-                                    工作室简介：萨达打算的
+                                    工作室简介：{{item.synopsis}}
                                 </div>
                             </div>
-                            <a class="join_btn" href="">申请加入</a>
+                            <a class="join_btn" href="javascript:;">申请加入</a>
                         </li>
                     </ul>
-                    <div id="page_box" class="clearfix">
+                    <div id="page_box" class="clearfix" v-if='Number(data.total)!==0'>
                         <el-pagination
                             background
                             layout="prev, pager, next"
-                            :total="1000"
+                            :page-size="pre_page"
+                            :total="Number(data.total)"
+                            @current-change="currentChange"
                         >
                         </el-pagination>
                     </div>
@@ -147,51 +180,182 @@
 </template>
 
 <script>
-import Crumbs from '@global/crumbs'
+import Crumbs from '@global/crumbs';
+import jsonp from 'jsonp';
+import qs from 'qs';
 export default {
     components: {
         Crumbs
     },
+    metaInfo(){
+        return {
+            title:'东联教育 - 名师工作室',
+            meta: [
+                {
+                    name: 'keyWords',
+                    content: '东联教育,东联在线,工作室,研究院,在线教育,家庭教育'
+                },
+                {
+                    name:'description',
+                    content: '优质的教育资源，各类专家坐阵咨询，百强名校成果展示，万位名师供你选择，周末与孩子共成长'
+                }
+            ]
+        }
+    },
     data(){
         return {
+            loading:false,
             area: 0,
             areaText:'不限',
             lv: 0,
             lvText: '不限',
             sortArr:['默认','访问量','成员数','开通时间'],
+            sortTypeArr:['','pv','member_cnt','ctime'],
             reverseOrder: false,
             sort: 0,
             show: 0,
             showText :'inline-block',
-            showType:'r'
+            showType:'r',
+            seacrValue:"",
+            pre_page:8,
+            page:1,
+            data:{
+                total:0,
+                list:[]
+            }
         }
     },
+    created(){
+        this.pageChange();
+    },
     methods:{
-        areaClickHandle(index,text){
-            this.area = index+1;
-            return false;
-        },
-        lvClickHandle(index,text){
-            this.lv = index+1;
+        // areaClickHandle(index,text){
+        //     this.area = index+1;
+        //     return false;
+        // },
+        // lvClickHandle(index,text){
+        //     this.lv = index+1;
+        // },
+        pageChange(params,cb){
+            this.loading = true;
+            let str = qs.stringify(params);
+            jsonp("http://institute.dljy.com/api/studioP/index?"+str,null,(err,data)=>{
+                if (err) {
+                    this.loading = false;
+                    this.$message({
+                        message: '工作室列表获取失败',
+                        type: 'warning'
+                    });
+                } else {
+                    this.loading = false;
+                    if(data.status.code==0){
+                        this.data = data.data
+                    }else{
+                        this.$message({
+                            message: data.data[0],
+                            type: 'warning'
+                        });
+                    }
+                }
+            })
         },
         sortClickHandle(index){
+            if(this.loading){
+                this.$message({
+                    message: '您点的太快了',
+                    type: 'warning'
+                });
+                return false;
+            }
             if(index==this.sort){
+                if(index==0) return false;
                 this.reverseOrder = !this.reverseOrder;
             }else{
                 this.reverseOrder = false;
                 this.sort = index;
-            }
+            };
+            this.$nextTick(()=>{
+                let str = '';
+                if(this.sort>0){
+                    if(!this.reverseOrder){
+                        str += "-"
+                    }
+                    str += this.sortTypeArr[this.sort]
+                }
+                this.pageChange({
+                    p:this.page,
+                    _sort:str
+                })
+            })
         },
         showClickHandle(text){
             if(text!=this.showType){
                 this.showType = text;
             }
+        },
+        querySearch(queryString, cb){
+            let str = '';
+            if(this.sort>0){
+                if(!this.reverseOrder){
+                    str += "-"
+                }
+                str += this.sortTypeArr[this.sort]
+            }
+            let params = {
+                p:this.page,
+                _sort:str,
+                k:this.seacrValue
+            }
+            let query = qs.stringify(params);
+            jsonp("http://institute.dljy.com/api/studioP/index?"+query,null,(err,data)=>{
+                if (err) {
+                    this.$message({
+                        message: '搜索失败',
+                        type: 'warning'
+                    });
+                } else {
+                    if(data.status.code==0){
+                        cb(data.data.list);
+                    }else{
+                        this.$message({
+                            message: data.data[0],
+                            type: 'warning'
+                        });
+                    }
+                }
+            })
+            
+        },
+        handleSelect(item){
+            this.$router.push({ path: '/institute/studio/'+item.id });
+        },
+        handleIconClick(){
+            this.seacrValue = "";
+        },
+        currentChange(val){
+            let str = '';
+            if(this.sort>0){
+                if(!this.reverseOrder){
+                    str += "-"
+                }
+                str += this.sortTypeArr[this.sort]
+            }
+            this.pageChange({
+                p:val,
+                _sort:str
+            })
+            this.page = val;
         }
     }
 }
 </script>
 
 <style lang='less' scoped>
+#page_box{
+    margin: 0;
+    margin-top: 20px;
+    padding-bottom: 0;
+}
 .left{
     // width: 870px;
     width: 1140px;
@@ -229,6 +393,21 @@ export default {
     .title{
         font-weight: 600;
     }
+}
+.studio_list_search{
+    // width: 350px;
+}
+.name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.addr {
+    font-size: 12px;
+    color: #b4b4b4;
+}
+
+.highlighted .addr {
+    color: #ddd;
 }
 .studio_box{
     background-color: #fff;
@@ -302,6 +481,7 @@ export default {
 
 .studio_list{
     padding: 20px 23px 0px;
+    min-height: 260px;
     background-color: #fff;
 }
 .studio_list.l{
@@ -393,9 +573,19 @@ export default {
         &:nth-child(4n){
             margin-right: 0px;
         }
-        .studio_head_pic{
-            width: 256px;
+        .pic_url{
+            display: block;
+            width: 100%;
             height: 165px;
+            overflow: hidden;
+            position: relative;
+        }
+        .studio_head_pic{
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate3d(-50%,0,0);
         }
         .studio_info{
             padding: 8px 28px;
