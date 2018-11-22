@@ -26,6 +26,7 @@ const StudioList = () => import('@views/StudioList')
 const Gather = () => import('@views/Gather/Gather')
 const ActivityPage = () => import('@views/ActivityPage')
 const StudioApply = () => import('@views/StudioApply')
+const Belong = () => import("@views/StudioItem/StudioItem")
 
 Vue.use(Router);
 
@@ -165,6 +166,11 @@ export default new Router({
           component:StudioList
         }
       ]
+    },
+    {
+      path:'/belong/:id?',
+      name:'belong',
+      component:Belong
     }
   ],
   scrollBehavior(to ,from , savedPosition){

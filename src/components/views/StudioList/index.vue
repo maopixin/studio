@@ -61,7 +61,7 @@
                             </dd>
                         </dl>
                         <div class="fr studio_list_search">
-                            <el-autocomplete
+                            <!-- <el-autocomplete
                                 class="inline-input"
                                 v-model="seacrValue"
                                 :fetch-suggestions="querySearch"
@@ -78,14 +78,20 @@
                                     <div class="name">{{ item.name }}</div>
                                     <span class="addr">{{ item.synopsis }}</span>
                                 </template>
-                            </el-autocomplete>
-                            <!-- <el-input 
+                            </el-autocomplete> -->
+                            <el-input
                                 placeholder="请输入工作室名称" 
-                                v-model="seacrValue" 
+                                v-model="seacrValue"
+
                                 class="input"
                             >
-                                
-                            </el-input> -->
+                                <i
+                                    class="el-icon-circle-close-outline el-input__icon"
+                                    slot="suffix"
+                                    @click="handleIconClick">
+                                </i>
+                                <el-button @click="handleSearch" slot="append" icon="el-icon-search"></el-button>
+                            </el-input>
                         </div>
                     </div>
                     <ul 
@@ -95,7 +101,7 @@
                         element-loading-text="拼命加载中"
                         element-loading-background="rgba(255, 255, 255, 0.8)"
                     >
-                        <li 
+                        <li
                             v-for="(item) in data.list"
                             :key='item.id'
                         >
@@ -131,8 +137,9 @@
                         <el-pagination
                             background
                             layout="prev, pager, next"
-                            :page-size="pre_page"
+                            :page-size="limit"
                             :total="Number(data.total)"
+                            :current-page="page"
                             @current-change="currentChange"
                         >
                         </el-pagination>
@@ -184,6 +191,7 @@ import Crumbs from '@global/crumbs';
 import jsonp from 'jsonp';
 import qs from 'qs';
 export default {
+    props:['institute'],
     components: {
         Crumbs
     },
@@ -217,8 +225,8 @@ export default {
             showText :'inline-block',
             showType:'r',
             seacrValue:"",
-            pre_page:8,
             page:1,
+            limit:8,
             data:{
                 total:0,
                 list:[]
@@ -228,6 +236,9 @@ export default {
     created(){
         this.pageChange();
     },
+    computed:{
+        
+    },
     methods:{
         // areaClickHandle(index,text){
         //     this.area = index+1;
@@ -236,10 +247,36 @@ export default {
         // lvClickHandle(index,text){
         //     this.lv = index+1;
         // },
-        pageChange(params,cb){
+        // 配置参数
+        setParams(){
+            let data = {
+                p:this.page,
+                limit:this.limit
+            };
+            // 是否为搜索
+            if(this.showSearch){
+                data.k = this.seacrValue;
+            }
+            // 排序方式
+            let str = '';
+            if(this.sort>0){
+                if(!this.reverseOrder){
+                    str += "-";
+                }
+                str += this.sortTypeArr[this.sort];
+            };
+            data._sort = str;
+            if(this.institute){
+                data.institute_id = this.institute
+            }
+            console.log(data);
+            return data;
+        },
+        // 页面改变
+        pageChange(cb){
             this.loading = true;
-            let str = qs.stringify(params);
-            jsonp("http://institute.dljy.com/api/studioP/index?"+str,null,(err,data)=>{
+            let str = qs.stringify(this.setParams());
+            jsonp("/api/studioP/index?"+str,null,(err,data)=>{
                 if (err) {
                     this.loading = false;
                     this.$message({
@@ -248,8 +285,9 @@ export default {
                     });
                 } else {
                     this.loading = false;
+                    cb&&cb();
                     if(data.status.code==0){
-                        this.data = data.data
+                        this.data = data.data;
                     }else{
                         this.$message({
                             message: data.data[0],
@@ -275,17 +313,7 @@ export default {
                 this.sort = index;
             };
             this.$nextTick(()=>{
-                let str = '';
-                if(this.sort>0){
-                    if(!this.reverseOrder){
-                        str += "-"
-                    }
-                    str += this.sortTypeArr[this.sort]
-                }
-                this.pageChange({
-                    p:this.page,
-                    _sort:str
-                })
+                this.pageChange()
             })
         },
         showClickHandle(text){
@@ -293,58 +321,35 @@ export default {
                 this.showType = text;
             }
         },
-        querySearch(queryString, cb){
-            let str = '';
-            if(this.sort>0){
-                if(!this.reverseOrder){
-                    str += "-"
-                }
-                str += this.sortTypeArr[this.sort]
-            }
-            let params = {
-                p:this.page,
-                _sort:str,
-                k:this.seacrValue
-            }
-            let query = qs.stringify(params);
-            jsonp("http://institute.dljy.com/api/studioP/index?"+query,null,(err,data)=>{
-                if (err) {
-                    this.$message({
-                        message: '搜索失败',
-                        type: 'warning'
-                    });
-                } else {
-                    if(data.status.code==0){
-                        cb(data.data.list);
-                    }else{
-                        this.$message({
-                            message: data.data[0],
-                            type: 'warning'
-                        });
-                    }
-                }
-            })
-            
-        },
         handleSelect(item){
             this.$router.push({ path: '/institute/studio/'+item.id });
         },
         handleIconClick(){
+            if(this.seacrValue==""){
+                return false;
+            }
             this.seacrValue = "";
+            this.showSearch = false;
+            this.page = 1;
+            let str = '';
+            this.$nextTick(()=>{
+                this.pageChange()
+            })
         },
         currentChange(val){
-            let str = '';
-            if(this.sort>0){
-                if(!this.reverseOrder){
-                    str += "-"
-                }
-                str += this.sortTypeArr[this.sort]
-            }
-            this.pageChange({
-                p:val,
-                _sort:str
-            })
             this.page = val;
+            this.$nextTick(()=>{
+                this.pageChange()
+            })
+        },
+        handleSearch(){
+            this.showSearch = true;
+            this.page = 1;
+            this.loading = true;
+            let str = '';
+            this.$nextTick(()=>{
+                this.pageChange();
+            })
         }
     }
 }
@@ -520,6 +525,7 @@ export default {
                 }
                 .studio_type{
                     color: #1b9fe2;
+                    min-height: 26px;
                     margin-right: 20px;
                 }
                 .studio_area{
@@ -595,6 +601,7 @@ export default {
                     display: block;
                     font-size: 14px;
                     font-weight: 600;
+                    min-height: 26px;
                     line-height: 26px;
                     color: #5c5c5c;
                     border-bottom: 1px solid #bfbfbf;
@@ -603,6 +610,7 @@ export default {
                     display: block;
                     margin-top: 6px;
                     font-size: 12px;
+                    min-height: 26px;
                     line-height: 26px;
                     color: #1b9fe2;
                 }
