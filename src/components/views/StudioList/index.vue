@@ -115,7 +115,7 @@
                                     <span class="studio_name">
                                         <a href="">{{item.name}}</a>
                                     </span>
-                                    <span class="studio_type">{{item.subject_major}}</span>
+                                    <span class="studio_type">学科：{{item.subject_major||'暂无'}}</span>
                                     <span class="studio_area">地区</span>
                                 </div>
                                 <div class="middle">
@@ -576,7 +576,7 @@ export default {
         box-shadow: 0 0 5px #ccc;
         margin-right: 23px;
         margin-bottom: 30px;
-        &:nth-child(4n){
+        &:nth-of-type(4n){
             margin-right: 0px;
         }
         .pic_url{

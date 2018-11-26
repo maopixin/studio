@@ -9,18 +9,18 @@ axios.interceptors.request.use(
         return Promise.reject(err);
     });
 
-// http response 服务器响应拦截器，这里拦截401错误，并重新跳入登页重新获取token 
+// http response 服务器响应拦截器，这里拦截401错误，并重新跳入登页重新获取token
 // axios.interceptors.response.use(
 //     response => {
 //         return response;
 //     },
 //     error => {
-//         return Promise.reject(error.response.data) 
+//         return Promise.reject(error.response.data)
 //     });
 
 // const domin = http://institute.dljy.com/studio/api/page_list
 function HandelError(code){
-    
+
 }
 // 获取研究院下所有工作室列表：institute_id: int [必传]page: int [必传] pre_page: int
 export function getStudioList(payload){
@@ -56,7 +56,7 @@ export function getStudioLatest(payload){
     })
 }
 export function getInstituteLatest(payload){
-    return axios.get('/source/api/institute_latest',{   
+    return axios.get('/source/api/institute_latest',{
         params:payload
     }).then(data=>{
         return data.data
@@ -70,7 +70,7 @@ export function getInstituteLatest(payload){
 export function getActivityList(payload){
     return axios.get('/activity/api/page_list',{
         params:payload,
-        
+
     }).then(data=>{
         return data.data
     }).catch(error=>{
@@ -214,7 +214,7 @@ export function getLessonMore(payload){
     }).then(data=>{
         return data.data;
     })
-} 
+}
 export function getLessonIndex(payload){
     return axios.get('/api/schoolRoom/index',{
         params:payload
