@@ -101,6 +101,7 @@
                         element-loading-text="拼命加载中"
                         element-loading-background="rgba(255, 255, 255, 0.8)"
                     >
+                        <li v-if="data.list.length<=0" class="no_list">暂无工作室数据</li>
                         <li
                             v-for="(item) in data.list"
                             :key='item.id'
@@ -218,7 +219,7 @@ export default {
             lv: 0,
             lvText: '不限',
             sortArr:['默认','访问量','成员数','开通时间'],
-            sortTypeArr:['','pv','member_cnt','ctime'],
+            sortTypeArr:['pv','pv','member_cnt','ctime'],
             reverseOrder: false,
             sort: 0,
             show: 0,
@@ -259,17 +260,16 @@ export default {
             }
             // 排序方式
             let str = '';
-            if(this.sort>0){
-                if(!this.reverseOrder){
-                    str += "-";
-                }
-                str += this.sortTypeArr[this.sort];
-            };
+            if(!this.reverseOrder){
+                str += "-";
+            }
+            str += this.sortTypeArr[this.sort];
+
             data._sort = str;
             if(this.institute){
                 data.institute_id = this.institute
             }
-            console.log(data);
+            console.log(data)
             return data;
         },
         // 页面改变
@@ -402,6 +402,7 @@ export default {
 .studio_list_search{
     // width: 350px;
 }
+
 .name {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -636,6 +637,15 @@ export default {
         .join_btn{
             display: none;
         }
+    }
+    .no_list{
+        float: initial;
+        width: 100%;
+        height: 240px;
+        line-height: 240px;
+        border: none;
+        box-shadow: initial;
+        text-align: center;
     }
 }
 #page_box{
