@@ -55,15 +55,18 @@
                     </div>
                     <div>
                     <div v-if="loading" class="info_box">
+                        
                         <div class="info clearfix">
-                            <img :src="studioInfo.data.user.mediumAvatar" alt="">
-                            <div class="text">
-                                <span class="name">
-                                    {{studioInfo.data.name}}
-                                    <!-- <router-link :to='{name:"introduce"}'>{{studioInfo.data.name}}</router-link> -->
-                                </span>
-                                <span class="type">{{studioInfo.data.subject_major}}</span>
-                            </div>
+                            <router-link :to="{name:'introduce'}">
+                                <img :src="studioInfo.data.user.mediumAvatar" alt="">
+                                <div class="text">
+                                    <span class="name">
+                                        {{studioInfo.data.name}}
+                                        <!-- <router-link :to='{name:"introduce"}'>{{studioInfo.data.name}}</router-link> -->
+                                    </span>
+                                    <span class="type">{{studioInfo.data.subject_major}}</span>
+                                </div>
+                            </router-link>
                         </div>
                         <div class="num clearfix">
                             <div>

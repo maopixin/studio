@@ -16,7 +16,7 @@
           <a class="header-top-link" href="http://www.dljy.com/index/index/about">关于我们</a></div>
       </div>
       <div class="header-main-box container clearfix" style="margin:35px auto">
-        <a href="/">
+        <a href="http://www.dljy.com/">
           <img class="logo" src="http://www.dljy.com/static/common/img/logo.png"></a>
         <div class="header-search-box">
           <div>

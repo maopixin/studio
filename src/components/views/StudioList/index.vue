@@ -362,12 +362,7 @@ export default {
     padding-bottom: 0;
 }
 .left{
-    // width: 870px;
     width: 1140px;
-}
-.right{
-    // width: 250px;
-    // padding-right: 20px;
 }
 .filter_box{
     user-select:none;
@@ -398,9 +393,6 @@ export default {
     .title{
         font-weight: 600;
     }
-}
-.studio_list_search{
-    // width: 350px;
 }
 
 .name {

@@ -21,7 +21,7 @@ const ActivityCase = () => import('@views/ActivityCase')
 const Article = () => import('@views/Article')
 const StudioInformation = () => import('@views/StudioInformation')
 const SubjectLeader = () => import('@views/SubjectLeader')
-const BriefIntroduce = () => import('@views/BriefIntroduce')
+const BriefIntroduce = () => import('@views/BriefIntroduce') //工作室简介
 const StudioList = () => import('@views/StudioList')
 const Gather = () => import('@views/Gather/Gather')
 const ActivityPage = () => import('@views/ActivityPage')
