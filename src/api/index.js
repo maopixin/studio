@@ -1,6 +1,7 @@
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 // 请求拦截器，后端无法识别请求，加上xhr特征码
+
 axios.interceptors.request.use(
     config => {
         config.headers['X-Requested-With'] = 'XMLHttpRequest';
