@@ -58,11 +58,10 @@
                         
                         <div class="info clearfix">
                             <router-link :to="{name:'introduce'}">
-                                <img :src="studioInfo.data.user.mediumAvatar" alt="">
+                                <img :src="studioInfo.data.avatar" alt="">
                                 <div class="text">
                                     <span class="name">
                                         {{studioInfo.data.name}}
-                                        <!-- <router-link :to='{name:"introduce"}'>{{studioInfo.data.name}}</router-link> -->
                                     </span>
                                     <span class="type">{{studioInfo.data.subject_major}}</span>
                                 </div>
@@ -867,8 +866,6 @@ export default {
             float: left;
             padding-left: 14px;
             width: 160px;
-            overflow: hidden;
-            white-space: nowrap;
             span{
                 display: block;
             }

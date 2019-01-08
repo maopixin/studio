@@ -108,7 +108,7 @@
                         >
                             <!-- {name:'studio',params: { id: item.id }} -->
                             <router-link class="pic_url" :to="'/institute/studio/'+item.id">
-                                <img class="studio_head_pic" :src="item.logo" alt="">
+                                <img class="studio_head_pic" :src="item.thumb" alt="">
                             </router-link>
                             <!-- <a class="" href=""></a> -->
                             <div class="studio_info">

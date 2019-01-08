@@ -10,7 +10,7 @@
             <div class="clearfix teacher-info">
                 <div class="fl teacher-pic">
                     <div class="pic-box">
-                        <img :src="studioData.user.mediumAvatar" alt=""/>
+                        <img :src="studioData.avatar" alt=""/>
                     </div>
                 </div>
                 
