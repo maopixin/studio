@@ -21,11 +21,11 @@
             <div class="part" data-type='login' style="" v-if='!userInfo'>
                 <a href="javascript:;" @click='login'>登录</a>
                 /
-                <a href="javascript:;" @click='zc' class="orange">注册</a>
+                <a href="javascript:;" @click='register' class="orange">注册</a>
             </div>
             <div class="part" data-type='logined' v-if='userInfo'>
-                <a href="http://meet.dljy.com" data-user='logined' style="display:inline-block;line-height:21px;vertical-align:middle;margin-right:20px;width:85px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{name}}</a>
-                <a href="javascript:;" @click='loout' class="orange" style="display:inline-block;vertical-align:middle;">退出</a>
+                <a :href="userUrl" data-user='logined' style="display:inline-block;line-height:21px;vertical-align:middle;margin-right:20px;width:85px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{name}}</a>
+                <a href="javascript:;" @click='logout' class="orange" style="display:inline-block;vertical-align:middle;">退出</a>
             </div>
         </div>
     </div>
@@ -39,13 +39,16 @@ export default {
     name:'header-use',      
     data(){
         return {
-            seacrValue:'',
-            userInfo:false,
-            name:''
+            seacrValue:'', // 搜索内容
+            userInfo:false, // 用户信息
+            name:'', // 当前登录用户的用户名
+            loginUrl:'//edu.dljy.com/login?goto=', // 登录链接
+            registerUrl:'//edu.dljy.com/register?goto=', // 注册链接
+            logoutUrl:'//edu.dljy.com/logout', // 登出链接
+            userUrl:'//edu.dljy.com/settings', // 个人信息页面
         }
     },
     created(){
-        
         jsonp('http://account.dljy.com/user/api/get_login_user', null, (err, data) => {
             if (err) {
                 this.$message({
@@ -53,7 +56,6 @@ export default {
                     type: 'warning'
                 });
             } else {
-                console.log(data,12312)
                 if(data.status.code==0){
                     if(data.data.is_login){
                         this.userInfo = true;
@@ -81,13 +83,13 @@ export default {
             this.$message('搜索暂未开放');
         },
         login(){
-            window.location.href = 'http://account.dljy.com/user/login/login?goto='+window.location.href;
+            window.location.href = this.loginUrl + window.location.href;
         },
-        zc(){
-            window.location.href = 'http://account.dljy.com/user/login/register?goto='+window.location.href;
+        register(){
+            window.location.href = this.registerUrl + window.location.href;
         },
-        loout(){
-            window.location.href = 'http://account.dljy.com/user/login/logout?goto='+window.location.href;
+        logout(){
+            window.location.href = this.logoutUrl ;
         },
     }
 }

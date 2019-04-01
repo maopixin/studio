@@ -90,6 +90,12 @@ export default {
                 duty:this.form.title,
                 honor_image:this.picList.join(',')
             }).then(data=>{
+                if(data.status.code==10105){
+                    this.$message({
+                        message: '暂未登陆，请先登录',
+                        type: 'error'
+                    });
+                }
                 if(data.status.code==0){
                     this.$message({
                         message: '工作室申请提交成功，请等待管理员审核',
